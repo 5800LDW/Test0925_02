@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.antonioleiva.mvpexample.app">
+
+    <!--<uses-sdk-->
+        <!--android:minSdkVersion="17"-->
+        <!--android:targetSdkVersion="25" />-->
+
+
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- 访问网络权限 -->
+       
+    <uses-permission android:name="android.permission.INTERNET" />
+       
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS">
+           
+    </uses-permission>
+       
+    <uses-permission android:name="com.mozillaonline.permission.ACCESS_DOWNLOAD_MANAGER" />
+       
+    <uses-permission android:name="com.mozillaonline.permission.ACCESS_DOWNLOAD_MANAGER_ADVANCED" />
+       
+    <uses-permission android:name="com.mozillaonline.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
+       
+    <uses-permission android:name="com.mozillaonline.permission.ACCESS_CACHE_FILESYSTEM" />
+       
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+       
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+       
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+       
+    <!-- 蓝牙分享所需的权限 -->
+       
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
+       
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+       
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+       
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+       
+    <!-- <uses-permission android:name="android.permission.WRITE_SMS" /> -->
+
+       
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+       
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+       
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+       
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+       
+    <!-- 打电话权限 -->
+       
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+       
+    <!-- 访问网络权限 -->
+       
+    <uses-permission android:name="android.permission.INTERNET" />
+       
+    <!-- 检测网络状态权限 -->
+       
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+       
+    <!-- 改变wifi状态 -->
+       
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+       
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+       
+    <!-- SD卡有写入的权限 -->
+       
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+       
+    <!-- 启用错误分析功能，须添加该权限 -->
+       
+    <uses-permission android:name="android.permission.READ_LOGS" />
+       
+    <!-- 读取手机状态 -->
+       
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+       
+    <!-- SDK1.5需要android.permission.GET_TASKS权限判断本程序是否为当前运行的应用? -->
+       
+    <uses-permission android:name="android.permission.GET_TASKS" />
+       
+    <!-- 获取摄像头的权限 -->
+       
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
+    <uses-feature android:name="android.hardware.camera" /> <!-- 使用照相机权限 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
+
+       
+    <!-- 来电消音 -->
+       
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+       
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION">
+           
+    </uses-permission>
+
+
+    <!--在sdcard中创建/删除文件的权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--SD卡写入数据权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--SD卡创建与删除权限-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <!--VISIBILITY_HIDDEN表示不显示任何通知栏提示的权限-->
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
+    <!--DownloadManager-->
+    <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER" />
+
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_test"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name="com.SeletActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Login.LoginActivity"
+            android:label="Fruits111">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".main.RecordStartActivity"
+            android:label="@string/title_activity_main">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name=".FruitActivity"
+            android:theme="@style/FruitActivityTheme"></activity>
+
+        <activity android:name=".CameraActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+
+        <activity android:name="com.mylhyl.circledialog.sample.MainActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity android:name=".WebViewActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity android:name=".TestFileActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <!--<activity android:name="cn.bluemobi.dylan.viewpagerfragmentlazyload.RecordStartActivity">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN" />-->
+
+        <!--<category android:name="android.intent.category.LAUNCHER" />-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
+
+
+        <activity
+            android:name="com.devices.DevicesInfoActivity"
+            android:screenOrientation="portrait"></activity>
+
+
+        <activity
+            android:name="com.example.wsj.splashdemo.activities.SplashActivity"
+            android:theme="@style/AppTheme.Launcher">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name="com.example.wsj.splashdemo.activities.WebActivity"></activity>
+        <activity android:name="com.example.wsj.splashdemo.activities.LoginActivity"></activity>
+
+        <service
+            android:name="com.example.wsj.splashdemo.service.SplashDownLoadService"
+            android:exported="false" />
+
+
+        <activity android:name="com.fragment.TestFragmentActivity"></activity>
+
+
+        <activity android:name="com.fragment2.TestBackFragmentActivity"></activity>
+
+        <activity android:name="com.fragment2.MyActivity"></activity>
+
+        <activity android:name="com.fragment2.ViewPagerActivity"></activity>
+
+
+        <!-- 鸿洋的通用适配器-->
+        <activity
+            android:name="com.zhy.sample.MainActivity"
+            android:label="@string/app_name"></activity>
+        <activity
+            android:name="com.zhy.sample.MultiItemListViewActivity"
+            android:label="@string/title_activity_multi_item_list_view"
+            android:theme="@style/Button"></activity>
+        <activity
+            android:name="com.zhy.sample.RecyclerViewActivity"
+            android:label="@string/title_activity_recycler_view"
+            android:theme="@style/Button"></activity>
+        <activity
+            android:name="com.zhy.sample.MultiItemRvActivity"
+            android:label="@string/title_activity_multi_item_rv"
+            android:theme="@style/Button"></activity>
+
+        <activity
+            android:name="com.tutor.update.UpadateActivity"
+            android:label="@string/title_activity_multi_item_rv"
+            android:theme="@style/Button"></activity>
+
+
+        <activity
+            android:name="com.tutor.update2.UpdateActivity2"
+            android:label="@string/title_activity_multi_item_rv"
+            android:theme="@style/Button"></activity>
+
+
+        <activity
+            android:name="com.example.chenfengyao.installapkdemo.UpdateActivity3"
+            android:label="@string/title_activity_multi_item_rv"
+            android:theme="@style/Button"></activity>
+
+        <!--<service android:name="com.example.chenfengyao.installapkdemo.NotificationService"/>-->
+        <!--<receiver android:name="com.tutor.update2.CompleteReceiver">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>-->
+        <!--<action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
+        <!--<provider-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="com.ldw.lib.biz.app.fileprovider"-->
+        <!--android:exported="false"-->
+        <!--android:grantUriPermissions="true">-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/file_paths24" />-->
+        <!--</provider>-->
+
+
+        <activity
+            android:name="com.github.phoenix.activity.UpdateActivity4"
+            android:label="@string/title_activity_multi_item_rv"
+            android:theme="@style/Button"></activity>
+
+
+        <!--版本更新服务-->
+        <service android:name="com.github.phoenix.service.DownloadService"></service>
+
+
+        <activity
+            android:name="com.hss01248.notifyutildemo.NotificationActivity"
+            android:label="@string/title_activity_multi_item_rv"
+            android:theme="@style/Button"></activity>
+
+
+        <!--<provider-->
+        <!--android:name="android.support.v4.content.FileProvider"-->
+        <!--android:authorities="com.antonioleiva.mvpexample.app.installapkdemo"-->
+        <!--android:grantUriPermissions="true"-->
+        <!--android:exported="false">-->
+        <!--&lt;!&ndash;元数据&ndash;&gt;-->
+        <!--<meta-data-->
+        <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--android:resource="@xml/file_paths24" />-->
+        <!--</provider>-->
+
+        <!--<provider-->
+            <!--android:name="android.support.v4.content.FileProvider"-->
+            <!--android:authorities="com.chaychan.androidnadaption.fileprovider"-->
+            <!--android:exported="false"-->
+            <!--android:grantUriPermissions="true">-->
+            <!--&lt;!&ndash;元数据&ndash;&gt;-->
+            <!--<meta-data-->
+                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+                <!--android:resource="@xml/file_provider_paths"/>-->
+        <!--</provider>-->
+
+
+        <activity
+            android:name="com.example.notifications.NotificationActivity2"
+            android:label="测试,多个app图标">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.example.notifications.CustomActivity"></activity>
+        <activity android:name="com.example.notifications.ProgressAcitivty"></activity>
+
+
+        <activity android:name="com.example.exmassets.AssetsActivity"></activity>
+        <activity android:name="com.chaychan.androidnadaption.CameraActivity2"></activity>
+
+///Users/LDW10000000/Workspaces/AndroidStudio/mvpdemo/src/main/java/com/example/android/api24adaptation/MyFileProvider.java
+
+        <provider
+            android:name="com.example.android.api24adaptation.MyFileProvider"
+            android:authorities="com.qqwl.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths24" />
+        </provider>
+
+
+        <activity android:name="com.example.android.api24adaptation.CameraActivity3"></activity>
+        <service android:name="com.example.android.api24adaptation.checkupdate.DownloadService" />
+
+
+
+        <activity android:name="com.test.TestActvity"/>
+
+        <activity android:name="com.lanou3g.downdemo.BreakPointResumeActivity"/>
+
+        <activity android:name="com.example.servicebestpractice.BreakPointResumeActivity2"/>
+        <service
+            android:name="com.example.servicebestpractice.DownloadService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+
+
+
+        <activity android:name="com.test.TestMyRunnableActivity"/>
+
+        <activity android:name="scut.carson_ho.check_net.CheckNetWorkActivity"/>
+
+        <activity android:name="com.ywj.svgdemo.SVGActivity1"/>
+        <activity android:name="com.my.phonesingle.SignActivity"/>
+
+
+        <activity android:name="com.test.so.LabelJSONTestActivity"/>
+        <activity android:name="com.test.so.TestSOActivity"/>
+
+
+        <activity android:name="com.test.honeywell.HoneWellTestActivity"/>
+    </application>
+
+    <!--<application-->
+    <!--android:name="com.example.wsj.splashdemo.ColumnApplication"-->
+    <!--android:allowBackup="true"-->
+    <!--android:icon="@mipmap/ic_launcher"-->
+    <!--android:label="@string/app_name"-->
+    <!--android:supportsRtl="true"-->
+    <!--android:theme="@style/AppTheme">-->
+
+
+    <!--<activity android:name="com.example.wsj.splashdemo.activities.SplashActivity"-->
+    <!--android:theme="@style/AppTheme.Launcher">-->
+    <!--<intent-filter>-->
+    <!--<action android:name="android.intent.action.MAIN"/>-->
+
+    <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+    <!--</intent-filter>-->
+    <!--</activity>-->
+
+    <!--<activity android:name="com.example.wsj.splashdemo.activities.WebActivity">-->
+    <!--</activity>-->
+
+    <!--<activity android:name="com.example.wsj.splashdemo.activities.LoginActivity">-->
+    <!--</activity>-->
+
+    <!--<service-->
+    <!--android:name="com.example.wsj.splashdemo.service.SplashDownLoadService"-->
+    <!--android:exported="false"/>-->
+
+    <!--<activity android:name="com.example.wsj.splashdemo.activities.RecordStartActivity">-->
+    <!--</activity>-->
+    <!--</application>-->
+
+
+    <!--<application-->
+    <!--android:allowBackup="true"-->
+    <!--android:icon="@mipmap/ic_launcher"-->
+    <!--android:label="@string/app_name"-->
+    <!--android:supportsRtl="true"-->
+    <!--android:theme="@style/AppTheme">-->
+
+    <!--<activity-->
+    <!--android:name="com.example.saulmm.splashes.OnboardingWithPlaceholderActivity"-->
+    <!--android:theme="@style/AppTheme.Placeholder">-->
+
+    <!--<intent-filter>-->
+    <!--<action android:name="android.intent.action.MAIN"/>-->
+    <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+    <!--</intent-filter>-->
+    <!--</activity>-->
+
+    <!--<activity-->
+    <!--android:name="com.example.saulmm.splashes.OnboardingWithCenterAnimationActivity"-->
+    <!--android:theme="@style/AppTheme.CenterAnimation">-->
+    <!--</activity>-->
+
+    <!--<activity-->
+    <!--android:name="com.example.saulmm.splashes.OnBoardingWithSimpleBackground"-->
+    <!--android:theme="@style/AppTheme.Simple"/>-->
+    <!--</application>-->
+
+
+</manifest>

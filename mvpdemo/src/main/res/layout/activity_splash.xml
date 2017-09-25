@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/sp_bg"
+        android:src="@mipmap/gank8"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:onClick="onViewClicked"
+        android:layout_height="match_parent"/>
+
+    <Button
+        android:visibility="visible"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:textColor="@color/red"
+        android:id="@+id/sp_jump_btn"
+        android:background="@drawable/btn_splash_shape"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:onClick="onViewClicked"
+        android:text="123"
+        android:layout_marginTop="20dp"/>
+
+
+    <TextView
+        android:layout_marginTop="320dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="30dp"
+        android:background="@android:color/holo_blue_bright"
+        android:text="冷启动欢迎界面"/>
+
+</RelativeLayout>

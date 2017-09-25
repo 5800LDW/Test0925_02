@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_fruit"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
+
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical">
+
+
+       <Button
+           android:id="@+id/bt_DevicesInfo"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="查看设备信息"/>
+
+       <Button
+           android:id="@+id/bt_Fruit"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="水果"/>
+
+       <Button
+           android:id="@+id/bt_RecordStart"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="查看Activity启动过程"/>
+
+       <Button
+           android:id="@+id/bt_Camera"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="照相"/>
+
+       <Button
+           android:id="@+id/bt_Camera2"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="照相2"/>
+
+       <Button
+           android:id="@+id/bt_Camera3"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="照相3"/>
+
+
+       <Button
+           android:id="@+id/bt_webView"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="WebView"/>
+
+       <Button
+           android:id="@+id/bt_Splash"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="闪屏启动"/>
+
+       <Button
+           android:id="@+id/bt_Fragment"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="Fragment"/>
+
+       <Button
+           android:id="@+id/bt_TestFragmentBack"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="测试fragment的返回键"/>
+
+       <Button
+           android:id="@+id/bt_CommonAdapter"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="鸿洋的通用RecyclerView适配器"/>
+       <Button
+           android:id="@+id/bt_Update"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="更新apk"/>
+       <Button
+           android:id="@+id/bt_Update2"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="更新apk2"/>
+       <Button
+           android:id="@+id/bt_Update3"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="更新apk3"/>
+       <Button
+           android:id="@+id/bt_Update4"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="更新apk4"/>
+       <Button
+           android:id="@+id/bt_notification"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="Notification"/>
+       <Button
+           android:id="@+id/bt_notification2"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="Notification2"/>
+       <Button
+           android:id="@+id/bt_assets"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="读取Assets"/>
+
+
+       <Button
+           android:id="@+id/bt_test"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="测试我的photoActivity"/>
+
+       <Button
+           android:id="@+id/bt_BreakpointResume"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="断点续传"/>
+
+       <Button
+           android:id="@+id/bt_BreakpointResume2"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="断点续传2"/>
+
+
+       <Button
+           android:id="@+id/bt_RxDownload"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="RxDownload"/>
+
+       <Button
+           android:id="@+id/bt_ThreadPool"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="线程池"/>
+       <Button
+           android:id="@+id/bt_Thread"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="线程"/>
+       <Button
+           android:id="@+id/bt_TestMyRunnable"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="测试我的下载runnable"/>
+       <Button
+           android:id="@+id/bt_CheckNetWork"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="网络状态测试"/>
+
+       <Button
+           android:id="@+id/bt_WifiSign"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="wifi信号强弱"/>
+
+       <Button
+           android:id="@+id/bt_SVG1"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="svg测试"/>
+
+       <Button
+           android:id="@+id/bt_TestSO"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="so库加入测试"/>
+
+       <Button
+           android:id="@+id/bt_HoneyWellTest"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:layout_margin="5dp"
+           android:text="honeyWell测试"/>
+
+
+   </LinearLayout>
+
+
+</ScrollView>

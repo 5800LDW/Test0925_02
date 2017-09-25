@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_svg1">
+    <target
+        android:name="path1"
+        android:animation="@animator/anim_path11" />
+    <target
+        android:name="path2"
+        android:animation="@animator/anim_path12" />
+
+</animated-vector>

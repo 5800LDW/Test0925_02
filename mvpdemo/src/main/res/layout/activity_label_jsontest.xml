@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/ButPrint"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:layout_weight="1.0"
+            android:text="打印" >
+        </Button>
+        <Button
+            android:id="@+id/ButQRCode"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:layout_weight="1.0"
+            android:text="二维码测试" >
+        </Button>
+        <Button
+            android:id="@+id/ButLogo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:layout_weight="1.0"
+            android:text="Logo" >
+        </Button>		
+        <Button
+            android:id="@+id/ButPrintStop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:layout_weight="1.0"
+            android:text="中止打印" >
+        </Button>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/ButGetDeviceID"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:layout_weight="1.0"
+            android:text="设备ID" >
+        </Button>
+        <Button
+            android:id="@+id/ButStatus"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:layout_weight="1.0"
+            android:text="状态" >
+        </Button>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/ButExit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:layout_weight="1.0"
+            android:text="退出" >
+        </Button>
+    </LinearLayout>
+    
+
+</LinearLayout>
