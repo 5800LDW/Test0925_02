@@ -1,0 +1,46 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+
+
+# 以下为我添加的忽略提交的标注，添加时间为20170926
+# Built application files
+*.apk
+*.ap_
+
+# File for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Gradle files
+.gradle/
+build/
+
+# Google Services (e.g. APIs or Firebase)
+google-services.json
+
+# Intellij
+*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/dictionaries
+.idea/libraries
+
+# Log Files
+*.log
+
+
+
+
+
+
+
