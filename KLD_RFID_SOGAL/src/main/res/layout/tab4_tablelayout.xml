@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabhost4"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:baselineAligned="true"
+            android:gravity="center_vertical|fill_horizontal" />
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/tab4_sub2_antpow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    layout="@layout/tab4_tablelayout_antpow" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tab4_sub3_invfre"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    layout="@layout/tab4_tablelayout_invfre" />
+
+            </LinearLayout>
+              <LinearLayout
+                android:id="@+id/tab4_sub4_gen2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                  <include
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      layout="@layout/tab4_tablelayout_gen2" />
+
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+</TabHost>

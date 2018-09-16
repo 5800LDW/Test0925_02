@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="kld.com.rfid.ldw"
+    android:versionCode="101"
+    android:versionName="1.0.1"
+    >
+
+    <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES" />-->
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <!-- begin -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- end -->
+
+
+    <!-- 访问网络权限 -->
+       
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- 检测网络状态权限 -->
+       
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+       
+    <!-- 改变wifi状态 -->
+       
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <!-- 启用错误分析功能，须添加该权限 -->
+       
+    <uses-permission android:name="android.permission.READ_LOGS" />
+       
+    <!-- 读取手机状态 -->
+       
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+
+    <application
+        android:name="kld.com.rfid.ldw.RFIDApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:resizeableActivity="false"
+        android:theme="@style/MyAppTheme">
+
+
+
+        <!--<activity-->
+            <!--android:name="kld.com.rfid.ldw.test.SecondActivity"-->
+            <!--android:label="@string/app_name">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+
+        <activity
+            android:name="kld.com.rfid.ldw.WelcomeActivity"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name="kld.com.rfid.ldw.demand2.SuoFeiYaMainDemand2Activity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <!-- 跟辅助功能类一起使用的Activity-->
+        <activity
+            android:name="kld.com.rfid.ldw.demand2.way2.SuoFeiYaAccessibilitySActivity"
+            android:label="@string/app_name" >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <!--<service-->
+            <!--android:name="kld.com.rfid.ldw.demand2.way2.FloatAccessibilityService"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true"-->
+            <!--android:permission=-->
+                <!--"android.permission.BIND_ACCESSIBILITY_SERVICE" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name=-->
+                    <!--"android.accessibilityservice.AccessibilityService" /></intent-filter>-->
+            <!--<meta-data-->
+                <!--android:name="android.accessibilityservice"-->
+                <!--android:resource="@xml/accessibilityservice" />-->
+        <!--</service>-->
+
+        <activity
+            android:name="kld.com.rfid.ldw.demand2.channel.ChannelCheckActivity"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+
+
+
+        <service
+            android:name="kld.com.rfid.ldw.demand2.way3.MyAccessibilityService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RFID扫描辅助服务"
+            android:permission=
+                "android.permission.BIND_ACCESSIBILITY_SERVICE" >
+            <intent-filter>
+                <action android:name=
+                    "android.accessibilityservice.AccessibilityService" /></intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibilityservice" />
+        </service>
+
+
+
+        <service
+            android:name="kld.com.rfid.ldw.demand2.FloatService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="true" >
+        </service>
+
+
+
+
+        <activity
+            android:name="kld.com.rfid.ldw.SuoFeiYaMainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Simple">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name="com.example.UHFDemo_install.MainActivity"
+            android:label="@string/app_activityName"
+            android:screenOrientation="portrait"
+            >
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <!--<activity-->
+            <!--android:name="kld.com.rfid.ldw.SettingActivity"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--/>-->
+
+
+        <activity
+            android:name="com.example.UHFDemo_install.Sub4TabActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.UHFDemo_install.Sub3TabActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.UHFDemo_install.SubSystemActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.UHFDemo_install.SubPathActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

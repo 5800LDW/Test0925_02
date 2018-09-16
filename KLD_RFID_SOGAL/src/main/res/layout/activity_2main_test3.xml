@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <!--<com.mcxtzhang.myapplication.LoadingPathAnimView-->
+            <!--android:id="@+id/fillView1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:background="@android:color/black"-->
+            <!--android:padding="5dp"/>-->
+
+        <!--<ImageView-->
+            <!--android:id="@+id/image"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="300dp"-->
+            <!--android:src="@drawable/suofeiya"/>-->
+
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            android:background="@drawable/suofeiya_black"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="正在初始化超高频模块..."/>
+        <!--<com.mcxtzhang.pathanimlib.StoreHouseAnimView-->
+            <!--android:id="@+id/pathAnimView1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:background="@android:color/black"-->
+            <!--android:padding="5dp"/>-->
+        <!--<com.mcxtzhang.pathanimlib.PathAnimView-->
+            <!--android:id="@+id/storeView3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/white"-->
+            <!--android:padding="5dp"/>-->
+        <!--<com.mcxtzhang.pathanimlib.PathAnimView-->
+            <!--android:id="@+id/pathAnimView1"-->
+            <!--android:layout_width="200dp"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:layout_height="200dp"-->
+            <!--android:background="@color/colorAccent"-->
+            <!--android:padding="5dp"/>-->
+
+        <!--<kld.com.rfid.ldw.views.CstStoreHouseAnimView-->
+            <!--android:id="@+id/storeView1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="200dp"-->
+            <!--android:layout_marginTop="65dp"-->
+            <!--android:background="@android:color/black"-->
+            <!--android:padding="5dp"-->
+            <!--&gt;</kld.com.rfid.ldw.views.CstStoreHouseAnimView>-->
+
+
+        <!--<kld.com.rfid.ldw.views.LoadingPathAnimView-->
+            <!--android:id="@+id/storeView2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="65dp"-->
+            <!--android:background="@android:color/black"-->
+            <!--android:padding="5dp"-->
+            <!--&gt;</kld.com.rfid.ldw.views.LoadingPathAnimView>-->
+
+
+        <!--<com.eftimoff.androipathview.PathView-->
+            <!--android:id="@+id/pathView"-->
+            <!--android:layout_width="300dp"-->
+            <!--android:layout_height="300dp"-->
+            <!--app:svg="@raw/suofeiya_svg"-->
+            <!--app:pathColor="@android:color/white"-->
+            <!--app:pathWidth="2dp"/>-->
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

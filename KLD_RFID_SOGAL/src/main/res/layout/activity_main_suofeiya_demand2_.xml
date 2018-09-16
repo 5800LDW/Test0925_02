@@ -1,0 +1,100 @@
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="MergeRootFrame" >
+
+    <TabHost
+        android:id="@android:id/tabhost"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+            </TabWidget>
+
+
+
+
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:textSize="18sp">
+
+
+
+
+                    <include
+                        layout="@layout/tab2_tablelayout_suofeiya_demand2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:textSize="16sp">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:textSize="14sp">
+
+                </LinearLayout>
+            </FrameLayout>
+
+
+        </LinearLayout>
+    </TabHost>
+    <TextView
+        android:id="@+id/tvVersionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center|left"
+        android:layout_margin="1dp"
+        android:textSize="15dp"
+        android:textColor="@color/gray"
+        android:text="当前版本:"/>
+    <Button
+        android:id="@+id/btnUpload"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_btn_main"
+        android:shadowColor="@color/colorPrimaryDarker"
+        android:text="上传"
+        android:visibility="gone"
+        android:textColor="@android:color/white"
+        android:textSize="16dp" />
+
+</LinearLayout>

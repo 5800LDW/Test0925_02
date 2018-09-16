@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tags" />
+
+         <Spinner
+             android:id="@+id/spinner_check_tag"
+             android:layout_width="80dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="2" >
+         </Spinner>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="2dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:id="@+id/View01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="#BFEFFF" />
+
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Data type"
+                    android:textColor="#FF8C00"
+                    android:textColorLink="#FF8C00"
+                    android:textSize="18sp" />
+            </FrameLayout>
+
+            <RadioGroup
+                android:id="@+id/radioGroup_datatype"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/RadioButton02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/hexadecimal" />
+
+                <RadioButton
+                    android:id="@+id/RadioButton01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ASCII" />
+
+                <RadioButton
+                    android:id="@+id/RadioButton03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GBK" />
+            </RadioGroup>
+
+            <TabHost
+                android:id="@+id/tabhost3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TabWidget
+                        android:id="@android:id/tabs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"></TabWidget>
+
+                    <FrameLayout
+                        android:id="@android:id/tabcontent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp">
+
+                        <LinearLayout
+                            android:id="@+id/tab3_sub_read"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <include
+                                layout="@layout/tab3_tablelayout_read"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/tab3_sub_write"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <include
+                                layout="@layout/tab3_tablelayout_write"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/tab3_sub_lockkill"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <include
+                                layout="@layout/tab3_tablelayout_lock"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </FrameLayout>
+                </LinearLayout>
+            </TabHost>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/View02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="#BFEFFF" />
+
+                    <TextView
+                        android:id="@+id/TextView02"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/selete_antenna"
+                        android:textColor="#FF8C00"
+                        android:textColorLink="#FF8C00"
+                        android:textSize="18sp" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup_opant"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/ant_radio0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="true"
+                            android:text="1" />
+
+                        <RadioButton
+                            android:id="@+id/ant_radio1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="2" />
+
+                        <RadioButton
+                            android:id="@+id/ant_radio2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="3" />
+
+                        <RadioButton
+                            android:id="@+id/ant_radio3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="4" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/view4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="#BFEFFF" />
+
+                    <TextView
+                        android:id="@+id/textView001"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Password"
+                        android:textColor="#FF8C00"
+                        android:textColorLink="#FF8C00"
+                        android:textSize="18sp" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textView10"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:text="Password" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox_opacepwd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0" />
+
+                    <EditText
+                        android:id="@+id/editText_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10">
+
+                        <requestFocus />
+                    </EditText>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

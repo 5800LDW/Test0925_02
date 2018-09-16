@@ -1,0 +1,85 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="MyAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+    <!-- 页面跳转动画-->
+    <style name="AnimationActivity" parent="MyAppTheme" mce_bogus="1">
+        <!--进入一个Acitvity包括两部分,当前Activity退出动画,下个个Activity进入动画-->
+        <item name="android:activityOpenEnterAnimation">@anim/right_in</item> //下个Activty进入动画
+        <item name="android:activityOpenExitAnimation">@anim/left_out</item> //当前Activity退出的动画
+        <!--跳回一个Activity也包括两部分,当前Activity摧毁动画,上个Actiivty进入动画-->
+        <item name="android:activityCloseEnterAnimation">@anim/left_in</item> //上个Activity进入动画
+        <item name="android:activityCloseExitAnimation">@anim/right_out</item> //当前Activity退出动画
+    </style>
+
+
+
+    <style name="ActionButton.Overflow" parent="android:style/Widget.Holo.Light.ActionButton.Overflow">
+    </style>
+
+
+
+    <style name="Dialog_Fullscreen">
+        <item name="android:windowBackground">@color/translucence</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+        <item name="android:windowEnterAnimation">@anim/slide_bottom_to_top</item>
+        <item name="android:windowExitAnimation">@anim/slide_top_to_bottom</item>
+    </style>
+
+
+
+    <style name="alert_dialog" parent="android:Theme.Dialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@color/float_transparent</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.4</item>
+    </style>
+
+    <style name="dialog_blue_button" parent="android:Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">31dp</item>
+        <item name="android:background">@drawable/blue_button_background</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">21dp</item>
+        <item name="android:paddingRight">21dp</item>
+        <item name="android:textColor">@color/button_text_color</item>
+    </style>
+
+    <style name="LaunchStyle" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/shape_launch</item>
+    </style>
+
+    <style name="AppTheme.Simple">
+        <item name="android:windowBackground">@null</item>
+    </style>
+
+
+    <style name="putin_item_content">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:gravity">center|left</item>
+        <item name="android:textSize">17dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textColor">@color/steel</item>
+    </style>
+
+    <style name="putin_item_content_black" parent="putin_item_content">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+</resources>
