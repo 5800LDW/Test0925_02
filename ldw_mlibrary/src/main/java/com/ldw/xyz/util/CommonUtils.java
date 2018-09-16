@@ -1,5 +1,16 @@
 package com.ldw.xyz.util;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.Settings;
+import android.support.v4.app.Fragment;
+import android.telephony.TelephonyManager;
+import android.view.WindowManager;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -11,19 +22,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.regex.Pattern;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.Settings;
-import android.support.v4.app.Fragment;
-import android.telephony.TelephonyManager;
-import android.view.WindowManager;
 
 /**
  * 工具类

@@ -3,7 +3,7 @@ package com.ldw.xyz.util;
 /**
  * Created by LDW10000000 on 05/12/2016.
  */
-
+@Deprecated
 public class NumberUtil {
 
     /**

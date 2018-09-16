@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.ldw.xyz.util.ExceptionUtil;
@@ -22,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,6 +40,9 @@ import java.util.List;
  * 3)android.permission.READ_EXTERNAL_STORAGE;
  */
 public class MyFileUtil {
+
+    /** 分隔符. */
+    public final static String FILE_EXTENSION_SEPARATOR = ".";
 
     public final static String UTF8_ENCODING = "UTF-8";
     public final static String GBK_ENCODING = "GBK";
@@ -63,6 +68,34 @@ public class MyFileUtil {
         String strFilePath = filePath + fileName;
         // 每次写入时，都换行写
         String strContent = strcontent + "\r\n";
+        try {
+            File file = new File(strFilePath);
+            if (!file.exists()) {
+                Log.d("TestFile", "Create the file:" + strFilePath);
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+            RandomAccessFile raf = new RandomAccessFile(file, "rwd");
+            raf.seek(file.length());
+            raf.write(strContent.getBytes());
+            raf.close();
+        } catch (Exception e) {
+            Log.e("error:", e + "");
+        }
+    }
+
+
+    /**
+     * 将字符串写入到文本文件中
+     */
+    public static void writeTxtToFile2(String strcontent, String filePath,
+                                      String fileName) {
+        // 生成文件夹之后，再生成文件，不然会出错
+        makeFile(filePath, fileName);// 生成文件
+
+        String strFilePath = filePath + fileName;
+        // 每次写入时，不换行写
+        String strContent = strcontent ;
         try {
             File file = new File(strFilePath);
             if (!file.exists()) {
@@ -598,6 +631,63 @@ public class MyFileUtil {
 
 
 
+
+    /**
+     * 待测试...
+     *
+     * 删除指定目录中特定的文件
+     * @param dir
+     * @param filter
+     */
+    public static void delete(String dir, FilenameFilter filter) {
+        if (TextUtils.isEmpty(dir))
+            return;
+        File file = new File(dir);
+        if (!file.exists())
+            return;
+        if (file.isFile())
+            file.delete();
+        if (!file.isDirectory())
+            return;
+
+        File[] lists = null;
+        if (filter != null)
+            lists = file.listFiles(filter);
+        else
+            lists = file.listFiles();
+
+        if (lists == null)
+            return;
+        for (File f : lists) {
+            if (f.isFile()) {
+                f.delete();
+            }
+        }
+    }
+
+
+
+    /**
+     * 获得不带扩展名的文件名称
+     * @param filePath 文件路径
+     * @return
+     */
+    public static String getFileNameWithoutExtension(String filePath) {
+        if (TextUtils.isEmpty(filePath)) {
+            return filePath;
+        }
+        int extenPosi = filePath.lastIndexOf(FILE_EXTENSION_SEPARATOR);
+        int filePosi = filePath.lastIndexOf(File.separator);
+        if (filePosi == -1) {
+            return (extenPosi == -1 ? filePath : filePath.substring(0,
+                    extenPosi));
+        }
+        if (extenPosi == -1) {
+            return filePath.substring(filePosi + 1);
+        }
+        return (filePosi < extenPosi ? filePath.substring(filePosi + 1,
+                extenPosi) : filePath.substring(filePosi + 1));
+    }
 
 }
 

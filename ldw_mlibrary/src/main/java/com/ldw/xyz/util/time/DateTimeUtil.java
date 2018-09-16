@@ -16,6 +16,16 @@ public final class DateTimeUtil {
 
 	private static long mServerSec = 0;// 服务器时间
 
+	/** yyyy-MM-dd HH:mm:ss字符串 */
+	public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+	/** yyyy-MM-dd字符串 */
+	public static final String DEFAULT_FORMAT_DATE = "yyyy-MM-dd";
+
+	/** HH:mm:ss字符串 */
+	public static final String DEFAULT_FORMAT_TIME = "HH:mm:ss";
+
+
 	/**
 	 * 日期格式化(Date转换成String)
 	 * 

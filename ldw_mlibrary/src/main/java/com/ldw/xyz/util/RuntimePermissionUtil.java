@@ -9,17 +9,24 @@ import com.ldw.xyz.util.array.ArrayUtil;
 /**
  * 测试是否已经获得权限
  * Created by LDW10000000 on 29/12/2016.
+ *
+ *
+ * 使用方法:
+ *   if(Build.VERSION.SDK_INT>=23){
+ *        RuntimePermissionUtil.test(new String[]{ Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.RECORD_AUDIO
+ *         },
+ *        new PermissionListener(){
+ *            @Override
+ *         public void onGranted(){}
+ *           @Override
+ *         public void onDenied(List<String> deniedPermissions){
+ *  }
+ *
+ *
+ *
+ *
  */
-//使用方法:
-//   if(Build.VERSION.SDK_INT>=23){
-//         RuntimePermissionUtil.test(new String[]{ Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.RECORD_AUDIO
-//         },
-//         new PermissionListener(){
-//            @Override
-//          public void onGranted(){}
-//            @Override
-//          public void onDenied(List<String> deniedPermissions){
-//   }
+
 public class RuntimePermissionUtil {
     public static void test(String[] permissions, PermissionListener listener) {
         BaseActivity.requestRuntimePermission(permissions, listener);

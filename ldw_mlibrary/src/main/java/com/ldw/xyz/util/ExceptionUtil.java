@@ -15,6 +15,7 @@ import mail.util.EmailUtil;
  *
  * @author tarena
  */
+@Deprecated
 public class ExceptionUtil {
     public static void handleException(Exception e) {
         if (true) {

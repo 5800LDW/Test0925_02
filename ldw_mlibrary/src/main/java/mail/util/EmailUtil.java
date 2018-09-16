@@ -2,6 +2,8 @@ package mail.util;
 
 import android.util.Log;
 
+import java.io.File;
+
 import mail.MailSenderInfo;
 import mail.SimpleMailSender;
 
@@ -21,17 +23,21 @@ public class EmailUtil {
             public void run() {
                 // TODO Auto-generated method stub
                 MailSenderInfo mailInfo = new MailSenderInfo();
-                mailInfo.setMailServerHost("smtp.163.com");
-                mailInfo.setMailServerPort("25");
-                mailInfo.setValidate(true);
-                mailInfo.setUserName("LDW5800@163.com");
-                mailInfo.setPassword("5800shouquanma");// 您的邮箱密码
-                mailInfo.setFromAddress("LDW5800@163.com");
-                mailInfo.setToAddress("15089815098@163.com");
+
+//                mailInfo.setMailServerHost("smtp.163.com");
+//                mailInfo.setMailServerPort("25");
+//                mailInfo.setValidate(true);
+//                mailInfo.setUserName("LDW5800@163.com");
+//                mailInfo.setPassword("5800shouquanma");// 您的邮箱密码
+//                mailInfo.setFromAddress("LDW5800@163.com");
+//                mailInfo.setToAddress("15089815098@163.com");
+                mailInfo = configuration(mailInfo);
+
                 mailInfo.setSubject(Subject);
                 mailInfo.setContent(msg);
                 // 这个类主要来发送邮件
                 SimpleMailSender sms = new SimpleMailSender();
+                // TODO: 07/02/2018
                 boolean isSuccess = sms.sendTextMail(mailInfo);// 发送文体格式
                 // sms.sendHtmlMail(mailInfo);//发送html格式
                 if (isSuccess) {
@@ -42,6 +48,70 @@ public class EmailUtil {
             }
         }).start();
     }
+
+
+    public interface OnSendEmailListener{
+        void onSucceed();
+        void onFailed();
+
+    }
+
+
+
+    public static void sendMessageWithAttachments(final String Subject,final String msg ,File file ,OnSendEmailListener listener){
+        /*****************************************************/
+        Log.i(TAG, "is Sending Email...");
+        // 这个类主要是设置邮件
+        new Thread(new Runnable() {
+            @Override
+
+            public void run() {
+                // TODO Auto-generated method stub
+                MailSenderInfo mailInfo = new MailSenderInfo();
+
+//                mailInfo.setMailServerHost("smtp.163.com");
+//                mailInfo.setMailServerPort("25");
+//                mailInfo.setValidate(true);
+//                mailInfo.setUserName("LDW5800@163.com");
+//                mailInfo.setPassword("5800shouquanma");// 您的邮箱密码
+//                mailInfo.setFromAddress("LDW5800@163.com");
+//                mailInfo.setToAddress("15089815098@163.com");
+                mailInfo = configuration(mailInfo);
+
+                mailInfo.setSubject(Subject);
+                mailInfo.setContent(msg);
+                // 这个类主要来发送邮件
+                SimpleMailSender sms = new SimpleMailSender();
+                // TODO: 07/02/2018
+                boolean isSuccess = sms.sendEmailWithAttachments(mailInfo,file);// 发送文体格式
+                // sms.sendHtmlMail(mailInfo);//发送html格式
+                if (isSuccess) {
+                    listener.onSucceed();
+                    Log.i(TAG, "=============Send a success=============");
+                } else {
+                    listener.onFailed();
+                    Log.i(TAG, "=============Send failure=============");
+                }
+
+            }
+        }).start();
+    }
+
+    private static MailSenderInfo configuration(MailSenderInfo mailInfo){
+        mailInfo.setMailServerHost("smtp.163.com");
+        mailInfo.setMailServerPort("25");
+        mailInfo.setValidate(true);
+        mailInfo.setUserName("LDW5800@163.com");
+        mailInfo.setPassword("5800shouquanma");// 您的邮箱密码
+        mailInfo.setFromAddress("LDW5800@163.com");
+        mailInfo.setToAddress("15089815098@163.com");
+        return mailInfo;
+    }
+
+
+
+
+
 
     public static void sendMessage(final String UserName,
                                    final String Password,
@@ -78,6 +148,19 @@ public class EmailUtil {
             }
         }).start();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -8,6 +8,14 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+
+/**
+ *
+ * 使用方法 MD5Util.getMD5ForLowercase(String str)
+ *
+ *
+ *
+ */
 public class MD5Util {
 
 	/**

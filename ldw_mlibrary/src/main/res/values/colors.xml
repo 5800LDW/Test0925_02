@@ -5,4 +5,13 @@
     <color name="colorAccent">#FF4081</color>
 
 
+    <!-- 我的颜色的资料
+
+        一般情况下半透明就是普通"ae"(等表示透明度的)+RGB（普通的）就可以得到了；
+         ae:  00 代表透明
+              11到99 代表透明度
+
+              例如:#FFFFFF是白色, #00FFFFFF就是全透明, #11FFFFFF 的 透明度就比 #55FFFFFF 要高;
+
+    -->
 </resources>

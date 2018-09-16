@@ -11,6 +11,11 @@ public class Controller {
     public static final boolean isRelease = false;
 
 
+    /**
+     * 要不要记录错误到本地
+     */
+    public static final boolean recordCrash = true;
+
     /***
      *
      *  IsRequestRegister = false:不要注册

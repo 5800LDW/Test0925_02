@@ -31,4 +31,10 @@ public class ActivityCollector {
     }
 
 
+    /***仅供测试用*/
+    public static  List<Activity> getActivityList(){
+        return activityList;
+    }
+
+
 }

@@ -20,6 +20,7 @@ import java.util.concurrent.Executors;
 /**
  * 访问WebService的工具类,
  */
+@Deprecated
 public class WebServiceUtils {
 	//begin
 	// WebSerivce地址
@@ -41,7 +42,15 @@ public class WebServiceUtils {
 		String WEB_SERVICE_URL = "http://www.connectek.com.cn:8089/WebSrv.asmx";
 		return WEB_SERVICE_URL;
 	}
-	
+
+
+
+
+
+
+
+
+
 	//end
 	
 	

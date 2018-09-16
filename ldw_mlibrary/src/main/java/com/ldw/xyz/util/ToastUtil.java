@@ -8,9 +8,9 @@ public class ToastUtil {
 	private static Toast toast;
 
 	public static void showToast(Context context, String content) {
-		
+
 		if(toast == null){
-			toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
+			toast = Toast.makeText(context.getApplicationContext(), content, Toast.LENGTH_SHORT);
 		}else{
 			toast.setText(content);
 		}
@@ -21,7 +21,8 @@ public class ToastUtil {
 	public static void showToast(Context context, int content) {
 		
 		if(toast == null){
-			toast = Toast.makeText(context, content, Toast.LENGTH_SHORT);
+			//ontext.getApplicationContext() 能解决内存泄露的问题
+			toast = Toast.makeText(context.getApplicationContext(), content, Toast.LENGTH_SHORT);
 		}else{
 			toast.setText(content);
 		}
