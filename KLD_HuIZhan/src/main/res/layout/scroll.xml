@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#808395"
+        android:minHeight="45dip"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_SNumber"
+            style="@style/look_output_item"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="物资名称" />
+
+        <kld.com.huizhan.view.CHScrollView
+            android:id="@+id/item_scroll_title"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_SCopy"
+                    style="@style/look_output_item"
+                    android:layout_width="150dip"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="物资条码" />
+
+                <TextView
+                    style="@style/look_output_item"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="规格型号" />
+
+                <TextView
+                    style="@style/look_output_item"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="单位" />
+
+                <TextView
+                    style="@style/look_output_item"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="仓库库存" />
+
+                <TextView
+                    style="@style/look_output_item"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="出库数量" />
+
+                <!--<TextView-->
+                <!--android:layout_width="100dip"-->
+                <!--android:textColor="#850"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:text="出库数量"-->
+                <!--android:gravity="center" />-->
+            </LinearLayout>
+        </kld.com.huizhan.view.CHScrollView>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/scroll_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="@android:color/transparent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollbars="none"></ListView>
+
+</LinearLayout>

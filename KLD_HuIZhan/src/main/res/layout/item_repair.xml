@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minHeight="40dip"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/item_title"
+        style="@style/repair_item"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:text="表头测试"
+        android:textColor="@color/black" />
+
+    <kld.com.huizhan.view.CHScrollView
+        android:id="@+id/item_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/item_data1"
+                style="@style/repair_item"
+                android:layout_width="100dip"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:text="Number"
+                android:textColor="@color/black" />
+
+            <!--<TextView-->
+                <!--android:id="@+id/item_data2"-->
+                <!--style="@style/repair_item"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:gravity="center"-->
+                <!--android:inputType="numberDecimal"-->
+                <!--android:singleLine="true"-->
+                <!--android:textColor="#191" />-->
+            <!--<LinearLayout-->
+                <!--style="@style/repair_item"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:orientation="horizontal">-->
+                <TextView
+                    style="@style/repair_item"
+                    android:id="@+id/item_data2"
+                    android:textColor="#191"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginRight="5dp"
+                    android:drawableRight="@drawable/checkbox_account"
+                    android:layout_height="match_parent" />
+                <!--<CheckBox-->
+                    <!--style="@style/AccountCheckboxTheme2"-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="end|center_vertical"-->
+                    <!--android:gravity="center|right"-->
+                    <!--android:minHeight="24dp" />-->
+            <!--</LinearLayout>-->
+
+
+
+            <EditText
+                android:id="@+id/item_data3"
+                style="@style/repair_item"
+                android:layout_width="150dip"
+                android:layout_margin="3dp"
+                android:layout_height="fill_parent"
+                android:maxLength="100"
+                android:background="@drawable/shape_round_grey"
+                android:gravity="center"
+                android:singleLine="false"
+                android:textColor="#101" />
+
+            <TextView
+                android:id="@+id/item_data4"
+                style="@style/repair_item"
+                android:layout_height="fill_parent"
+                android:background="@null"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center"
+                android:textSize="13dp"
+                android:layout_width="105dp"
+                android:text="code"
+                android:textColor="#111" />
+
+            <LinearLayout
+                style="@style/repair_item"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!--<View-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1" />-->
+
+                <TextView
+                    android:id="@+id/item_data5"
+                    style="@style/repair_item"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="删除"
+                    android:textSize="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/bg_btn_main"
+                    android:textColor="@color/white" />
+
+                <!--<View-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight="1" />-->
+            </LinearLayout>
+
+
+            <!--
+            <TextView
+                android:id="@+id/item_data6"
+                android:layout_width="100dip"
+                android:textColor="#910"
+                android:layout_height="fill_parent"
+                android:gravity="center" />-->
+        </LinearLayout>
+    </kld.com.huizhan.view.CHScrollView>
+
+</LinearLayout>

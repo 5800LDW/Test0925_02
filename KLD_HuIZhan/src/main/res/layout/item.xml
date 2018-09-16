@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minHeight="40dip"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="3"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:text="表头测试"
+        android:textColor="@color/black"
+        style="@style/look_output_item" />
+
+    <kld.com.huizhan.view.CHScrollView
+        android:id="@+id/item_scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/item_data1"
+                android:layout_width="150dip"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:text="Number"
+                style="@style/look_output_item"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/item_data2"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                style="@style/look_output_item"
+                android:textColor="#191" />
+
+            <TextView
+                android:id="@+id/item_data3"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                style="@style/look_output_item"
+                android:textColor="#101" />
+
+            <TextView
+                android:id="@+id/item_data4"
+                android:layout_height="fill_parent"
+                android:background="@null"
+                android:clickable="false"
+                android:focusable="false"
+                android:gravity="center"
+                style="@style/look_output_item"
+                android:textColor="#111" />
+
+            <TextView
+                android:id="@+id/item_data5"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                style="@style/look_output_item"
+                android:textColor="#071" />
+
+            <!--
+            <TextView
+                android:id="@+id/item_data6"
+                android:layout_width="100dip"
+                android:textColor="#910"
+                android:layout_height="fill_parent"
+                android:gravity="center" />-->
+        </LinearLayout>
+    </kld.com.huizhan.view.CHScrollView>
+
+</LinearLayout>

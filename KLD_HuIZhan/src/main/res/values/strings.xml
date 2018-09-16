@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">物资管理</string>
+
+    <!--<string name="url_server_address">http://192.168.1.10:8012</string>-->
+    <string name="url_server_address">http://www.connectek.com.cn:9514</string>
+
+    <string name="loading">正在处理,请稍后...</string>
+    <string name="alright">好的</string>
+    
+    <string name="reminder_are_you_exit">你有单据未保存,确定退出?</string>
+
+
+    <string name="text_output_upload_goods_item">%1$s \n物资条码:&#160;%2$s \n规格型号:&#160;%3$s&#160;&#160;&#160;&#160;单位:&#160;%4$s   \n仓库库存:&#160;%5$s&#160;&#160;&#160;&#160;&#160;&#160;出库数量:&#160;%6$s</string>
+
+    <string name="text_input_unupload_goods_item">单号:&#160;%1$s \n仓库:&#160;%2$s  \n入库日期:&#160;%3$s  \n货品信息:&#160;%4$s</string>
+
+    <string name="text_output_unupload_goods_item">单号:&#160;%1$s \n使用部门:&#160;%2$s  \n出库日期:&#160;%3$s  \n货品信息:&#160;%4$s</string>
+
+
+    <string name="text_give_back_item">出库单号:&#160;%1$s \n经办人:&#160;%2$s  \n申请日期:&#160;%3$s  \n领用部门:&#160;%4$s</string>
+
+    <string name="text_repair_default_result">完好</string>
+
+    <string name="text_check_item">%1$s \n物资条码:&#160;%2$s  \n规格型号:&#160;%3$s  \n账面数量:&#160;%4$s  \n实盘数量:&#160;%5$s</string>
+
+    <string name="text_checked">已盘:&#160;%1$s</string>
+    <string name="text_unchecked">未盘:&#160;%1$s</string>
+
+</resources>

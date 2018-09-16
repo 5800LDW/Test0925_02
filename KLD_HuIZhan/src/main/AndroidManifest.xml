@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="kld.com.huizhan">
+
+
+    <uses-permission android:name="android.permission.GET_TASKS" />
+
+    <!-- 访问网络权限 -->
+       
+    <uses-permission android:name="android.permission.INTERNET" />
+       
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS">
+           
+    </uses-permission>
+       
+    <uses-permission android:name="com.mozillaonline.permission.ACCESS_DOWNLOAD_MANAGER" />
+       
+    <uses-permission android:name="com.mozillaonline.permission.ACCESS_DOWNLOAD_MANAGER_ADVANCED" />
+       
+    <uses-permission android:name="com.mozillaonline.permission.SEND_DOWNLOAD_COMPLETED_INTENTS" />
+       
+    <uses-permission android:name="com.mozillaonline.permission.ACCESS_CACHE_FILESYSTEM" />
+       
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+       
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+       
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+       
+    <!-- 蓝牙分享所需的权限 -->
+       
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
+       
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+       
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+       
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+       
+    <!-- <uses-permission android:name="android.permission.WRITE_SMS" /> -->
+
+       
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+       
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+       
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+       
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+       
+    <!-- 打电话权限 -->
+       
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+       
+    <!-- 访问网络权限 -->
+       
+    <uses-permission android:name="android.permission.INTERNET" />
+       
+    <!-- 检测网络状态权限 -->
+       
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+       
+    <!-- 改变wifi状态 -->
+       
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+       
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+       
+    <!-- SD卡有写入的权限 -->
+       
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+       
+    <!-- 启用错误分析功能，须添加该权限 -->
+       
+    <uses-permission android:name="android.permission.READ_LOGS" />
+       
+    <!-- 读取手机状态 -->
+       
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+       
+    <!-- SDK1.5需要android.permission.GET_TASKS权限判断本程序是否为当前运行的应用? -->
+       
+    <uses-permission android:name="android.permission.GET_TASKS" />
+       
+    <!-- 获取摄像头的权限 -->
+       
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
+    <uses-feature android:name="android.hardware.camera" /> <!-- 使用照相机权限 -->
+    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
+
+       
+    <!-- 来电消音 -->
+       
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+       
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION">
+           
+    </uses-permission>
+
+
+    <!--在sdcard中创建/删除文件的权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+
+    <application
+        android:name="kld.com.huizhan.HuIZhanApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:resizeableActivity="false"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+
+        <activity
+            android:name=".activity.welcome.Main2Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+
+        <activity
+            android:name=".activity.welcome.Main2ActivityTest"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+
+        <activity
+            android:name=".activity.welcome.Main2ActivityTest3"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+
+
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+           ></activity>
+
+        <activity
+            android:name=".activity.SettingActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <!--<activity-->
+            <!--android:name=".activity.main.MainActivity2"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:windowSoftInputMode="stateAlwaysHidden"></activity>-->
+        <activity
+            android:name=".activity.putin.PutInActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".activity.storage.SelectStorageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <!--<activity android:name=".activity.output.OutPutActivity"></activity>-->
+        <activity
+            android:name=".activity.output.OutPutActivity2"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name=".activity.putin.look.LookPutInActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name=".activity.putin.look.LookPutInDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name=".activity.output.look.LookOutPutActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity
+            android:name=".activity.output.look.LookOutPutDetailsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name=".activity.giveback.GiveBackActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name=".activity.giveback.SelectOutPutBillNoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name=".activity.repair.RepairActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name=".activity.check.CheckActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity
+            android:name=".activity.check.look.LookUnCheckedActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity
+            android:name=".activity.check.look.LookCheckedActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+    </application>
+
+</manifest>

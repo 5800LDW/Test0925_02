@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:ldw="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_login"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/mytoolbar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/putin_item_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="物资条码" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <EditText
+                android:id="@+id/etCode"
+                style="@style/putin_item_content_black"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="2"
+                android:background="@drawable/shape_round_grey"
+                android:maxLength="30"
+                android:singleLine="true" />
+
+            <Button
+                android:id="@+id/btSearch"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:text="确定"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/hsv"
+        layout="@layout/scroll_repair"
+        android:layout_weight="1"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        />
+    
+    
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:background="@color/white"-->
+        <!--android:orientation="horizontal">-->
+        <!--<TextView-->
+            <!--android:id="@+id/tvSave"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_margin="3dp"-->
+            <!--android:text="保存本地"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:layout_weight="1"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/tvUpLoad"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_margin="3dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:text="提交记录"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_weight="1"/>-->
+        <!---->
+    <!--</LinearLayout>-->
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal" >
+
+        <Button
+            style="@style/textview_green_angle_style"
+            android:id="@+id/tvSave"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="保存本地" />
+
+        <Button
+            style="@style/button_angle_red_style"
+            android:id="@+id/tvUpLoad"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="上传数据" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

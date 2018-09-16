@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<item android:drawable="@drawable/angle_1" android:state_pressed="true" />-->
+    <!--<item android:drawable="@drawable/angle_1" android:state_selected="true" />-->
+    <!--<item android:drawable="@drawable/angle_1" android:state_focused="true" />-->
+    <!--<item android:drawable="@drawable/angle_1" android:state_expanded="true" />-->
+
+    <!--<item android:state_pressed="true">-->
+    <!--<shape>-->
+
+    <!--<solid android:color="@color/tuatara_light" />-->
+
+    <!--<corners android:bottomLeftRadius="0dp" android:bottomRightRadius="0dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />-->
+    <!--&lt;!&ndash; 描边 &ndash;&gt;-->
+    <!--<stroke android:width="1px" android:color="@color/hz_grey_line" android:dashGap="2px" />-->
+    <!--</shape>-->
+    <!--</item>-->
+
+    <!--<item android:state_selected="true">-->
+    <!--<shape>-->
+
+    <!--<solid android:color="@color/tuatara_light" />-->
+
+    <!--<corners android:bottomLeftRadius="0dp" android:bottomRightRadius="0dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />-->
+    <!--&lt;!&ndash; 描边 &ndash;&gt;-->
+    <!--<stroke android:width="1px" android:color="@color/hz_grey_line" android:dashGap="2px" />-->
+    <!--</shape>-->
+    <!--</item>-->
+    <!--<item android:state_focused="true">-->
+    <!--<shape>-->
+
+    <!--<solid android:color="@color/tuatara_light" />-->
+
+    <!--<corners android:bottomLeftRadius="0dp" android:bottomRightRadius="0dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />-->
+    <!--&lt;!&ndash; 描边 &ndash;&gt;-->
+    <!--<stroke android:width="1px" android:color="@color/hz_grey_line" android:dashGap="2px" />-->
+    <!--</shape>-->
+    <!--</item>-->
+    <!--<item android:state_expanded="true">-->
+    <!--<shape>-->
+
+    <!--<solid android:color="@color/tuatara_light" />-->
+
+    <!--<corners android:bottomLeftRadius="0dp" android:bottomRightRadius="0dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />-->
+    <!--&lt;!&ndash; 描边 &ndash;&gt;-->
+    <!--<stroke android:width="1px" android:color="@color/hz_grey_line" android:dashGap="2px" />-->
+    <!--</shape>-->
+    <!--</item>-->
+
+
+    <item>
+        <shape>
+
+            <solid android:color="@color/tuatara" />
+
+            <corners android:bottomLeftRadius="0dp" android:bottomRightRadius="0dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
+            <!-- 描边 -->
+            <!--<stroke android:width="1px"-->
+                <!--android:color="@color/hz_grey_line"-->
+                <!--android:dashGap="1px" />-->
+            <stroke
+                android:width="1px"
+                android:color="@color/gray"
+                android:dashGap="2px"/>
+        </shape>
+    </item>
+</selector>
