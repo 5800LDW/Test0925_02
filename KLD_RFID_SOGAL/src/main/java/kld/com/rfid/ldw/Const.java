@@ -1,5 +1,6 @@
 package kld.com.rfid.ldw;
 
+import com.ldw.xyz.control.Controller;
 import com.ldw.xyz.util.PreferenceUtil;
 
 /**
@@ -10,13 +11,26 @@ public class Const {
 
 
 
+    public static final boolean IsCanTest = false;
     public static final boolean IsCanRecordEpcID = true;
-    public static final boolean IsCanTest = true;
+    public static final boolean IsCanUpdate = false;
+    static {
+        Controller.isRelease = false;
+    }
+
+
+
 
     public static final String KEY_URL_SERVER = "$_url";
     public static final String KEY_STAGE_NMAE = "$_STAGE_NMAE";
     public static final String KEY_STAGE_CODE = "$_KEY_STAGE_CODE";
     public static final String KEY_ORGANIZATION = "$_KEY_ORGANIZATION";
+    public static final String KEY_IS_CAN_INSTALL = "$_KEY_ISCANINSTALL";
+    public static final String KEY_MODE_BU_HUO = "$_KEY_MODEBUHUO";
+
+
+    public static final String CONST_TRUE = "TRUE";
+    public static final String CONST_FALSE = "FALSE";
 
     public static final int KEY_SCAN_BUTTON = 261;
 
@@ -37,6 +51,9 @@ public class Const {
         return getURL_BASE() + "/rfidscanned/upload";
     }
 
+    public static String getURL_BU_HUO(){
+        return getURL_BASE() + "/rfidscanned/rescanned";
+    }
 
     public static String getURL_MATERIALS(){
         return getURL_BASE() + "/organization/materials";
@@ -56,5 +73,6 @@ public class Const {
 //        return getURL_BASE() ;//TODO
         return "https://www.baidu.com";
     }
+
 
 }

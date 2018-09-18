@@ -51,7 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import kld.com.rfid.ldw.Const;
 import kld.com.rfid.ldw.R;
 import kld.com.rfid.ldw.RFIDApplication;
@@ -79,6 +78,7 @@ import static com.uhf.uhf.Common.Comm.tagListSize;
 
 @SuppressWarnings("deprecation")
 public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
+    private static final String TAG = "SuoFeiYaMainDemand2Activity";
     //liudongwen
     Set<String> uploadSet;
     SuoFeiYaAdapter adapter;
@@ -87,7 +87,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
     protected Object cancelTag = this;
 
 
-    TextView tv_state, tv_tags, textView_time;
+    TextView tv_state, tv_tags, textView_time,tv_Title;
     Button button_read, button_stop, button_clean, button_set, butSetUrl, btnUpload;
     CheckBox cb_is6btag, cb_readtid;
     private ListView listView;
@@ -117,7 +117,10 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
         super.onStart();
 
         // 检查更新;
-        UpdateUtil.check(this, HttpRequestMethod.GET);
+        if(RFIDApplication.getIsCanCheckUpdate()){
+            UpdateUtil.check(this, HttpRequestMethod.GET);
+        }
+
 
 
         Log.d("Activity", "onStart()");
@@ -136,6 +139,30 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
             IntentFilter filter2 = new IntentFilter();
             filter2.addAction("$_CloseDialog");
             getApplicationContext().registerReceiver(receiverStopDialog, filter2);
+        }
+
+
+        if (!isAccessibilitySettingsOn(mContext)) {
+
+//            dialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
+//                    .setTitleText("提示")
+//                    .setConfirmText("立刻开启")
+//                    .setContentText("需要开启: 无障碍 ---> RFID扫描 "+"\n"+"才能使用物理按键触发扫描")
+//                    .setCancelText("取消")
+//                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                        @Override
+//                        public void onClick(SweetAlertDialog sDialog) {
+//                            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+//                            startActivity(intent);
+//
+//                            if (sDialog != null) {
+//                                sDialog.dismiss();
+//                            }
+//                        }
+//                    });
+//            dialog.show();
+            addViewAndShowInfo("提示", "需要开启: 无障碍 ---> RFID扫描 " + "\n" + "才能使用物理按键触发扫描");
+
         }
     }
 
@@ -206,7 +233,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
 
         button_set.setText(R.string.Real_time);
         tv_state.setText(R.string.device_msg);
-        if(test){
+        if (test) {
             Awl = new AndroidWakeLock((PowerManager) getSystemService(Context.POWER_SERVICE));
         }
 
@@ -223,9 +250,9 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
             public void onClick(View arg0) {
 
 
-                String name = PreferenceUtil.get(mContext,Const.KEY_STAGE_NMAE,"");
-                if(StringHelper2.isEmpty(name)){
-                    ToastUtil.showToast(mContext,"请选择通道!");
+                String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
+                if (StringHelper2.isEmpty(name)) {
+                    ToastUtil.showToast(mContext, "请选择通道!");
                     return;
                 }
 
@@ -243,7 +270,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
                     if (RFIDApplication.instance.floatService == null) {
                         promptDialog.viewAnimDuration = 10;
                         promptDialog = new PromptDialog(SuoFeiYaMainDemand2Activity.this);
-                        promptDialog.getDefaultBuilder().touchAble(false).round(3).loadingDuration(2500);
+                        promptDialog.getDefaultBuilder().touchAble(false).round(3).loadingDuration(3500);
                         promptDialog.showLoading("正在开启服务...");
                     }
 
@@ -312,7 +339,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
                 stopService();
                 StopHandleUI();
 
-                if(RFIDApplication.instance.floatService!=null){
+                if (RFIDApplication.instance.floatService != null) {
                     RFIDApplication.instance.floatService.release();
                 }
 
@@ -480,86 +507,79 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
         mContext = this;
 
 
+        tv_Title = (TextView)findViewById(R.id.tv_Title);
+        //默认是补货
+        if(StringHelper2.isEmpty(RFIDApplication.getModeIsBuHuo())){
+            RFIDApplication.setModeBuHuo(Const.CONST_TRUE);
+        }
+        boolean check ;
+        if(RFIDApplication.getModeIsBuHuo()==Const.CONST_TRUE){
+            check = true;
+            tv_Title.setText("补\t\t\t货");
+            uiBuHuo();
+        }
+        else{
+            check = false;
+            tv_Title.setText("发\t\t\t货");
+            uiFaHuo();
+        }
+
         mCheckSwithcButton = (CheckSwitchButton) findViewById(R.id.mCheckSwithcButton);
-        mCheckSwithcButton.setChecked(isCheck);
+        mCheckSwithcButton.setChecked(check);
         mCheckSwithcButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // TODO Auto-generated method stub
 
-                if (RFIDApplication.instance.floatService != null) {
+                LogUtil.e(TAG,"*** isChecked *** ----------------");
+                LogUtil.e(TAG,"isChecked = " + isChecked);
 
-                    if (RFIDApplication.instance.floatService.isCanRunRead == false) {
-                        ToastUtil.showToast(mContext, "正在处理数据,请稍后重试...");
-                        return;
-                    }
-
-                }
-
-                // begin
-                if (Build.VERSION.SDK_INT >= 23) {
-                    if (Settings.canDrawOverlays(RFIDApplication.instance)) {
-                        // begin
-                        switchIsClick(isChecked);
-
-
-                    } else {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-
-                        mCheckSwithcButton.setChecked(false);
-                        isCheck = false;
-
-                    }
-                } else {
-                    switchIsClick(isChecked);
-                }
-
-            }
-
-            private void switchIsClick(boolean isChecked) {
-                if (isChecked) {
-                    startService();
-                    isCheck = true;
-
-                    ReadHandleUI();
-                } else {
-
-                    //liudongewn
-                    if (isrun && RFIDApplication.instance.floatService != null) {
-                        RFIDApplication.instance.floatService.list.clear();
-                        RFIDApplication.instance.floatService.uploadSet.clear();
-                        RFIDApplication.instance.floatService.stopScan();
-                        RFIDApplication.instance.floatService.notifyActivityUpdateAdapter();
-                    }
-
-                    stopService();
-                    isCheck = false;
-                    StopHandleUI();
+                if(isChecked){
+                    tv_Title.setText("补\t\t\t货");
+                    RFIDApplication.setModeBuHuo(Const.CONST_TRUE);
+                    uiBuHuo();
 
                 }
+                else{
+                    tv_Title.setText("发\t\t\t货");
+                    RFIDApplication.setModeBuHuo(Const.CONST_FALSE);
+                    uiFaHuo();
+                }
+
+//                ToastUtil.showToast(mContext,PreferenceUtil.get(mContext,Const.KEY_MODE_BU_HUO));
+
             }
         });
+
 
 
         findViewById(R.id.llMore).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityUtil.startActivity(mContext, ChannelCheckActivity.class,null);
+                ActivityUtil.startActivity(mContext, ChannelCheckActivity.class, null);
             }
         });
 
-        tvChannel =(TextView)findViewById(R.id.tvChannel);
+        tvChannel = (TextView) findViewById(R.id.tvChannel);
 
-        TextView tvVersionName = (TextView)findViewById(R.id.tvVersionName);
-        tvVersionName.setText("当前版本:"+ VersionUtil.getVersionName(RFIDApplication.instance));
-
+        TextView tvVersionName = (TextView) findViewById(R.id.tvVersionName);
+        tvVersionName.setText("当前版本:" + VersionUtil.getVersionName(RFIDApplication.instance));
     }
+
+    private void uiBuHuo(){
+        ((TextView)findViewById(R.id.tvBuHuo)).setTextColor(ResHelper.getColor(mContext,R.color.black));
+        ((TextView)findViewById(R.id.tvFaHuo)).setTextColor(ResHelper.getColor(mContext,R.color.gray));
+    }
+    private void uiFaHuo(){
+        ((TextView)findViewById(R.id.tvBuHuo)).setTextColor(ResHelper.getColor(mContext,R.color.gray));
+        ((TextView)findViewById(R.id.tvFaHuo)).setTextColor(ResHelper.getColor(mContext,R.color.black));
+    }
+
+
+
+
 
     private PromptDialog promptDialog;
     CheckSwitchButton mCheckSwithcButton;
-    private static boolean isCheck;
 
     private void startService() {
         new Handler().postDelayed(new Runnable() {
@@ -623,7 +643,6 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
     };
 
 
-
     private static Dialog getDialog(Context context) {
         final Dialog dialog = new Dialog(context, R.style.Dialog_Fullscreen);
         dialog.setContentView(R.layout.dialog_url_modify);
@@ -662,7 +681,6 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
         dialog.show();
         return dialog;
     }
-
 
 
     String[] Coname = new String[]{"NO", "                    EPC ID ", "Count"};
@@ -755,25 +773,25 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
     }
 
 
-    private void selectChannel(){
+    private void selectChannel() {
         tvChannel.setText("请选择通道");
         tvChannel.setTextColor(getResources().getColor(R.color.red));
     }
 
 
     boolean test = false;
-    SweetAlertDialog dialog;
+
+    //    SweetAlertDialog dialog;
     @Override
     protected void onResume() {
         super.onResume();
 
 
-        String name = PreferenceUtil.get(mContext,Const.KEY_STAGE_NMAE,"");
-        if(StringHelper2.isEmpty(name)){
+        String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
+        if (StringHelper2.isEmpty(name)) {
             selectChannel();
             //tood
-        }
-        else{
+        } else {
             tvChannel.setText(name);
             tvChannel.setTextColor(getResources().getColor(R.color.black));
         }
@@ -785,35 +803,13 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
             button_read.performClick();
         }
 
-        if (!isAccessibilitySettingsOn(mContext)) {
-
-            dialog = new SweetAlertDialog(mContext, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText("提示")
-                    .setConfirmText("立刻开启")
-                    .setContentText("需要开启: 无障碍 ---> RFID扫描 "+"\n"+"才能使用物理按键触发扫描")
-                    .setCancelText("取消")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                            startActivity(intent);
-
-                            if (sDialog != null) {
-                                sDialog.dismiss();
-                            }
-                        }
-                    });
-            dialog.show();
-
-            return;
-        }
 
     }
 
     @Override
     protected void onStop() {
-        if(dialog!=null){
-            dialog.dismiss();
+        if (mDialog != null) {
+            mDialog.dismiss();
         }
         super.onStop();
     }
@@ -853,20 +849,55 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
     }
 
 
-
     private boolean isAccessibilitySettingsOn(Context mContext) {
-        return  AccessibilityServiceUtil.isAccessibilitySettingsOn(mContext,MyAccessibilityService.class);
+        return AccessibilityServiceUtil.isAccessibilitySettingsOn(mContext, MyAccessibilityService.class);
 
     }
 
 
+    Dialog mDialog;
 
+    public void addViewAndShowInfo(String title, String content) {
+        LogUtil.e("TAG", "addViewAndShowInfo=============>1");
 
+        if(mDialog!=null){
+            mDialog.dismiss();
+        }
 
+        mDialog = new Dialog(this, R.style.Dialog_Fullscreen2);
+        mDialog.setContentView(R.layout.alert_dialog_demand3);
 
+        TextView title_text = (TextView) mDialog.findViewById(R.id.title_text);//content_text
+        TextView content_text = (TextView) mDialog.findViewById(R.id.content_text);//content_text
+        title_text.setText(title);
+        content_text.setText(content);
+        Button btnClear = (Button) mDialog.findViewById(R.id.btnClear);
+        btnClear.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mDialog != null) {
+                    mDialog.dismiss();
+                }
+            }
+        });
 
+        Button confirm_button = (Button) mDialog.findViewById(R.id.confirm_button);
+        confirm_button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(intent);
 
+                if (mDialog != null) {
+                    mDialog.dismiss();
+                }
+            }
+        });
+        LogUtil.e("TAG", "addViewAndShowInfo=============>2");
 
+        mDialog.show();
+
+    }
 
 
 }

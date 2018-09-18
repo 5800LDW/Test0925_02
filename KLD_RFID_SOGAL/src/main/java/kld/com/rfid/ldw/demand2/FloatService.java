@@ -833,6 +833,16 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
     public void postString() {
 
+        String url ;
+        if(RFIDApplication.getModeIsBuHuo()==Const.CONST_TRUE){
+            url = Const.getURL_BU_HUO();
+        }
+        else{
+             url = Const.getURL_UPLAOD();
+        }
+
+
+
 
         String id = PreferenceUtil.get(mContext,Const.KEY_STAGE_CODE,"");
         if(StringHelper2.isEmpty(id)){
@@ -851,7 +861,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
         String content = getJsonObject();
 
-        String url = Const.getURL_UPLAOD();
+//        String url = Const.getURL_UPLAOD();
 
         LogUtil.e("TAG","url = " + url);
         LogUtil.e("TAG","content = " + content);
@@ -1178,7 +1188,6 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //    public void soundError() {
 //        mHandler.postDelayed(this, 100);
 //    }
-//
 //    public Thread playSouncThread = new playSouncThread(new playSoundRunnable());
 //    @Override
 //    public void run() {
