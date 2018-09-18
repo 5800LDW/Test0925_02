@@ -120,7 +120,10 @@ public class CheckSwitchButton extends android.support.v7.widget.AppCompatCheckB
 		mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
 		// get Bitmap
-		mBottom = BitmapFactory.decodeResource(resources, R.drawable.checkswitch_bottom);
+		mBottom = BitmapFactory.decodeResource(resources, R.drawable.checkswitch_bottom2);//
+//		mBottom = BitmapFactory.decodeResource(resources, R.drawable.checkswitch_frame);//
+
+
 		mBtnPressed = BitmapFactory.decodeResource(resources, R.drawable.checkswitch_btn_pressed);
 		mBtnNormal = BitmapFactory.decodeResource(resources,R.drawable.checkswitch_btn_unpressed);
 		mFrame = BitmapFactory.decodeResource(resources, R.drawable.checkswitch_frame);
