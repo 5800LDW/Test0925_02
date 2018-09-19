@@ -27,10 +27,10 @@ public class EmailUtil {
 //                mailInfo.setMailServerHost("smtp.163.com");
 //                mailInfo.setMailServerPort("25");
 //                mailInfo.setValidate(true);
-//                mailInfo.setUserName("LDW5800@163.com");
-//                mailInfo.setPassword("5800shouquanma");// 您的邮箱密码
-//                mailInfo.setFromAddress("LDW5800@163.com");
-//                mailInfo.setToAddress("15089815098@163.com");
+//                mailInfo.setUserName("********@163.com");
+//                mailInfo.setPassword("********");// 您的邮箱密码
+//                mailInfo.setFromAddress("********");
+//                mailInfo.setToAddress("********@163.com");
                 mailInfo = configuration(mailInfo);
 
                 mailInfo.setSubject(Subject);
@@ -72,10 +72,10 @@ public class EmailUtil {
 //                mailInfo.setMailServerHost("smtp.163.com");
 //                mailInfo.setMailServerPort("25");
 //                mailInfo.setValidate(true);
-//                mailInfo.setUserName("LDW5800@163.com");
-//                mailInfo.setPassword("5800shouquanma");// 您的邮箱密码
-//                mailInfo.setFromAddress("LDW5800@163.com");
-//                mailInfo.setToAddress("15089815098@163.com");
+//                mailInfo.setUserName("***********");
+//                mailInfo.setPassword("********");// 您的邮箱密码
+//                mailInfo.setFromAddress("********");
+//                mailInfo.setToAddress("********");
                 mailInfo = configuration(mailInfo);
 
                 mailInfo.setSubject(Subject);
