@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kld.com.rfid.ldw"
-    android:versionCode="101"
-    android:versionName="1.0.1"
-    >
+    package="kld.com.rfid.ldw">
 
     <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES" />-->
 
@@ -126,7 +123,7 @@
             android:name="kld.com.rfid.ldw.demand2.way3.MyAccessibilityService"
             android:enabled="true"
             android:exported="true"
-            android:label="RFID扫描辅助服务"
+            android:label="@string/app_name"
             android:permission=
                 "android.permission.BIND_ACCESSIBILITY_SERVICE" >
             <intent-filter>
