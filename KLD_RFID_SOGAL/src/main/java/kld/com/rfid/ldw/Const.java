@@ -7,7 +7,7 @@ import com.ldw.xyz.util.PreferenceUtil;
  * Created by liudongwen on 2018/8/23.
  */
 
-public class Const {
+public final class Const {
 
 
 
