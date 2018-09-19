@@ -33,7 +33,20 @@ public class PreferenceUtil {
 		String str = preferences.getString(key, value);
 		return str;
 	}
-	
+
+
+	/**
+	 * 20180918 不需要value,默认返回""
+	 *
+	 * @param context
+	 * @param key
+	 * @return
+	 */
+	public static String get(Context context, String key) {
+		setObjectNotNull(context);
+		String str = preferences.getString(key, "");
+		return str;
+	}
 	
 	private static void setObjectNotNull(Context context) {
 		if (preferences == null) {
