@@ -321,6 +321,16 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //            getApplicationContext().registerReceiver(actionUpReceiver, filter);
 //        }
 
+        // // begin
+        try {
+            Intent mIntent = new Intent();
+            mIntent.setAction("$_CloseDialog");
+            getApplicationContext().sendBroadcast(mIntent);
+        } catch (Exception e) {
+            ExceptionUtil.handleException(e);
+        }
+        // end
+
         LogUtil.e("TAG","onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
@@ -600,15 +610,6 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
         super.onStart(intent, startId);
 
-        // // begin
-        try {
-            Intent mIntent = new Intent();
-            mIntent.setAction("$_CloseDialog");
-            getApplicationContext().sendBroadcast(mIntent);
-        } catch (Exception e) {
-            ExceptionUtil.handleException(e);
-        }
-        // end
     }
 
 
