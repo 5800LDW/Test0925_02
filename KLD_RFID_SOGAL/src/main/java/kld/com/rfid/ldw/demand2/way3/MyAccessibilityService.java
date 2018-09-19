@@ -8,6 +8,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
 import com.ldw.xyz.util.LogUtil;
+import com.ldw.xyz.util.PreferenceUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,17 +29,42 @@ public class MyAccessibilityService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
 
+
+        if(RFIDApplication.getIsCanCheckUpdate()==false){
+            return;
+        }
+
+        if( PreferenceUtil.get(RFIDApplication.instance,Const.KEY_IS_CAN_INSTALL,"").equals("FALSE")){
+            return;
+        }
+
+
+
         AccessibilityNodeInfo nodeInfo = event.getSource();
 
 
 
+
+
         LogUtil.e(TAG, "***  *** ------------------");
+        if(event!=null){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                LogUtil.e(TAG, "event.getClassName() = " + event.getClassName());
+                LogUtil.e(TAG, "event.getPackageName() = " + event.getPackageName());
+                LogUtil.e(TAG, "event = " + event.toString());
+            }
+        }
         if(nodeInfo!=null){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                LogUtil.e(TAG, "nodeInfo.getViewIdResourceName() = " + nodeInfo.getViewIdResourceName());
+                LogUtil.e(TAG, "nodeInfo.getClassName() = " + nodeInfo.getClassName());
+                LogUtil.e(TAG, "nodeInfo.getPackageName() = " + nodeInfo.getPackageName());
             }
-            LogUtil.e(TAG, "nodeInfo.toString() = " + nodeInfo);
         }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+//            LogUtil.e(TAG, " getRootInActiveWindow().getPackageName()  = " +  getRootInActiveWindow().getPackageName());
+//            LogUtil.e(TAG, " getRootInActiveWindow().getClassName()  = " +  getRootInActiveWindow().getClassName());
+//        }
+
         LogUtil.e(TAG, "***  *** ------------------ ***  ***");
 
 
@@ -82,6 +108,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
                     if("打开".equals(nodeContent)){
                         Toast.makeText(this, "更新完成!", Toast.LENGTH_SHORT).show();
+                        RFIDApplication.setIsCanInstallFALSE();
                     }
 
                     return true;
