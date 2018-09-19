@@ -98,13 +98,7 @@ public class EmailUtil {
     }
 
     private static MailSenderInfo configuration(MailSenderInfo mailInfo){
-//        mailInfo.setMailServerHost("smtp.163.com");
-//        mailInfo.setMailServerPort("25");
-//        mailInfo.setValidate(true);
-//        mailInfo.setUserName("*********");
-//        mailInfo.setPassword("*********");// 您的邮箱密码
-//        mailInfo.setFromAddress("*********");
-//        mailInfo.setToAddress("*********");
+
         return mailInfo;
     }
 
