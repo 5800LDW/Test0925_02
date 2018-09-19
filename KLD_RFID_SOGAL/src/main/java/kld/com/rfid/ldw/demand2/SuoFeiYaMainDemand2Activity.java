@@ -249,12 +249,13 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
             @Override
             public void onClick(View arg0) {
 
+                LogUtil.e(TAG,"*** button_read start *** -----------");
 
-                String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
-                if (StringHelper2.isEmpty(name)) {
-                    ToastUtil.showToast(mContext, "请选择通道!");
-                    return;
-                }
+//                String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
+//                if (StringHelper2.isEmpty(name)) {
+//                    ToastUtil.showToast(mContext, "请选择通道!");
+//                    return;
+//                }
 
                 //liudongwen
                 //隐藏dialog
@@ -272,23 +273,26 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
                         promptDialog = new PromptDialog(SuoFeiYaMainDemand2Activity.this);
                         promptDialog.getDefaultBuilder().touchAble(false).round(3).loadingDuration(3500);
                         promptDialog.showLoading("正在开启服务...");
-                    }
 
-                    // begin
-                    if (Build.VERSION.SDK_INT >= 23) {
-                        if (Settings.canDrawOverlays(RFIDApplication.instance)) {
-                            // begin
+
+                        // begin
+                        if (Build.VERSION.SDK_INT >= 23) {
+                            if (Settings.canDrawOverlays(RFIDApplication.instance)) {
+                                // begin
+                                startService();
+                                ReadHandleUI();
+                            } else {
+                                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        } else {
                             startService();
                             ReadHandleUI();
-                        } else {
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
                         }
-                    } else {
-                        startService();
-                        ReadHandleUI();
                     }
+
+
 
                     if (promptDialog != null) {
                         promptDialog.dismiss();
@@ -304,6 +308,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
 
                 }
 
+                LogUtil.e(TAG,"*** button_read stop *** -----------");
 
             }
         });
@@ -563,6 +568,8 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
 
         TextView tvVersionName = (TextView) findViewById(R.id.tvVersionName);
         tvVersionName.setText("当前版本:" + VersionUtil.getVersionName(RFIDApplication.instance));
+
+
     }
 
     private void uiBuHuo(){
@@ -790,7 +797,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
         String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
         if (StringHelper2.isEmpty(name)) {
             selectChannel();
-            //tood
+
         } else {
             tvChannel.setText(name);
             tvChannel.setTextColor(getResources().getColor(R.color.black));
@@ -799,9 +806,14 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
 
         //todo
         uiFresh();
+
+        //这里主要是为了显示UI
         if (RFIDApplication.instance.floatService != null) {
             button_read.performClick();
         }
+
+
+
 
 
     }
