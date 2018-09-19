@@ -508,14 +508,14 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
 
 
         tv_Title = (TextView)findViewById(R.id.tv_Title);
-        //默认是补货
+        //默认是发货
         if(StringHelper2.isEmpty(RFIDApplication.getModeIsBuHuo())){
-            RFIDApplication.setModeBuHuo(Const.CONST_TRUE);
+            RFIDApplication.setModeBuHuo(Const.CONST_FALSE);
         }
         boolean check ;
         if(RFIDApplication.getModeIsBuHuo()==Const.CONST_TRUE){
             check = true;
-            tv_Title.setText("补\t\t\t货");
+            tv_Title.setText("取\t\t\t消");
             uiBuHuo();
         }
         else{
@@ -534,7 +534,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
                 LogUtil.e(TAG,"isChecked = " + isChecked);
 
                 if(isChecked){
-                    tv_Title.setText("补\t\t\t货");
+                    tv_Title.setText("取\t\t\t消");
                     RFIDApplication.setModeBuHuo(Const.CONST_TRUE);
                     uiBuHuo();
 
