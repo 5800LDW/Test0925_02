@@ -80,6 +80,8 @@ import static kld.com.rfid.ldw.demand2.sound.SoundUtil.initExecutorSoundUtil;
 @TargetApi(23)
 public class FloatService extends MyBaseService implements OnClickListener , Runnable{
 
+    private static final String TAG = "FloatService";
+
     boolean isTest = RFIDApplication.getIsCanTest();
 
 
@@ -119,7 +121,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     ActionUpReceiver actionUpReceiver;
 
 
-    private static final String TAG = "FloatService ";
+//    private static final String TAG = "FloatService ";
 //	private static boolean isAutoScanning = false;
 
     // end
@@ -139,14 +141,14 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         Comm.soundPool.load(this, R.raw.beep51, 1);
 
 
-        LogUtil.e("TAG", "*** soundPool *** ----------------");
+        LogUtil.e(TAG, "*** soundPool *** ----------------");
         if(soundPool==null){
-            LogUtil.e("TAG", " soundPool == null");
+            LogUtil.e(TAG, " soundPool == null");
         }
         else{
-            LogUtil.e("TAG", " soundPool == " + soundPool);
+            LogUtil.e(TAG, " soundPool == " + soundPool);
         }
-        LogUtil.e("TAG", "soundPool");
+        LogUtil.e(TAG, "soundPool");
 
         checkDevice();
         Comm.initWireless(Comm.app);
@@ -156,7 +158,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             ConnectModule();
         else
             Connect();
-        LogUtil.e("test", "connect");
+        LogUtil.e(TAG, "connect");
 
 
 
@@ -225,10 +227,10 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
                     //tv_state.setText(String.valueOf(readCount));
                 }
 
-                Log.e("tagListSize", "tagListSize : " + tagListSize);//lsTagList
-                Log.e("lsTagList", "lsTagList.size() : " + lsTagList.size());//lsTagList
-                Log.e("lsTagList", "lsTagList.size() : " + lsTagList);//lsTagList
-                Log.e("lsTagList", "lsTagList : " + lsTagList.toString());//lsTagList
+//                Log.e("tagListSize", "tagListSize : " + tagListSize);//lsTagList
+//                Log.e("lsTagList", "lsTagList.size() : " + lsTagList.size());//lsTagList
+//                Log.e("lsTagList", "lsTagList.size() : " + lsTagList);//lsTagList
+//                Log.e("lsTagList", "lsTagList : " + lsTagList.toString());//lsTagList
                 //todo  重点关注这个;
 
 //				if(tagListSize>0){
@@ -250,7 +252,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             } catch (Exception e) {
                 e.printStackTrace();
                 com.ldw.xyz.util.exception.ExceptionUtil.handleException(e);
-                LogUtil.e("Tag", e.getMessage());
+                LogUtil.e(TAG, e.getMessage());
             }
         }
     };
@@ -260,7 +262,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
     @Override
     public void onCreate() {
-        LogUtil.e("FloatService", "onCreate");
+        LogUtil.e(TAG, "onCreate");
         super.onCreate();
         view = LayoutInflater.from(this).inflate(R.layout.floating, null);
         iv = (ImageView) view.findViewById(R.id.img2);
@@ -331,7 +333,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         }
         // end
 
-        LogUtil.e("TAG","onStartCommand");
+        LogUtil.e(TAG,"onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -475,8 +477,8 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //			wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
             //正在运行
             if(Comm.isrun){
-                LogUtil.e("STOP","*** STOP *** ---------");
-                LogUtil.e("STOP"," Comm.isrun = "+ Comm.isrun);
+                LogUtil.e(TAG,"*** STOP *** ---------");
+                LogUtil.e(TAG," Comm.isrun = "+ Comm.isrun);
                 stopButtonClick();
             }
             else if(!Comm.isrun){
@@ -515,7 +517,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
 
     public void addViewAndShowInfo(String title,String content){
-        LogUtil.e("TAG","addViewAndShowInfo=============>1");
+        LogUtil.e(TAG,"addViewAndShowInfo=============>1");
         wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
         wmParams.format = 1;
@@ -549,7 +551,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
                 postString();
             }
         });
-        LogUtil.e("TAG","addViewAndShowInfo=============>2");
+        LogUtil.e(TAG,"addViewAndShowInfo=============>2");
 
 
 
@@ -604,7 +606,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
     @Override
     public void onStart(Intent intent, int startId) {
-        LogUtil.e("TAG", "onStart");
+        LogUtil.e(TAG, "onStart");
 
         startForeground();
 
@@ -629,7 +631,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
         handler.removeCallbacks(task);
         LogUtil.i(TAG, "onDestroy");
-        LogUtil.i("TAG", "onDestroy");
+        LogUtil.i(TAG, "onDestroy");
         wm.removeView(view);
 
         OkHttpUtils.getInstance().cancelTag(cancelTag);
@@ -707,7 +709,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         //liudongwen
         uploadSetStartSize = uploadSet.size();
 
-        LogUtil.e("TAG2","showlist");
+        LogUtil.e(TAG,"showlist");
 
         try {
 //            int index = 1;
@@ -734,7 +736,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
                     epcstr = lsTagList.get(ListIndex).strEPC;
 
-                    LogUtil.e("TAG2","lsTagList.get(ListIndex).strEPC  epcstr ="+epcstr);
+                    LogUtil.e(TAG,"lsTagList.get(ListIndex).strEPC  epcstr ="+epcstr);
 
                     if (Comm.dt == Comm.DeviceType.supoin_JT && Comm.To433Index < index) {
                         Comm.mWirelessMg.writeTo433(epcstr + "\n");
@@ -788,8 +790,8 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             //liudongwen 为零就是清空了,所以要刷新,大于原来的就是新加了, 也要刷新;
             if(uploadSet!=null&&(uploadSet.size()==0||(uploadSet.size()>uploadSetStartSize))){
 
-                LogUtil.e("TAG","uploadSet.size() ========================> " + uploadSet.size());
-                LogUtil.e("TAG","uploadSet.toString()========================>)"+uploadSet.toString());
+                LogUtil.e(TAG,"uploadSet.size() ========================> " + uploadSet.size());
+                LogUtil.e(TAG,"uploadSet.toString()========================>)"+uploadSet.toString());
 
                 //刷新界面;
                 notifyActivityUpdateAdapter();
@@ -853,7 +855,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
         String organizationID = PreferenceUtil.get(mContext,Const.KEY_ORGANIZATION,"");
 
-        LogUtil.e("ORGANIZATION_ID","ORGANIZATION_ID =" + organizationID);
+        LogUtil.e(TAG,"ORGANIZATION_ID =" + organizationID);
 
         if(uploadSet.size()==0){
 //            ToastUtil.showToast(mContext,"没有扫描数据");
@@ -864,9 +866,9 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
 //        String url = Const.getURL_UPLAOD();
 
-        LogUtil.e("TAG","url = " + url);
-        LogUtil.e("TAG","content = " + content);
-        LogUtil.e("TAG","organization = " + organizationID);
+        LogUtil.e(TAG,"url = " + url);
+        LogUtil.e(TAG,"content = " + content);
+        LogUtil.e(TAG,"organization = " + organizationID);
 
         OkHttpUtils
                 .post()//
@@ -884,7 +886,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
     private String getJsonObject(){
 
-        LogUtil.e("TAG","uploadSet.size() = " + uploadSet.size());
+        LogUtil.e(TAG,"uploadSet.size() = " + uploadSet.size());
 
         StringBuffer sb = new StringBuffer();
 
@@ -979,14 +981,14 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         @Override
         public void onError(Call call, Exception e, int id) {
 
-            LogUtil.e("TAG", "e ------------>" + e);
+            LogUtil.e(TAG, "e ------------>" + e);
 
 //            isCanRunRead = true;
             //todo 取消显示正在上传
 //            tvTips.setVisibility(View.GONE);
             dialog_window_background.setVisibility(View.GONE);
 
-            LogUtil.e("TAG","onError " + e.toString());
+            LogUtil.e(TAG,"onError " + e.toString());
 
             if (mContext != null ) {
                 final String info;
@@ -1005,13 +1007,15 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
 
                 testAlsert();
-//                soundErrorNow(R.raw.alarmbell5s);
+                soundErrorNow(R.raw.alarmbell5s);
+                shake();
 //                soundError();
 //                soundErrorNow(R.raw.sound_ou);
 
                 Toast.makeText(mContext,
                         "Error:"+"\n"+info,
                         Toast.LENGTH_LONG).show();
+
                 if(isTest){
                     onResponse("{未排程;取消;窜货}",12);
                 }
@@ -1019,7 +1023,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
             }
 
-            Log.e("TAG","Exception = "+e.toString());
+            Log.e(TAG,"Exception = "+e.toString());
 
         }
 
@@ -1035,11 +1039,11 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
 //            isCanRunRead = true;
 //            tvTips.setVisibility(View.GONE);
-            LogUtil.e("TAG", "onResponse：complete-------->");
+            LogUtil.e(TAG, "onResponse：complete-------->");
 
 
-            LogUtil.e("TAG", "response ------------> " + response);
-            LogUtil.e("TAG", "id ------------>" + id);
+            LogUtil.e(TAG, "response ------------> " + response);
+            LogUtil.e(TAG, "id ------------>" + id);
 
             ResponseObj obj = GsonUtil.toResponseObj(response);
 
@@ -1056,7 +1060,9 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
             if(obj==null){
                 addViewAndShowInfo("返回信息错误",response);
-//                soundError();
+                soundErrorNow(R.raw.alarmbell5s);
+                shake();
+//              soundError();
 
                 testAlsert();
                 Toast.makeText(mContext,
@@ -1102,7 +1108,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
                                 notifyActivityUpdateAdapter();
                                 //发出声音
                                 SoundUtil.playSound();
-
+                                //震动
                                 shake();
                                 ToastUtil.showToast(mContext,sb.toString());
                                 if(!StringHelper2.isEmpty(obj.getMyPackage())){
@@ -1126,7 +1132,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
         @Override
         public void inProgress(float progress, long total, int id) {
-            LogUtil.e("TAG", "inProgress=================>" + progress);
+            LogUtil.e(TAG, "inProgress=================>" + progress);
             int currentProgress = (int) (100 * progress);
 
 
