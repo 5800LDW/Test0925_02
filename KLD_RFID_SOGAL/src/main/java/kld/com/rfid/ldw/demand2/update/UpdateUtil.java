@@ -12,6 +12,7 @@ import com.allenliu.versionchecklib.v2.callback.RequestVersionListener;
 import com.ldw.xyz.util.LogUtil;
 
 import kld.com.rfid.ldw.Const;
+import kld.com.rfid.ldw.RFIDApplication;
 
 /**
  * Created by liudongwen on 2018/9/12.
@@ -37,6 +38,9 @@ public class UpdateUtil {
 
 
     public static void check(final Context context, HttpRequestMethod requestMethod){
+
+//        RFIDApplication.setIsCanInstallFALSE();
+
 //        test(  context);
          builder = AllenVersionChecker
                 .getInstance()
@@ -53,6 +57,7 @@ public class UpdateUtil {
                         String title = "立刻更新?";
                         String content = "发现新版本:"+"test";
 
+                        RFIDApplication.setIsCanInstallTRUE();
 
                         return crateUIData(title,content);
                     }
@@ -61,7 +66,7 @@ public class UpdateUtil {
                         LogUtil.e(TAG,"****** 下载失败  ****** -------------------");
                         LogUtil.e(TAG,"下载失败!"+"\n"+message);
 //                        Toast.makeText(context, "下载失败!"+"\n"+message, Toast.LENGTH_SHORT).show();
-
+                        RFIDApplication.setIsCanInstallFALSE();
                     }
                 });
 
@@ -69,6 +74,7 @@ public class UpdateUtil {
             @Override
             public void onCancel() {
                 //Toast.makeText(context,"Cancel Hanlde",Toast.LENGTH_SHORT).show();
+                RFIDApplication.setIsCanInstallFALSE();
             }
         });
 

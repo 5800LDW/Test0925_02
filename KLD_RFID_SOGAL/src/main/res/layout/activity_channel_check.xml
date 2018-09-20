@@ -26,8 +26,8 @@
         <TextView
             style="@style/putin_item_content"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:layout_height="match_parent"
             android:text="组织：" />
 
         <LinearLayout
@@ -54,7 +54,7 @@
                 android:singleLine="true" />
             <TextView
                 android:id="@+id/tvMore"
-                android:layout_width="40dp"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:drawableRight="@drawable/checkbox_account"
                 />
