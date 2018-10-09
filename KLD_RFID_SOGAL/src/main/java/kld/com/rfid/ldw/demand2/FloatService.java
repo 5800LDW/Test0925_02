@@ -161,12 +161,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         LogUtil.e(TAG, "connect");
 
 
-
-
-
     }
-
-
 
     //180910
 //    public SoundPool soundPoolBeep;
@@ -183,9 +178,6 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //    }
 
 
-
-
-
     @SuppressLint("HandlerLeak")
     public Handler connectH = new Handler() {
         @SuppressLint("SetTextI18n")
@@ -193,12 +185,11 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         @Override
         public void handleMessage(Message msg) {
             try {
+                LogUtil.e(TAG,"---- msg ---" + msg);
 
                 Comm.mInventoryHandler = uhfhandler;
 
-
                 Comm.SetInventoryTid(false);
-
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -207,7 +198,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         }
     };
 
-    @SuppressLint("HandlerLeak") //todo
+    @SuppressLint("HandlerLeak")
     public Handler uhfhandler = new Handler() {
         @SuppressWarnings({"unchecked", "unused"})
         @Override
@@ -223,14 +214,14 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
 
                 if (readCount > 0){
-                    //todo 显示数量
+                    //显示数量
                     //tv_state.setText(String.valueOf(readCount));
                 }
 
-//                Log.e("tagListSize", "tagListSize : " + tagListSize);//lsTagList
-//                Log.e("lsTagList", "lsTagList.size() : " + lsTagList.size());//lsTagList
-//                Log.e("lsTagList", "lsTagList.size() : " + lsTagList);//lsTagList
-//                Log.e("lsTagList", "lsTagList : " + lsTagList.toString());//lsTagList
+                Log.e("tagListSize", "tagListSize : " + tagListSize);//lsTagList
+                Log.e("lsTagList", "lsTagList.size() : " + lsTagList.size());//lsTagList
+                Log.e("lsTagList", "lsTagList.size() : " + lsTagList);//lsTagList
+                Log.e("lsTagList", "lsTagList : " + lsTagList.toString());//lsTagList
                 //todo  重点关注这个;
 
 //				if(tagListSize>0){
@@ -241,11 +232,9 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
 
 
-                if (tagListSize > 0)
+                if (tagListSize > 0){
                     showlist();
-
-
-
+                }
 
                 Log.e("uhfhandler", "readCount : " + String.valueOf(readCount));
 
@@ -848,7 +837,10 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
 
         String id = PreferenceUtil.get(mContext,Const.KEY_STAGE_CODE,"");
-        if(StringHelper2.isEmpty(id)){
+        if(Const.IsCanTest == true){
+            //测试环境不需要检测;
+        }
+        else if(StringHelper2.isEmpty(id)){
             ToastUtil.showToast(mContext,"stage ID 为空,请重新获取通道!");
             return;
         }
@@ -857,7 +849,10 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
         LogUtil.e(TAG,"ORGANIZATION_ID =" + organizationID);
 
-        if(uploadSet.size()==0){
+        if(Const.IsCanTest == true){
+            //测试环境不需要检测;
+        }
+        else if(uploadSet.size()==0){
 //            ToastUtil.showToast(mContext,"没有扫描数据");
             return;
         }
@@ -1050,9 +1045,9 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             if(isTest){
                 obj = new ResponseObj();
 
-                obj.setErrormsg("未排程;非已点数;窜货;取消;漏货");
+                obj.setErrormsg("未排程;包状态异常;窜货;取消;漏货");
                 obj.setMyCollude("");
-                obj.setMyPackage("未排程;非已点数;窜货;取消;漏货");
+                obj.setMyPackage("未排程;包状态异常;窜货;取消;漏货");
 
             }
 
@@ -1251,6 +1246,10 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         }
         else if(msg.startsWith("非已点数")){
             SoundUtil.put(R.raw.sound_feiyidianshu3,index);
+            index++;
+        }
+        else if(msg.startsWith("包状态异常")){
+            SoundUtil.put(R.raw.sound_baozhuangtaiyc3,index);
             index++;
         }
 
