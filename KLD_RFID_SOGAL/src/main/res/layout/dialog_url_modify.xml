@@ -1,131 +1,313 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:ldw="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_login"
     android:fitsSystemWindows="true"
-    android:orientation="vertical">
-
-    <FrameLayout
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@color/transparent"
-        android:fitsSystemWindows="true"
-        android:gravity="center"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="left"
-            android:src="@drawable/back" />
-
-        <TextView
-            android:id="@+id/tv_Text"
-            android:layout_width="wrap_content"
-            android:layout_centerInParent="true"
-            android:textSize="22dp"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:text="配置地址"
-            android:textColor="@color/white"/>
-
-    </FrameLayout>
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:background="@drawable/background_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/shape_wihte_frame"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:paddingLeft="0dp"
-            android:paddingRight="15dp">
+            android:layout_height="40dp"
+            android:background="@color/transparent"
+            android:fitsSystemWindows="true"
+            android:gravity="center"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical|start"
-                android:layout_marginEnd="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginStart="5dp"
-                android:contentDescription="手机号"
-                android:scaleType="centerInside"
-                android:visibility="gone" />
+                android:id="@+id/btnBack"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:src="@drawable/back" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical|start"
-                android:layout_marginLeft="34dp"
-                android:layout_marginStart="34dp"
-                android:background="@color/divider"
-                android:visibility="gone" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-                android:layout_gravity="center_vertical|start"
-                android:hint="请输入服务器地址"
-                android:paddingStart="5dp">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/user_mobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:gravity="center_vertical|top"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:singleLine="true"
-                    android:textColor="@color/font_title"
-                    android:textSize="14dp" />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <CheckBox
-                android:id="@+id/check_AccountLists"
+            <TextView
+                android:id="@+id/tv_Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:gravity="center"
-                android:minHeight="24dp"
-                android:visibility="gone" />
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:text="设置"
+                android:textColor="@color/white"
+                android:textSize="22dp" />
 
         </FrameLayout>
 
+        <TextView
+            android:id="@+id/tv_1"
+            style="@style/item_style"
+            android:layout_width="fill_parent"
+            android:background="#EAEAEA"
+            android:gravity="left|center"
+            android:paddingLeft="10dp"
+            android:text="服务器地址" />
 
-        <Button
-            android:id="@+id/login_btn"
-            android:layout_width="100dp"
-            android:layout_height="44dp"
-            android:layout_gravity="right"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/bg_btn_main"
-            android:shadowColor="@color/colorPrimaryDarker"
-            android:text="确认更改"
-            android:textColor="@android:color/white"
-            android:textSize="16dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:divider="@drawable/divider_line"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/shape_wihte_frame"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="15dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical|start"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginStart="5dp"
+                        android:contentDescription="手机号"
+                        android:scaleType="centerInside"
+                        android:visibility="gone" />
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical|start"
+                        android:layout_marginLeft="34dp"
+                        android:layout_marginStart="34dp"
+                        android:background="@color/divider"
+                        android:visibility="gone" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:layout_gravity="center_vertical|start"
+                        android:hint="请输入服务器地址"
+                        android:paddingStart="5dp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/user_mobile"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:gravity="center_vertical|top"
+                            android:imeOptions="actionNext"
+                            android:inputType="text"
+                            android:singleLine="true"
+                            android:textColor="@color/font_title"
+                            android:textSize="14dp" />
+                    </android.support.design.widget.TextInputLayout>
 
 
+                    <CheckBox
+                        android:id="@+id/check_AccountLists"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:gravity="center"
+                        android:minHeight="24dp"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+
+                <Button
+                    android:id="@+id/login_btn"
+                    android:layout_width="100dp"
+                    android:layout_height="44dp"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/bg_btn_main"
+                    android:shadowColor="@color/colorPrimaryDarker"
+                    android:text="确认更改"
+                    android:textColor="@android:color/white"
+                    android:textSize="16dp" />
+
+
+            </LinearLayout>
+
+            <TextView
+
+                style="@style/item_style"
+                android:layout_width="fill_parent"
+                android:background="#EAEAEA"
+                android:gravity="left|center"
+                android:paddingLeft="10dp"
+                android:text="软件更新地址" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:divider="@drawable/divider_line"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/shape_wihte_frame"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:paddingLeft="0dp"
+                        android:paddingRight="15dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical|start"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginStart="5dp"
+                            android:contentDescription="手机号"
+                            android:scaleType="centerInside"
+                            android:visibility="gone" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_vertical|start"
+                            android:layout_marginLeft="34dp"
+                            android:layout_marginStart="34dp"
+                            android:background="@color/divider"
+                            android:visibility="gone" />
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="38dp"
+                            android:layout_gravity="center_vertical|start"
+                            android:hint="请输入软件更新地址"
+                            android:paddingStart="5dp">
+
+                            <android.support.design.widget.TextInputEditText
+                                android:id="@+id/etUrlUpdate"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:gravity="center_vertical|top"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:singleLine="true"
+                                android:textColor="@color/font_title"
+                                android:textSize="14dp" />
+                        </android.support.design.widget.TextInputLayout>
+
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|center_vertical"
+                            android:gravity="center"
+                            android:minHeight="24dp"
+                            android:visibility="gone" />
+
+                    </FrameLayout>
+
+
+                    <Button
+                        android:id="@+id/btSure"
+                        android:layout_width="100dp"
+                        android:layout_height="44dp"
+                        android:layout_gravity="right"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/bg_btn_main"
+                        android:shadowColor="@color/colorPrimaryDarker"
+                        android:text="确认更改"
+                        android:textColor="@android:color/white"
+                        android:textSize="16dp" />
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+
+                style="@style/item_style"
+                android:layout_width="fill_parent"
+                android:background="#EAEAEA"
+                android:gravity="left|center"
+                android:paddingLeft="10dp"
+                android:text="悬浮按钮样式" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="默认样式"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
+
+                    <kld.com.rfid.ldw.demand2.CheckSwitchButton
+                        android:id="@+id/mCheckSwithcButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="3" />
+
+                    <TextView
+                        android:id="@+id/tvRight"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="刘海样式"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>

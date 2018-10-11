@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 public class SuoFeiYaAdapter extends SimpleAdapter{
+
+//	List<Map<String, String>> mData;
+
 	public SuoFeiYaAdapter(Context context, List<? extends Map<String, ?>> data,
                            int resource, String[] from, int[] to) {
 		super(context, data, resource, from, to);
@@ -36,8 +39,11 @@ public class SuoFeiYaAdapter extends SimpleAdapter{
 				view = super.getView(position, convertView, parent);
 		}
 
-		 view.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同 
-		return super.getView(position, view, parent); 
+		 view.setBackgroundColor(colors[position % 2]);// 每隔item之间颜色不同
+
+
+
+		return super.getView(position, view, parent);
 	}
 	public void notifyDataSetChanged(){
 		super.notifyDataSetChanged();

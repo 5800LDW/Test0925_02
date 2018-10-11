@@ -32,10 +32,12 @@ import android.widget.Toast;
 import com.allenliu.versionchecklib.core.http.HttpRequestMethod;
 import com.example.UHFDemo_install.Sub3TabActivity;
 import com.example.UHFDemo_install.Sub4TabActivity;
+import com.ldw.xyz.listener.PermissionListener;
 import com.ldw.xyz.util.ActivityUtil;
 import com.ldw.xyz.util.LogUtil;
 import com.ldw.xyz.util.PreferenceUtil;
 import com.ldw.xyz.util.ResHelper;
+import com.ldw.xyz.util.RuntimePermissionUtil;
 import com.ldw.xyz.util.ToastUtil;
 import com.ldw.xyz.util.exception.ExceptionUtil;
 import com.ldw.xyz.util.service.AccessibilityServiceUtil;
@@ -87,7 +89,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
     protected Object cancelTag = this;
 
 
-    TextView tv_state, tv_tags, textView_time,tv_Title;
+    TextView tv_state, tv_tags, textView_time, tv_Title;
     Button button_read, button_stop, button_clean, button_set, butSetUrl, btnUpload;
     CheckBox cb_is6btag, cb_readtid;
     private ListView listView;
@@ -116,11 +118,38 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
     protected void onStart() {
         super.onStart();
 
-        // 检查更新;
-        if(RFIDApplication.getIsCanCheckUpdate()){
-            UpdateUtil.check(this, HttpRequestMethod.GET);
+        LogUtil.e(TAG, "onStart()");
+
+        //这里主要是为了显示UI
+        String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
+        if (StringHelper2.isEmpty(name)) {
+            selectChannel();
+
+        } else {
+            tvChannel.setText(name);
+            tvChannel.setTextColor(getResources().getColor(R.color.black));
         }
 
+        //todo
+        uiFresh();
+
+        //这里主要是为了显示UI
+        if (RFIDApplication.instance.floatService != null) {
+            button_read.performClick();
+            //开始按钮变灰
+            ReadHandleUI();
+        }
+
+//        if(PreferenceUtil.get(mContext,"ISREAD").equals("TRUE")){
+//            //开始按钮变灰
+//            ReadHandleUI();
+//        };
+
+
+//        // 检查更新;
+//        if(RFIDApplication.getIsCanCheckUpdate()){
+//            UpdateUtil.check(this, HttpRequestMethod.GET);
+//        }
 
 
         Log.d("Activity", "onStart()");
@@ -190,9 +219,21 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setTheme(R.style.MyAppTheme);
         setContentView(R.layout.activity_main_suofeiya_demand2_);
+
+        // 检查更新;
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (RFIDApplication.getIsCanCheckUpdate()) {
+                    LogUtil.e("TAG", "PreferenceUtil.get(RFIDApplication.instance, Const.KEY_IS_CAN_INSTALL) = " + PreferenceUtil.get(RFIDApplication.instance, Const.KEY_IS_CAN_INSTALL));
+
+                    UpdateUtil.check(SuoFeiYaMainDemand2Activity.this, HttpRequestMethod.GET,null);
+                }
+            }
+        }, 10);
+
 
         tabHost = (TabHost) findViewById(android.R.id.tabhost);
         tabHost.setup();
@@ -249,13 +290,19 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
             @Override
             public void onClick(View arg0) {
 
-                LogUtil.e(TAG,"*** button_read start *** -----------");
+//                PreferenceUtil.set(mContext,"ISREAD","TRUE");
 
-//                String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
-//                if (StringHelper2.isEmpty(name)) {
-//                    ToastUtil.showToast(mContext, "请选择通道!");
-//                    return;
-//                }
+                LogUtil.e(TAG, "*** button_read start *** -----------");
+
+                String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
+
+                if (Const.IsCanTest == true) {
+                    //测试的情况下不需要通道号;
+                } else if (StringHelper2.isEmpty(name)) {
+                    ToastUtil.showToast(mContext, "请选择通道!");
+                    return;
+                }
+
 
                 //liudongwen
                 //隐藏dialog
@@ -271,27 +318,27 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
                     if (RFIDApplication.instance.floatService == null) {
                         promptDialog.viewAnimDuration = 10;
                         promptDialog = new PromptDialog(SuoFeiYaMainDemand2Activity.this);
-                        promptDialog.getDefaultBuilder().touchAble(false).round(3).loadingDuration(3500);
+                        promptDialog.getDefaultBuilder().touchAble(false).round(3).loadingDuration(2500);
                         promptDialog.showLoading("正在开启服务...");
 
 
-                        // begin
-                        if (Build.VERSION.SDK_INT >= 23) {
-                            if (Settings.canDrawOverlays(RFIDApplication.instance)) {
-                                // begin
-                                startService();
-                                ReadHandleUI();
-                            } else {
-                                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                            }
-                        } else {
+                    }
+                    // begin
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        if (Settings.canDrawOverlays(RFIDApplication.instance)) {
+                            // begin
                             startService();
                             ReadHandleUI();
+                        } else {
+                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
+                    } else {
+                        startService();
+                        //开始按钮变灰
+                        ReadHandleUI();
                     }
-
 
 
                     if (promptDialog != null) {
@@ -308,7 +355,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
 
                 }
 
-                LogUtil.e(TAG,"*** button_read stop *** -----------");
+                LogUtil.e(TAG, "*** button_read stop *** -----------");
 
             }
         });
@@ -316,6 +363,8 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
         button_stop.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+
+//                PreferenceUtil.set(mContext,"ISREAD","FALSE");
 
                 if (RFIDApplication.instance.floatService != null && RFIDApplication.instance.floatService.isCanRunRead == false) {
                     ToastUtil.showToast(mContext, "正在上传数据,请稍后重试");
@@ -511,50 +560,82 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
         //liudongwen
         mContext = this;
 
+        mCheckSwithcButton = (CheckSwitchButton) findViewById(R.id.mCheckSwithcButton);
+        tv_Title = (TextView) findViewById(R.id.tv_Title);
+//        //默认是发货
+//        if(StringHelper2.isEmpty(RFIDApplication.getModeIsBuHuo())){
+//            RFIDApplication.setModeBuHuo(Const.CONST_FALSE);
+//        }
+//        boolean check ;
+//        if(RFIDApplication.getModeIsBuHuo()==Const.CONST_TRUE){
+//            check = true;
+//            tv_Title.setText("取\t\t\t消");
+//            uiBuHuo();
+//        }
+//        else{
+//            check = false;
+//            tv_Title.setText("发\t\t\t货");
+//            uiFaHuo();
+//        }
 
-        tv_Title = (TextView)findViewById(R.id.tv_Title);
+        LogUtil.e("TAG", "RFIDApplication.getModeIsBuHuo() = " + RFIDApplication.getModeIsBuHuo());
         //默认是发货
-        if(StringHelper2.isEmpty(RFIDApplication.getModeIsBuHuo())){
+        if (StringHelper2.isEmpty(RFIDApplication.getModeIsBuHuo())) {
             RFIDApplication.setModeBuHuo(Const.CONST_FALSE);
         }
-        boolean check ;
-        if(RFIDApplication.getModeIsBuHuo()==Const.CONST_TRUE){
+        boolean check;
+        if (RFIDApplication.getModeIsBuHuo().equals(Const.CONST_FALSE)) {
             check = true;
-            tv_Title.setText("取\t\t\t消");
-            uiBuHuo();
-        }
-        else{
-            check = false;
             tv_Title.setText("发\t\t\t货");
             uiFaHuo();
+            mCheckSwithcButton.setChecked(check);
+        } else {
+
+            check = false;
+            tv_Title.setText("取\t\t\t消");
+            uiBuHuo();
+            mCheckSwithcButton.setChecked(check);
         }
 
-        mCheckSwithcButton = (CheckSwitchButton) findViewById(R.id.mCheckSwithcButton);
-        mCheckSwithcButton.setChecked(check);
+
+//       LogUtil.e("TAG","RFIDApplication.getModeIsBuHuo() = "+RFIDApplication.getModeIsBuHuo());
+
+
         mCheckSwithcButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                LogUtil.e(TAG,"*** isChecked *** ----------------");
-                LogUtil.e(TAG,"isChecked = " + isChecked);
+                LogUtil.e(TAG, "*** isChecked *** ----------------");
+                LogUtil.e(TAG, "isChecked = " + isChecked);
 
-                if(isChecked){
-                    tv_Title.setText("取\t\t\t消");
-                    RFIDApplication.setModeBuHuo(Const.CONST_TRUE);
-                    uiBuHuo();
+//                if(isChecked){
+//                    tv_Title.setText("取\t\t\t消");
+//                    RFIDApplication.setModeBuHuo(Const.CONST_TRUE);
+//                    uiBuHuo();
+//
+//                }
+//                else{
+//                    tv_Title.setText("发\t\t\t货");
+//                    RFIDApplication.setModeBuHuo(Const.CONST_FALSE);
+//                    uiFaHuo();
+//                }
+                if (isChecked) {
 
-                }
-                else{
                     tv_Title.setText("发\t\t\t货");
                     RFIDApplication.setModeBuHuo(Const.CONST_FALSE);
                     uiFaHuo();
+                } else {
+
+                    tv_Title.setText("取\t\t\t消");
+                    RFIDApplication.setModeBuHuo(Const.CONST_TRUE);
+                    uiBuHuo();
                 }
+
 
 //                ToastUtil.showToast(mContext,PreferenceUtil.get(mContext,Const.KEY_MODE_BU_HUO));
 
             }
         });
-
 
 
         findViewById(R.id.llMore).setOnClickListener(new OnClickListener() {
@@ -570,19 +651,60 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
         tvVersionName.setText("当前版本:" + VersionUtil.getVersionName(RFIDApplication.instance));
 
 
+
+        Button btCheckUpdate = (Button)findViewById(R.id.btCheckUpdate);
+        btCheckUpdate.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promptDialog.viewAnimDuration = 10;
+                promptDialog = new PromptDialog(SuoFeiYaMainDemand2Activity.this);
+                promptDialog.getDefaultBuilder().touchAble(false).round(3).loadingDuration(2500);
+                promptDialog.showLoading("正在检查更新...");
+
+                // 检查更新;
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (RFIDApplication.getIsCanCheckUpdate()) {
+                            LogUtil.e("TAG", "PreferenceUtil.get(RFIDApplication.instance, Const.KEY_IS_CAN_INSTALL) = " +
+                                    PreferenceUtil.get(RFIDApplication.instance, Const.KEY_IS_CAN_INSTALL));
+                            UpdateUtil.check(SuoFeiYaMainDemand2Activity.this, HttpRequestMethod.GET, new UpdateUtil.UpdateCheckListener() {
+                                @Override
+                                public void checkSuccess() {
+                                    if (promptDialog != null) {
+                                        promptDialog.dismiss();
+                                    }
+                                }
+
+                                @Override
+                                public void checkFail() {
+                                    if (promptDialog != null) {
+                                        promptDialog.dismiss();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }, 10);
+
+
+
+            }
+        });
+
+
+
     }
 
-    private void uiBuHuo(){
-        ((TextView)findViewById(R.id.tvBuHuo)).setTextColor(ResHelper.getColor(mContext,R.color.black));
-        ((TextView)findViewById(R.id.tvFaHuo)).setTextColor(ResHelper.getColor(mContext,R.color.gray));
-    }
-    private void uiFaHuo(){
-        ((TextView)findViewById(R.id.tvBuHuo)).setTextColor(ResHelper.getColor(mContext,R.color.gray));
-        ((TextView)findViewById(R.id.tvFaHuo)).setTextColor(ResHelper.getColor(mContext,R.color.black));
+    private void uiBuHuo() {
+        ((TextView) findViewById(R.id.tvBuHuo)).setTextColor(ResHelper.getColor(mContext, R.color.black));
+        ((TextView) findViewById(R.id.tvFaHuo)).setTextColor(ResHelper.getColor(mContext, R.color.gray));
     }
 
-
-
+    private void uiFaHuo() {
+        ((TextView) findViewById(R.id.tvBuHuo)).setTextColor(ResHelper.getColor(mContext, R.color.gray));
+        ((TextView) findViewById(R.id.tvFaHuo)).setTextColor(ResHelper.getColor(mContext, R.color.black));
+    }
 
 
     private PromptDialog promptDialog;
@@ -685,6 +807,77 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
                 }
             }
         });
+
+
+
+        String urlUpdate = PreferenceUtil.get(RFIDApplication.instance, Const.KEY_URL_UPDATE, "");
+        Button btSure = (Button) dialog.findViewById(R.id.btSure);
+        final TextInputEditText etUrlUpdate = (TextInputEditText) dialog.findViewById(R.id.etUrlUpdate);
+        etUrlUpdate.setText(urlUpdate);
+        btSure.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = etUrlUpdate.getText().toString().trim();
+                if (StringHelper2.judeIsLegalURL(url)) {
+                    PreferenceUtil.set(RFIDApplication.instance, Const.KEY_URL_UPDATE, url);
+                    LogUtil.i("TAG", "软件更新地址 = " + PreferenceUtil.get(RFIDApplication.instance, Const.KEY_URL_UPDATE));
+                    ToastUtil.showToast(RFIDApplication.instance, "修改成功!");
+                } else {
+                    ToastUtil.showToast(RFIDApplication.instance, "修改失败!地址格式不正确!");
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        CheckSwitchButton checkSwitchButton = (CheckSwitchButton) dialog.findViewById(R.id.mCheckSwithcButton);
+        LogUtil.e("TAG", "RFIDApplication.getModeIsBuHuo() = " + RFIDApplication.getModeIsBuHuo());
+        //默认是发货
+        if (StringHelper2.isEmpty(PreferenceUtil.get(RFIDApplication.instance, Const.KEY_FLOAT_BUTTON))) {
+            PreferenceUtil.set(RFIDApplication.instance, Const.KEY_FLOAT_BUTTON, Const.CONST_TRUE);
+        }
+        boolean check;
+        //左边是true  右边是false
+        if (PreferenceUtil.get(RFIDApplication.instance, Const.KEY_FLOAT_BUTTON).equals(Const.CONST_FALSE)) {
+            check = false;
+            checkSwitchButton.setChecked(check);
+        } else {
+
+            check = true;
+            checkSwitchButton.setChecked(check);
+        }
+
+        checkSwitchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    PreferenceUtil.set(RFIDApplication.instance, Const.KEY_FLOAT_BUTTON, Const.CONST_TRUE);
+
+                } else {
+                    PreferenceUtil.set(RFIDApplication.instance, Const.KEY_FLOAT_BUTTON, Const.CONST_FALSE);
+                }
+            }
+        });
+
         dialog.show();
         return dialog;
     }
@@ -793,36 +986,40 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
     protected void onResume() {
         super.onResume();
 
+        LogUtil.e(TAG, "onResume()");
 
-        String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
-        if (StringHelper2.isEmpty(name)) {
-            selectChannel();
-
-        } else {
-            tvChannel.setText(name);
-            tvChannel.setTextColor(getResources().getColor(R.color.black));
-        }
-
-
-        //todo
-        uiFresh();
-
-        //这里主要是为了显示UI
-        if (RFIDApplication.instance.floatService != null) {
-            button_read.performClick();
-        }
-
-
-
+//        String name = PreferenceUtil.get(mContext, Const.KEY_STAGE_NMAE, "");
+//        if (StringHelper2.isEmpty(name)) {
+//            selectChannel();
+//
+//        } else {
+//            tvChannel.setText(name);
+//            tvChannel.setTextColor(getResources().getColor(R.color.black));
+//        }
+//
+//        //todo
+//        uiFresh();
+//
+//        //这里主要是为了显示UI
+//        if (RFIDApplication.instance.floatService != null) {
+//            button_read.performClick();
+//            ReadHandleUI();
+//        }
+//
+//        if(PreferenceUtil.get(mContext,"ISREAD").equals("TRUE")){
+//            ReadHandleUI();
+//        };
 
 
     }
+
 
     @Override
     protected void onStop() {
         if (mDialog != null) {
             mDialog.dismiss();
         }
+
         super.onStop();
     }
 
@@ -872,7 +1069,7 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
     public void addViewAndShowInfo(String title, String content) {
         LogUtil.e("TAG", "addViewAndShowInfo=============>1");
 
-        if(mDialog!=null){
+        if (mDialog != null) {
             mDialog.dismiss();
         }
 
@@ -911,5 +1108,36 @@ public class SuoFeiYaMainDemand2Activity extends SuoFeiYaBaseActivity {
 
     }
 
+
+    private void testPermission() {
+        RuntimePermissionUtil.test(RuntimePermissionUtil.getStoragePermissionList(), new PermissionListener() {
+            @Override
+            public void onGranted() {
+
+            }
+
+            @Override
+            public void onDenied(List<String> deniedPermissions) {
+
+                ToastUtil.showToast(SuoFeiYaMainDemand2Activity.this, "需要写入SD卡的权限,否则无法正常运行.");
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        LogUtil.e("TAG", "PreferenceUtil.get(RFIDApplication.instance, Const.KEY_IS_CAN_INSTALL) = " + PreferenceUtil.get(RFIDApplication.instance, Const.KEY_IS_CAN_INSTALL));
+
+        super.onPause();
+    }
+
+    //    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK) {
+//            moveTaskToBack(false);
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
 }

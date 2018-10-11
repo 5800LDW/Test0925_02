@@ -49,6 +49,7 @@ public class RFIDApplication extends UHF1Application implements
         ExceptionUtil.context = this;
         Thread.setDefaultUncaughtExceptionHandler(this);
 
+
 //        if(Controller.isRelease==false){
 //            LeakCanary.install(this);
 //        }
@@ -61,7 +62,20 @@ public class RFIDApplication extends UHF1Application implements
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
+        RFIDApplication.setIsCanInstallFALSE();
         ExceptionUtil.handleExceptionAndExit(e);
+        //20181009
+        if(floatService!=null){
+//            floatService.stopButtonClick();
+//            Intent serviceStop = new Intent();
+//            serviceStop.setClass(this, FloatService.class);
+//            stopService(serviceStop);
+//            if(floatService!=null){
+//                floatService.release();
+//            }
+//            floatService = null;
+        }
+
     }
 
 
@@ -84,6 +98,16 @@ public class RFIDApplication extends UHF1Application implements
          PreferenceUtil.set(RFIDApplication.instance,Const.KEY_MODE_BU_HUO,str);
     }
 
+
+
+    public static boolean getIsDefaultFloatButton(){
+        if(PreferenceUtil.get(RFIDApplication.instance, Const.KEY_FLOAT_BUTTON).equals(Const.CONST_TRUE)){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 
 

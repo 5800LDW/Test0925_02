@@ -84,7 +84,9 @@ public class CheckSwitchButton extends android.support.v7.widget.AppCompatCheckB
 	/** 判断是否在进行动画  */
 	private boolean mAnimating;
 
-	private final float VELOCITY = 350;
+//	private final float VELOCITY = 350;
+
+	private final float VELOCITY = 1750;
 	/** 滑动速度 */
 	private float mVelocity;
 

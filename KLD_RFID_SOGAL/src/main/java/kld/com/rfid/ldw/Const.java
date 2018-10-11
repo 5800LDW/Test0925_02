@@ -11,9 +11,13 @@ public final class Const {
 
 
 
-    public static final boolean IsCanTest = false;
+    //是否允许测试
+    public static final boolean IsCanTest = true;
+    //是否允许记录id号到本地
     public static final boolean IsCanRecordEpcID = true;
-    public static final boolean IsCanUpdate = false;
+    //是否允许更新
+    public static final boolean IsCanUpdate = true;
+    //是不是发布版本
     static {
         Controller.isRelease = false;
     }
@@ -28,12 +32,20 @@ public final class Const {
     public static final String KEY_IS_CAN_INSTALL = "$_KEY_ISCANINSTALL";
     public static final String KEY_MODE_BU_HUO = "$_KEY_MODEBUHUO";
 
+    public static final String KEY_FLOAT_BUTTON = "$_KEY_FLOAT_BUTTON";
+
+    public static final String KEY_URL_UPDATE = "$_KEY_KEY_URL_UPDATE";
+
 
     public static final String CONST_TRUE = "TRUE";
     public static final String CONST_FALSE = "FALSE";
 
     public static final int KEY_SCAN_BUTTON = 261;
 
+//    public static final int CONN_TIME_OUT = 39;
+//    public static final int READ_TIME_OUT = 39;
+//    public static final int WRITE_TIME_OUT = 39;
+//
     public static final int CONN_TIME_OUT = 39;
     public static final int READ_TIME_OUT = 39;
     public static final int WRITE_TIME_OUT = 39;
@@ -66,11 +78,14 @@ public final class Const {
 
     public static String getURL_DownloadAPK(){
 //        return getURL_BASE() ;//TODO
-        return "http://test-1251233192.coscd.myqcloud.com/1_1.apk";
+//        return "http://test-1251233192.coscd.myqcloud.com/1_1.apk";
+        return "http://192.168.1.66:8080/MyFirstServletDemo/servlet/HelloServlet/getVersionName";
     }
 
     public static String getURL_Version(){
 //        return getURL_BASE() ;//TODO
+//        return "https://www.baidu.com"; //https://www.baidu.com
+//        return "http://192.168.1.27:8080/MyFirstServletDemo/servlet/HelloServlet/getVersionName";
         return "https://www.baidu.com";
     }
 
