@@ -6,6 +6,7 @@ import com.ldw.xyz.util.PreferenceUtil;
 import com.ldw.xyz.util.exception.ExceptionUtil;
 import com.uhf.uhf.UHF1.UHF1Application;
 
+import kld.com.rfid.ldw.demand2.SuoFeiYaMainDemand2Activity;
 import kld.com.rfid.ldw.demand2.baseService.MyBaseService;
 import kld.com.rfid.ldw.demand2.way2.FloatAccessibilityService;
 
@@ -33,6 +34,9 @@ public class RFIDApplication extends UHF1Application implements
 
 
     public MyBaseService floatService;//FloatAccessibilityService
+    public SuoFeiYaMainDemand2Activity suoFeiYaMainDemand2Activity;//FloatAccessibilityService
+
+
     public FloatAccessibilityService floatAccessibilityService;//FloatAccessibilityService
 
 
