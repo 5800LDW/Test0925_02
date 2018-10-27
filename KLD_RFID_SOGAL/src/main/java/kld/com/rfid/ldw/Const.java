@@ -12,14 +12,14 @@ public final class Const {
 
 
     //是否允许测试
-    public static final boolean IsCanTest = true;
+    public static final boolean IsCanTest = false;
     //是否允许记录id号到本地
     public static final boolean IsCanRecordEpcID = true;
     //是否允许更新
     public static final boolean IsCanUpdate = true;
     //是不是发布版本
     static {
-        Controller.isRelease = false;
+        Controller.isRelease = true;
     }
 
 
@@ -35,6 +35,11 @@ public final class Const {
     public static final String KEY_FLOAT_BUTTON = "$_KEY_FLOAT_BUTTON";
 
     public static final String KEY_URL_UPDATE = "$_KEY_KEY_URL_UPDATE";
+    public static final String KEY_POWER = "$__POWER";
+
+
+    public static final String KEY_JIE_WEN_TEST_SUFFIX = "$_KEY_JIE_WEN_TEST_SUFFIX";
+    public static final String KEY_IS_CAN_JIE_WEN_TEST= "$_KEY_IS_CAN_JIE_WEN_TEST";
 
 
     public static final String CONST_TRUE = "TRUE";
@@ -42,13 +47,40 @@ public final class Const {
 
     public static final int KEY_SCAN_BUTTON = 261;
 
-//    public static final int CONN_TIME_OUT = 39;
-//    public static final int READ_TIME_OUT = 39;
-//    public static final int WRITE_TIME_OUT = 39;
+
+    public static final int CONST_NOT_UPDATE = 0;
+    public static final int CONST_UPDATE = 1;
+    public static final int CONST_NOT_CHECK = 2;
+
+
+    public static final String[] Coname = new String[]{"NO", "                    EPC ID ", "Count"};
+
+
+
+    public static  int CONN_TIME_OUT ;
+    public static  int READ_TIME_OUT ;
+    public static  int WRITE_TIME_OUT;
+
+
+
+    static {
+        if(Const.IsCanTest==true){
+             CONN_TIME_OUT = 3;
+             READ_TIME_OUT = 3;
+             WRITE_TIME_OUT = 3;
+        }
+        else {
+             CONN_TIME_OUT = 20;
+             READ_TIME_OUT = 20;
+             WRITE_TIME_OUT = 20;
+        }
+    }
+
+
 //
-    public static final int CONN_TIME_OUT = 39;
-    public static final int READ_TIME_OUT = 39;
-    public static final int WRITE_TIME_OUT = 39;
+//    public static final int CONN_TIME_OUT = 1;
+//    public static final int READ_TIME_OUT = 1;
+//    public static final int WRITE_TIME_OUT = 1;
 
 
     private static final String getURL_BASE(){
@@ -79,7 +111,7 @@ public final class Const {
     public static String getURL_DownloadAPK(){
 //        return getURL_BASE() ;//TODO
 //        return "http://test-1251233192.coscd.myqcloud.com/1_1.apk";
-        return "http://192.168.1.66:8080/MyFirstServletDemo/servlet/HelloServlet/getVersionName";
+        return "http://192.168.43.202:8080/MyFirstServletDemo/servlet/HelloServlet/getVersionName";
     }
 
     public static String getURL_Version(){

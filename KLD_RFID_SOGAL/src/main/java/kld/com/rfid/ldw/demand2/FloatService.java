@@ -3,7 +3,6 @@ package kld.com.rfid.ldw.demand2;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -52,6 +51,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import kld.com.rfid.ldw.Const;
 import kld.com.rfid.ldw.R;
@@ -59,6 +59,7 @@ import kld.com.rfid.ldw.RFIDApplication;
 import kld.com.rfid.ldw.bean.ResponseObj;
 import kld.com.rfid.ldw.demand2.baseService.MyBaseService;
 import kld.com.rfid.ldw.demand2.logepc.LogEpcID;
+import kld.com.rfid.ldw.demand2.logepc2.LogEpcID2;
 import kld.com.rfid.ldw.demand2.sound.SoundUtil;
 import kld.com.rfid.ldw.util.DataDoWithUtil;
 import kld.com.rfid.ldw.util.GsonUtil;
@@ -73,13 +74,15 @@ import static com.uhf.uhf.Common.Comm.context;
 import static com.uhf.uhf.Common.Comm.isQuick;
 import static com.uhf.uhf.Common.Comm.isrun;
 import static com.uhf.uhf.Common.Comm.lsTagList;
+import static com.uhf.uhf.Common.Comm.lsTagList6B;
 import static com.uhf.uhf.Common.Comm.soundPool;
 import static com.uhf.uhf.Common.Comm.tagListSize;
-import static com.uhf.uhf.Common.Comm.lsTagList6B;
 import static kld.com.rfid.ldw.demand2.sound.SoundUtil.initExecutorSoundUtil;
 
 @TargetApi(23)
-public class FloatService extends MyBaseService implements OnClickListener , Runnable{
+public class FloatService extends MyBaseService implements OnClickListener, Runnable {
+
+    public static Set<String> unUPploadSet = new HashSet<>();
 
     private static final String TAG = "FloatService";
 
@@ -91,9 +94,9 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     private long mlCount = 0;
     private int totalSec, yushu, min, sec;
     //liudongwen
-    String[] Coname = new String[]{"NO", "                    EPC ID ", "Count"};
+    String[] Coname = Const.Coname;
     //liudongwen
-    public int uploadSetStartSize;
+    public int uploadSetStartSize = 0;
 
     //    public FloatService floatService;
 
@@ -124,6 +127,19 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     // begin
     private int scanCount = 0;
 
+    //20181012
+    private int updateState = Const.CONST_NOT_UPDATE;
+
+    public static int unPAStartNum = 0;
+    public static int unAAAStartNum = 0;
+    public static int AAAStartNum = 0;
+
+    public static void initJieWenTest() {
+        unPAStartNum = 0;
+        unAAAStartNum = 0;
+        AAAStartNum = 0;
+    }
+
 
 //    private static final String TAG = "FloatService ";
 //	private static boolean isAutoScanning = false;
@@ -136,20 +152,19 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //        Comm.app = getApplication();
         Comm.app = new UHF1Application();
         Comm.spConfig = new SPconfig(this);
-        context = this;
+        context = RFIDApplication.instance;
 
 //        Comm.soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
 //        Comm.soundPool.load(this, R.raw.beep51, 1);
 
         Comm.soundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
-        Comm.soundPool.load(this, R.raw.beep51, 1);
+        Comm.soundPool.load(RFIDApplication.instance, R.raw.beep51, 1);
 
 
         LogUtil.e(TAG, "*** soundPool *** ----------------");
-        if(soundPool==null){
+        if (soundPool == null) {
             LogUtil.e(TAG, " soundPool == null");
-        }
-        else{
+        } else {
             LogUtil.e(TAG, " soundPool == " + soundPool);
         }
         LogUtil.e(TAG, "soundPool");
@@ -158,34 +173,15 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         Comm.initWireless(Comm.app);
         Comm.connecthandler = connectH;
 //        Comm.moduleType = null;
-        if (Comm.moduleType!=null)
+        if (Comm.moduleType != null)
             ConnectModule();
         else
             Connect();
+        LogUtil.e(TAG, "-----------------------------------");
         LogUtil.e(TAG, "connect");
 
 
     }
-
-
-
-    //180910
-//    public SoundPool soundPoolBeep;
-//    public int sounPoolBeepID;
-//    public void myInitSoundPool(){
-//        soundPoolBeep = new SoundPool(10, AudioManager.STREAM_SYSTEM, 5);
-//        sounPoolBeepID =  soundPoolBeep.load(this, R.raw.beep51, 1);
-//    }
-//    protected void playSoundBeep() {
-//        if(soundPoolBeep==null){
-//            myInitSoundPool();
-//        }
-//        soundPoolBeep.play(sounPoolBeepID, 1f, 1f, 0, 0, 1.0f);
-//    }
-
-
-
-
 
     @SuppressLint("HandlerLeak")
     public Handler connectH = new Handler() {
@@ -195,9 +191,19 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         public void handleMessage(Message msg) {
             try {
 
+                connectHTimes++;
+
                 Comm.mInventoryHandler = uhfhandler;
 
                 Comm.SetInventoryTid(false);
+
+                //20181026
+//                Bundle bd = msg.getData();
+//                String strMsg = bd.get("Msg").toString();
+//                if(!strMsg.equals("")&&strMsg!=null){
+//                    Comm.setSes(1);
+//                }
+                Comm.setSes(1);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -206,16 +212,26 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         }
     };
 
+
+    int uhfhandlerTimes = 0;
+    int connectHTimes = 0;
+
+    int testInt = 100000;
+
+
     @SuppressLint("HandlerLeak") //todo
     public Handler uhfhandler = new Handler() {
         @SuppressWarnings({"unchecked", "unused"})
         @Override
         public void handleMessage(Message msg) {
+
+            uhfhandlerTimes++;
+
+
             try {
-                if (Comm.is6BTag){
+                if (Comm.is6BTag) {
                     tagListSize = lsTagList6B.size();
-                }
-                else{
+                } else {
                     tagListSize = lsTagList.size();
                 }
 
@@ -224,14 +240,14 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
                 int readCount = bd.getInt("readCount");
 
 
-                if (readCount > 0){
+                if (readCount > 0) {
                     //显示数量
                     //tv_state.setText(String.valueOf(readCount));
                 }
 
 //                Log.e("tagListSize", "uhfhandler tagListSize  : " + tagListSize);//lsTagList
 //                Log.e("lsTagList", "lsTagList.size() : " + lsTagList.size());//lsTagList
-//                Log.e("lsTagList", "lsTagList.size() : " + lsTagList);//lsTagList
+//                LogUtil.e("lsTagList", "lsTagList.size() : " + lsTagList);//lsTagList
 //                Log.e("lsTagList", "lsTagList : " + lsTagList.toString());//lsTagList
                 //todo  重点关注这个;
 
@@ -242,49 +258,55 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //				}
 
 
+                if (tagListSize > 0 && tagListSize > uploadSet.size()) {
 
 
+                    if (false) {
+                        LogUtil.e(TAG, "------------------------------------");
+                        LogUtil.e(TAG, "uploadSet.size()  : " + uploadSet.size());
+                        LogEpcID2.put("uploadSet.size()  : " + uploadSet.size(), testInt++);
+                        LogUtil.e(TAG, "tagListSize  : " + tagListSize);
+                        LogUtil.e(TAG, "------------------------------------");
+                        LogUtil.e(TAG, "uploadSet   =  " + uploadSet);
+                        LogEpcID2.put("uploadSet  : " + uploadSet, testInt++);
+                        LogUtil.e(TAG, "lsTagList   =  " + lsTagList);
+                        LogEpcID2.put("lsTagList  : " + lsTagList, testInt++);
 
+                        LogUtil.e(TAG, "------ readCount : " + String.valueOf(readCount));
+                        for (int i = 0; i < lsTagList.size(); i++) {
+                            String epcstr = lsTagList.get(i).strEPC;
 
-                if (tagListSize > 0 && tagListSize>uploadSet.size()){
-                    Log.e(TAG, "------------------------------------");
-                    Log.e(TAG, "uploadSet.size()  : " + uploadSet.size());
-                    Log.e(TAG, "tagListSize  : " + tagListSize);
-                    Log.e(TAG, "------------------------------------");
-                    Log.e(TAG, "uploadSet   =  " + uploadSet);
-                    Log.e(TAG, "lsTagList   =  " + lsTagList);
-//                    Log.e(TAG, "------ readCount : " + String.valueOf(readCount));
+//                    LogUtil.e(TAG,"lsTagList.get(ListIndex).strEPC  epcstr ="+epcstr);
 
+                            if (Comm.dt == Comm.DeviceType.supoin_JT && Comm.To433Index < index) {
+                                Comm.mWirelessMg.writeTo433(epcstr + "\n");
+                                Comm.To433Index++;
+                            }
 
-//                    for(int i =0;i<lsTagList.size();i++){
-//                       String  epcstr = lsTagList.get(i).strEPC;
-//
-////                    LogUtil.e(TAG,"lsTagList.get(ListIndex).strEPC  epcstr ="+epcstr);
-//
-//                        if (Comm.dt == Comm.DeviceType.supoin_JT && Comm.To433Index < index) {
-//                            Comm.mWirelessMg.writeTo433(epcstr + "\n");
-//                            Comm.To433Index++;
-//                        }
-//
-//                        if (epcstr != null && !epcstr.equals("")) {
-//
-//                            epcstr = lsTagList.get(i).strEPC.replace(" ", "");
-//
-//
-//                            if (epcstr.length() > 24) {
-//                                epcstr = epcstr.substring(0, 24) + "\r\n" + epcstr.substring(24);
-//                            }
-//
-//                            //TODO 数据处理
+                            if (epcstr != null && !epcstr.equals("")) {
+                                epcstr = lsTagList.get(i).strEPC.replace(" ", "");
+                                if (epcstr.length() > 24) {
+                                    epcstr = epcstr.substring(0, 24) + "\r\n" + epcstr.substring(24);
+                                }
+                                //TODO 数据处理
 //                            epcstr = DataDoWithUtil.dataConversion(epcstr);
-//                            Log.e(TAG, "------------------------------------");
-//                            LogUtil.e(TAG,"  epcstr ="+epcstr);
-//                        }
-//                    }
+                                Log.e(TAG, "------------------------------------");
+                                LogUtil.e(TAG, "  epcstr =" + epcstr);
 
+                                LogEpcID2.put("------------------------------------", testInt++);
+                                LogEpcID2.put("  epcstr =" + epcstr, testInt++);
+                                LogEpcID2.put(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>", testInt++);
+                            }
+                        }
+                        LogUtil.e(TAG, "------------------------------------");
+                        LogUtil.e(TAG, "uhfhandler times  : " + uhfhandlerTimes);
+                        LogUtil.e(TAG, "------------------------------------");
+                        LogUtil.e(TAG, "connectHTimes times  : " + connectHTimes);
+                    }
 
 
                     showlist();
+
                 }
 
 //                Log.e("uhfhandler", "readCount : " + String.valueOf(readCount));
@@ -298,31 +320,22 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     };
 
 
-//    @SuppressLint("HandlerLeak") //todo
-//    public Handler uhfhandler ;
-
-
-
-
     @Override
     public void onCreate() {
         LogUtil.e(TAG, "onCreate");
         super.onCreate();
 
-        if(RFIDApplication.getIsDefaultFloatButton()==false){
+        if (RFIDApplication.getIsDefaultFloatButton() == false) {
             view = LayoutInflater.from(this).inflate(R.layout.floating2, null);
-        }
-        else{
+        } else {
             view = LayoutInflater.from(this).inflate(R.layout.floating, null);
         }
 
 
-
-
         iv = (ImageView) view.findViewById(R.id.img2);
-        imageView1 = (ImageView)view.findViewById(R.id.img1);
+        imageView1 = (ImageView) view.findViewById(R.id.img1);
         tvTips = view.findViewById(R.id.tvTips);
-        tvTotalScan = (TextView)view.findViewById(R.id.tvTotalScan);
+        tvTotalScan = (TextView) view.findViewById(R.id.tvTotalScan);
         alertDialog = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.alert_dialog_demand2, null);
         dialog_window_background = view.findViewById(R.id.dialog_window_background);
         iv.setVisibility(View.GONE);
@@ -330,9 +343,8 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         createView();
 
 
-
         //liudognwen
-        mContext =this;
+        mContext = this;
         RFIDApplication.instance.floatService = this;
 
         Awl = new AndroidWakeLock((PowerManager) getSystemService(Context.POWER_SERVICE));
@@ -341,92 +353,46 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         initAllSoundPool();
 
         //180911
-        if(RFIDApplication.getIsCanRecordEpcID()){
+        if (RFIDApplication.getIsCanRecordEpcID()) {
             LogEpcID.initExecutor();
         }
 
-
 //        initHandler();
 
-        InitDevice();
+//        InitDevice();
 
-        initSoundPool();
+//        InitDevice();
 
-        initExecutorSoundUtil();
+//        initSoundPool();
 
-        if(true){
+//        initExecutorSoundUtil();
+
+        if (true) {
             //liudognwen 0902
             actionUpReceiver = new ActionUpReceiver();
             IntentFilter filter = new IntentFilter();
             filter.addAction("$_ActionUp");
             getApplicationContext().registerReceiver(actionUpReceiver, filter);
         }
+
+        //开始每隔一段时间看是否需要刷新界面;
+        updateListSurface();
+
+        initJieWenTest();
+
+
     }
-
-//    HandlerThread handlerThread
-//    void initHandler(){
-//        HandlerThread handlerThread = new HandlerThread("HandlerThread");
-//        handlerThread.start();
-//         uhfhandler = new Handler(handlerThread.getLooper()){
-//            @Override
-//            public void handleMessage(Message msg) {
-//                super.handleMessage(msg);
-//                Log.d(TAG,"子线程 uiThread2------"+Thread.currentThread());//子线程
-//
-//                try {
-//                    if (Comm.is6BTag)
-//                        tagListSize = lsTagList6B.size();
-//                    else
-//                        tagListSize = lsTagList.size();
-//                    Bundle bd = msg.getData();
-//
-//                    int readCount = bd.getInt("readCount");
-//
-//
-//                    if (readCount > 0){
-//                        //显示数量
-//                        //tv_state.setText(String.valueOf(readCount));
-//                    }
-//
-////                Log.e("tagListSize", "uhfhandler tagListSize  : " + tagListSize);//lsTagList
-////                Log.e("lsTagList", "lsTagList.size() : " + lsTagList.size());//lsTagList
-////                Log.e("lsTagList", "lsTagList.size() : " + lsTagList);//lsTagList
-////                Log.e("lsTagList", "lsTagList : " + lsTagList.toString());//lsTagList
-//                    //todo  重点关注这个;
-//
-////				if(tagListSize>0){
-////					for(int i=0;i<tagListSize;i++){
-////						container.put(lsTagList.get(i));
-////					}
-////				}
-//                    if (tagListSize > 0 && isCanRunRead == true){
-//                        Log.e("tagListSize", "*** (tagListSize > 0 && isCanRunRead == true)***  tagListSize  : " + tagListSize);//lsTagList
-//                        showlist();
-//                    }
-//
-//                    Log.e("uhfhandler", "readCount : " + String.valueOf(readCount));
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    com.ldw.xyz.util.exception.ExceptionUtil.handleException(e);
-//                    LogUtil.e(TAG, e.getMessage());
-//                }
-//            }
-//        };
-//
-//        Log.d(TAG,"uiThread1------"+Thread.currentThread());//主线程
-//        mHandler.sendEmptyMessage(1);
-//    }
-
-
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //liudongwen
-//        InitDevice();
+
+        InitDevice();
 //
-//        initSoundPool();
+        initSoundPool();
+
+        initExecutorSoundUtil();
 //
 //        if(true){
 //            //liudognwen 0902
@@ -446,7 +412,15 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         }
         // end
 
-        LogUtil.e(TAG,"onStartCommand");
+        LogUtil.e(TAG, "onStartCommand");
+
+        LogEpcID2.initExecutor();
+
+
+        if(unUPploadSet == null){
+            unUPploadSet = new HashSet<>();
+        }
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -466,7 +440,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         wmParams = ((RFIDApplication) getApplication()).getMywmParams();
 
 
-        if(RFIDApplication.getIsDefaultFloatButton()==false){
+        if (RFIDApplication.getIsDefaultFloatButton() == false) {
 
 //            wmParams.type = 2002;
             wmParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
@@ -474,11 +448,10 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
             wmParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
 
-            wmParams.flags =  wmParams.flags | WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            wmParams.flags = wmParams.flags | WindowManager.LayoutParams.FLAG_FULLSCREEN;
 
-            wmParams.flags =  wmParams.flags | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
-        }
-        else{
+            wmParams.flags = wmParams.flags | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+        } else {
             wmParams.type = 2002;
             wmParams.flags |= 8;
             wmParams.gravity = Gravity.LEFT | Gravity.TOP; // 调整悬浮窗口至左上角
@@ -550,40 +523,53 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
     }
 
-    public  void stopScan(){
+    public void stopScan() {
 
         Awl.ReleaseWakeLock();
         Comm.stopScan();
-        LogUtil.e(TAG,"Comm.stopScan();");
-
+        LogUtil.e(TAG, "Comm.stopScan();");
 
         //Comm.powerDown();
         showlist();
-        ToastUtil.showToast(mContext,"已结束扫描");
+        ToastUtil.showToast(mContext, "已结束扫描");
         //todo 提示正在上传;
         //todo 上传操作;
     }
 
 
+    public void startScan() {
 
-
-    public void startScan(){
+        unUPploadSet.clear();
 
         Comm.lv.clear();
         Comm.clean();
 
         try {
+
             Awl.WakeLock();
             Comm.startScan();
-            LogUtil.e(TAG,"Comm.startScan()");
-            ToastUtil.showToast(mContext,"开始RFID扫描");
+
+            LogUtil.e(TAG, "Comm.startScan()");
+            ToastUtil.showToast(mContext, "开始RFID扫描");
         } catch (Exception ex) {
             //liudongwen
             com.ldw.xyz.util.exception.ExceptionUtil.handleException(ex);
         }
+
+
+//        Comm.lv.clear();
+//        Comm.clean();
+//
+//        try {
+//            Awl.WakeLock();
+//            Comm.startScan();
+//            LogUtil.e(TAG, "Comm.startScan()");
+//            ToastUtil.showToast(mContext, "开始RFID扫描");
+//        } catch (Exception ex) {
+//            //liudongwen
+//            com.ldw.xyz.util.exception.ExceptionUtil.handleException(ex);
+//        }
     }
-
-
 
 
     public void showImg() {
@@ -599,8 +585,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         // Decoding is enable
 
 
-
-        if (isCanRunRead==true) {
+        if (isCanRunRead == true) {
             view.setVisibility(View.VISIBLE);
 //			wmParams.width = WindowManager.LayoutParams.FILL_PARENT;
 //			wmParams.height = WindowManager.LayoutParams.FILL_PARENT;
@@ -609,16 +594,15 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //			wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
 //			wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
             //正在运行
-            if(Comm.isrun){
-                LogUtil.e(TAG,"*** STOP *** 开始进行停止---------");
+            if (Comm.isrun) {
+                LogUtil.e(TAG, "*** STOP *** 开始进行停止---------");
                 stopButtonClick();
-                LogUtil.e(TAG,"停止后是否正在运行 Comm.isrun = "+ Comm.isrun);
-            }
-            else if(!Comm.isrun){
+                LogUtil.e(TAG, "停止后是否正在运行 Comm.isrun = " + Comm.isrun);
+            } else if (!Comm.isrun) {
                 //todo 运行
                 startUI();
                 startScan();
-                LogUtil.e(TAG,"是否已经开始正在运行 Comm.isrun = "+ Comm.isrun);
+                LogUtil.e(TAG, "是否已经开始正在运行 Comm.isrun = " + Comm.isrun);
             }
             // todo 如果正在上传 ,提示等待上传成功;
 
@@ -626,18 +610,29 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             updateViewPosition();
         }
 
-        LogUtil.e(TAG,"*** scanBiz =" );
-        LogUtil.e(TAG,"*** isCanRunRead  =" + isCanRunRead);
+        LogUtil.e(TAG, "*** scanBiz =");
+        LogUtil.e(TAG, "*** isCanRunRead  =" + isCanRunRead);
     }
 
 
-
-
-
-
-
     @Override
-    public void stopButtonClick(){
+    public void stopButtonClick() {
+        Awl.ReleaseWakeLock();
+        Comm.stopScan();
+        LogUtil.e(TAG, "Comm.stopScan();");
+
+
+        if (tagListSize == 0 || uploadSet.size() == 0) {
+
+        } else {
+            while (tagListSize > uploadSet.size()) {
+                try {
+                    Thread.sleep(10);
+                } catch (Exception e) {
+                    LogUtil.e(TAG, e.toString());
+                }
+            }
+        }
 
 
         stopScan();
@@ -651,26 +646,22 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     }
 
 
-
-
-
-
-    public void addViewAndShowInfo(String title,String content){
-        LogUtil.e(TAG,"addViewAndShowInfo=============>1");
+    public void addViewAndShowInfo(String title, String content) {
+        LogUtil.e(TAG, "addViewAndShowInfo=============>1");
         wmParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         wmParams.height = WindowManager.LayoutParams.MATCH_PARENT;
         wmParams.format = 1;
-        wmParams.gravity = Gravity.CENTER ; // 调整悬浮窗口至左上角
+        wmParams.gravity = Gravity.CENTER; // 调整悬浮窗口至左上角
         wm.addView(alertDialog, wmParams);
         wmParams.gravity = Gravity.LEFT | Gravity.TOP; // 调整悬浮窗口至左上角
         wmParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         wmParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-        TextView title_text = (TextView)alertDialog.findViewById(R.id.title_text);//content_text
-        TextView content_text = (TextView)alertDialog.findViewById(R.id.content_text);//content_text
+        TextView title_text = (TextView) alertDialog.findViewById(R.id.title_text);//content_text
+        TextView content_text = (TextView) alertDialog.findViewById(R.id.content_text);//content_text
         title_text.setText(title);
         content_text.setText(content);
-        Button btnClear = (Button)alertDialog.findViewById(R.id.btnClear);
+        Button btnClear = (Button) alertDialog.findViewById(R.id.btnClear);
         btnClear.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -681,7 +672,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             }
         });
 
-        Button confirm_button =(Button)alertDialog.findViewById(R.id.confirm_button);
+        Button confirm_button = (Button) alertDialog.findViewById(R.id.confirm_button);
         confirm_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -690,29 +681,21 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
                 postString();
             }
         });
-        LogUtil.e(TAG,"addViewAndShowInfo=============>2");
-
+        LogUtil.e(TAG, "addViewAndShowInfo=============>2");
 
 
     }
 
 
-
-
-
-
-    public void stopUI(){
+    public void stopUI() {
         imageView1.setBackground(getDrawable(R.drawable.svg_rfid_stop));
         tvTotalScan.setTextColor(getResources().getColor(R.color.white));
     }
 
-    public void startUI(){
+    public void startUI() {
         imageView1.setBackground(getDrawable(R.drawable.svg_rfid_read));
         tvTotalScan.setTextColor(getResources().getColor(R.color.green));
     }
-
-
-
 
 
     // begin
@@ -737,10 +720,10 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     }
 
     private void updateViewPosition() {
-        if(RFIDApplication.getIsDefaultFloatButton()==false){
+        if (RFIDApplication.getIsDefaultFloatButton() == false) {
 
-        }
-        else {
+        } else {
+            LogUtil.e("updateViewPosition", "updateViewPosition()");
             // 更新浮动窗口位置参数
             wmParams.x = (int) (x - mTouchStartX);
             wmParams.y = (int) (y - mTouchStartY);
@@ -759,10 +742,41 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     }
 
 
+    private Runnable updateRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (updateState == Const.CONST_NOT_UPDATE) {
+                updateListSurface();
+
+                return;
+            }
+
+            if (updateState == Const.CONST_UPDATE) {
+
+                //刷新界面;
+                notifyActivityUpdateAdapter();
+                //更新读到的标签总数;
+                tvTotalScan.setText("总数:" + totalTagsSum);
+
+                updateState = Const.CONST_NOT_UPDATE;
+
+                updateListSurface();
+
+                return;
+            }
+
+            if (updateState == Const.CONST_NOT_CHECK) {
+
+                return;
+            }
+        }
+    };
 
 
+    public void updateListSurface() {
+        mHandler.postDelayed(updateRunnable, 50);
 
-
+    }
 
 
     @Override
@@ -773,6 +787,9 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             e.printStackTrace();
         }
 
+        //停止handler的自我调用;
+        updateState = Const.CONST_NOT_CHECK;
+
         handler.removeCallbacks(task);
         LogUtil.i(TAG, "onDestroy");
         LogUtil.i(TAG, "onDestroy");
@@ -780,15 +797,15 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
         OkHttpUtils.getInstance().cancelTag(cancelTag);
         //避免内存泄露
-        if(mHandler!=null){
+        if (mHandler != null) {
             mHandler.removeCallbacksAndMessages(null);
         }
-        if(connectH!=null){
-            connectH.removeCallbacksAndMessages(null);
-        }
-        if(uhfhandler!=null){
-            uhfhandler.removeCallbacksAndMessages(null);
-        }
+//        if (connectH != null) {
+//            connectH.removeCallbacksAndMessages(null);
+//        }
+//        if (uhfhandler != null) {
+//            uhfhandler.removeCallbacksAndMessages(null);
+//        }
 
         //liudongwen
         release();
@@ -801,8 +818,6 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     public IBinder onBind(Intent intent) {
         return null;
     }
-
-
 
 
 //    // begin
@@ -819,7 +834,6 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -832,20 +846,33 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     private static final int NOTIFY_FAKEPLAYER_ID = 1339;
 
     private void startForeground() {
-        Intent i = new Intent(this, SuoFeiYaMainDemand2Activity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
+//        Intent i = new Intent(this, SuoFeiYaMainDemand2Activity.class);
+//        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        PendingIntent pi = PendingIntent.getActivity(this, 0, i, 0);
 
         Notification myNotify = new Notification.Builder(this).setSmallIcon(R.drawable.ic_launcher_sl)
                 // .setTicker("Fake Player: " )
-                .setContentTitle(ResHelper.getString(RFIDApplication.instance,R.string.app_name))
-                .setContentText(ResHelper.getString(RFIDApplication.instance,R.string.scan_service_running))
-                .setContentIntent(pi)
+                .setContentTitle(ResHelper.getString(RFIDApplication.instance, R.string.app_name))
+                .setContentText(ResHelper.getString(RFIDApplication.instance, R.string.scan_service_running))
+//                .setContentIntent(pi)
                 .getNotification();
         myNotify.flags |= Notification.FLAG_NO_CLEAR;
         startForeground(NOTIFY_FAKEPLAYER_ID, myNotify);
     }
 
+    int inSupplement = 0;
+
+    public void setSupplementZero() {
+        inSupplement = 0;
+    }
+
+    public void supplementAdd() {
+        inSupplement = inSupplement + 1;
+    }
+
+    public int getSupplement() {
+        return inSupplement;
+    }
 
 
     private void showlist() {
@@ -853,15 +880,15 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         //liudongwen
         uploadSetStartSize = uploadSet.size();
         Log.e(TAG, "------------------------------------");
-        LogUtil.e(TAG,"showlist()");
+        LogUtil.e(TAG, "showlist()");
 
         try {
 //            int index = 1;
 
             //liudongwen
             int index = list.size();
-            if(index==0){
-                index=1;
+            if (index == 0) {
+                index = 1;
                 Map<String, String> h = new HashMap<String, String>();
                 for (int i = 0; i < Coname.length; i++)
                     h.put(Coname[i], Coname[i]);
@@ -875,13 +902,12 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //            int ListIndex = 0;
             int ListIndex = uploadSetStartSize;
             tagListSize = tagListSize - uploadSetStartSize;
-            if(ListIndex<0){
+            if (ListIndex < 0) {
                 ListIndex = 0;
             }
 
 //            LogUtil.e(TAG,"----------------------------------");
 //            LogUtil.e(TAG,"tagListSize = " + tagListSize);
-
 
 
             if (!isQuick || !Comm.isrun) {
@@ -905,8 +931,44 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
                             epcstr = epcstr.substring(0, 24) + "\r\n" + epcstr.substring(24);
                         }
 
-                        //TODO 数据处理
+                        if (Const.IsCanTest == true && PreferenceUtil.get(mContext, Const.KEY_IS_CAN_JIE_WEN_TEST).equals(Const.CONST_TRUE)) {
+                            //todo
+                            if (epcstr.toUpperCase().endsWith(PreferenceUtil.get(mContext, Const.KEY_JIE_WEN_TEST_SUFFIX))) {
+                                AAAStartNum++;
+                            } else {
+                                unAAAStartNum++;
+                            }
+
+                            LogUtil.e(TAG, "---------------------");
+                            LogUtil.e(TAG, "AAAStartNum = " + AAAStartNum);
+                            LogUtil.e(TAG, "---------------------");
+                            LogUtil.e(TAG, "unAAAStartNum = " + unAAAStartNum);
+                        }
+
+
+                        boolean b = false;
+
+                        if (epcstr.startsWith("5041") && !epcstr.toUpperCase().endsWith("FFFFF")) {
+
+
+                            b = true;
+
+                        }
+//                        else {
+                        //数据处理
                         epcstr = DataDoWithUtil.dataConversion(epcstr);
+
+                        if (b) {
+                            unUPploadSet.add(epcstr);
+                        }
+
+                        if (Const.IsCanTest == true && PreferenceUtil.get(mContext, Const.KEY_IS_CAN_JIE_WEN_TEST).equals(Const.CONST_TRUE)) {
+                            //todo
+                            if (!epcstr.toUpperCase().startsWith("PA")) {
+                                unPAStartNum++;
+                            }
+                        }
+
 
 //                        LogUtil.e(TAG,"----------------------------------");
 //                        LogUtil.e(TAG,"DataDoWithUtil.dataConversion(epcstr)  ="+epcstr);
@@ -915,30 +977,39 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //                        LogUtil.e(TAG,"uploadSet.contains(epcstr)  ="+uploadSet.contains(epcstr));
 
                         //liudongwen
-                        if(uploadSet.contains(epcstr)==false){
-
-                            //liudongwen
-                            uploadSet.add(epcstr);
-
-                            //demo
-                            Map<String, String> m = new HashMap<String, String>();
-                            m.put(Coname[0], String.valueOf(index));
-                            m.put(Coname[1], epcstr);
+//                            if (uploadSet.contains(epcstr) == false) {
 
 
+                        //liudongwen
+                        uploadSet.add(epcstr);
 
+                        //demo
+                        Map<String, String> m = new HashMap<String, String>();
+                        m.put(Coname[0], String.valueOf(index));
+                        m.put(Coname[1], epcstr);
+
+
+                        if(b){
+                            logUnRightEpcIDString(epcstr, index);
+                        }else {
                             // 20180910 添加记录读到的数据;
-                            logScanEpcIDString(epcstr,index);
+                            logScanEpcIDString(epcstr, index);
+                        }
 
 
-                            ////demo该标签读取的次数;
-                            ReadCnt = lsTagList.get(ListIndex).nReadCount;
-                            m.put(Coname[2], String.valueOf(ReadCnt));
-                            //int mRSSI=Integer.parseInt(lsTagList.get(ListIndex).strRSSI);
-                            index++;
+
+                        ////demo该标签读取的次数;
+                        ReadCnt = lsTagList.get(ListIndex).nReadCount;
+                        m.put(Coname[2], String.valueOf(ReadCnt));
+                        //int mRSSI=Integer.parseInt(lsTagList.get(ListIndex).strRSSI);
+                        index++;
+                        if (!b) {
                             list.add(m);
                         }
 
+//                            }
+
+//                        }
 //                            }
 //                        }
                     }
@@ -948,25 +1019,26 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
             }
             //liudongwen 为零就是清空了,所以要刷新,大于原来的就是新加了, 也要刷新;
-            if(uploadSet!=null&&(uploadSet.size()==0||(uploadSet.size()>uploadSetStartSize))){
+            if (uploadSet != null && (uploadSet.size() == 0 || (uploadSet.size() > uploadSetStartSize))) {
 
-                LogUtil.e(TAG,"uploadSet.size() ========================> " + uploadSet.size());
-                LogUtil.e(TAG,"uploadSet.toString()========================>)"+uploadSet.toString());
+                LogUtil.e(TAG, "uploadSet.size() ========================> " + uploadSet.size());
+                LogUtil.e(TAG, "uploadSet.toString()========================>)" + uploadSet.toString());
 
-                //刷新界面;
-                notifyActivityUpdateAdapter();
-                //更新读到的标签总数;
-                totalTagsSum = uploadSet.size();
-                tvTotalScan.setText("总数:"+totalTagsSum);
-
-                //180910
-//                playSoundBeep();
-
-                //demo
-                if (!isQuick || !Comm.isrun) {
-
-
+                totalTagsSum = uploadSet.size() - unUPploadSet.size();
+                if(totalTagsSum<0){
+                    totalTagsSum = 0;
                 }
+
+//                //刷新界面;
+//                notifyActivityUpdateAdapter();
+//                //更新读到的标签总数;
+//                tvTotalScan.setText("总数:"+totalTagsSum);
+
+
+                updateState = Const.CONST_UPDATE;
+//                LogUtil.e(TAG,"-----------------------------------");
+//                LogUtil.e(TAG,"updateState = " + state);
+
             }
 
         } catch (NumberFormatException e) {
@@ -988,42 +1060,32 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     }
 
 
-
-
-
-
-
-
     public void postString() {
+//        test2();
 
-        String url ;
-        if(RFIDApplication.getModeIsBuHuo()==Const.CONST_TRUE){
+        String url;
+        if (RFIDApplication.getModeIsBuHuo() == Const.CONST_TRUE) {
             url = Const.getURL_BU_HUO();
+        } else {
+            url = Const.getURL_UPLAOD();
         }
-        else{
-             url = Const.getURL_UPLAOD();
-        }
 
 
-
-
-        String id = PreferenceUtil.get(mContext,Const.KEY_STAGE_CODE,"");
-        if(Const.IsCanTest == true){
+        String id = PreferenceUtil.get(mContext, Const.KEY_STAGE_CODE, "");
+        if (Const.IsCanTest == true) {
             //测试环境不需要检测;
-        }
-        else if(StringHelper2.isEmpty(id)){
-            ToastUtil.showToast(mContext,"stage ID 为空,请重新获取通道!");
+        } else if (StringHelper2.isEmpty(id)) {
+            ToastUtil.showToast(mContext, "stage ID 为空,请重新获取通道!");
             return;
         }
 
-        String organizationID = PreferenceUtil.get(mContext,Const.KEY_ORGANIZATION,"");
+        String organizationID = PreferenceUtil.get(mContext, Const.KEY_ORGANIZATION, "");
 
-        LogUtil.e(TAG,"ORGANIZATION_ID =" + organizationID);
+        LogUtil.e(TAG, "ORGANIZATION_ID =" + organizationID);
 
-        if(Const.IsCanTest == true){
+        if (Const.IsCanTest == true) {
             //测试环境不需要检测;
-        }
-        else if(uploadSet.size()==0){
+        } else if (uploadSet.size() == 0) {
 //            ToastUtil.showToast(mContext,"没有扫描数据");
             return;
         }
@@ -1032,16 +1094,16 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
 //        String url = Const.getURL_UPLAOD();
 
-        LogUtil.e(TAG,"url = " + url);
-        LogUtil.e(TAG,"content = " + content);
-        LogUtil.e(TAG,"organization = " + organizationID);
+        LogUtil.e(TAG, "url = " + url);
+        LogUtil.e(TAG, "content = " + content);
+        LogUtil.e(TAG, "organization = " + organizationID);
 
         OkHttpUtils
                 .post()//
                 .url(url)//
-                .addParams("json",content)
-                .addParams("stage",id)
-                .addParams("organization",organizationID)
+                .addParams("json", content)
+                .addParams("stage", id)
+                .addParams("organization", organizationID)
                 .build()
                 .connTimeOut(Const.CONN_TIME_OUT)
                 .readTimeOut(Const.READ_TIME_OUT)
@@ -1050,9 +1112,9 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
     }
 
-    private String getJsonObject(){
+    private String getJsonObject() {
 
-        LogUtil.e(TAG,"uploadSet.size() = " + uploadSet.size());
+        LogUtil.e(TAG, "uploadSet.size() = " + uploadSet.size());
 
         StringBuffer sb = new StringBuffer();
 
@@ -1067,21 +1129,24 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         // "PA1808010411792","PA1808010411803","PA1808010411799",
         // "PA1808010340643","PA1808010340644"]}
 
-        if(uploadSet!=null){
+        if (uploadSet != null) {
 
             boolean isFirst = true;
             Iterator<String> it = uploadSet.iterator();
             while (it.hasNext()) {
                 String str = it.next();
-                if(isFirst){
-                    isFirst = false;
+
+                if(!unUPploadSet.contains(str)){
+                    if (isFirst) {
+                        isFirst = false;
+                    } else {
+                        sb.append(",");
+                    }
+                    sb.append("\"");
+                    sb.append(str);
+                    sb.append("\"");
                 }
-                else{
-                    sb.append(",");
-                }
-                sb.append("\"");
-                sb.append(str);
-                sb.append("\"");
+
             }
 
         }
@@ -1099,10 +1164,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     }
 
 
-
-
-
-    private void testAlsert(){
+    private void testAlsert() {
 //        soundError();
         isCanRunRead = true;
         buttonClearOn();
@@ -1125,17 +1187,17 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             dialog_window_background.setVisibility(View.VISIBLE);
 
 
-            if(tvShow==null){
+            if (tvShow == null) {
                 tvShow = (TextView) dialog_window_background.findViewById(R.id.tvShow);
             }
-            if(circularProgressBar==null){
+            if (circularProgressBar == null) {
                 circularProgressBar = (MCircularProgressBar) dialog_window_background.findViewById(com.maning.mndialoglibrary.R.id.circularProgressBar);
             }
             circularProgressBar.setProgress(0);
 //            tvShow.setText("上传进度:0%");
 
 
-            if(LineProgressBar==null){
+            if (LineProgressBar == null) {
                 LineProgressBar = (ProgressBar) dialog_window_background.findViewById(com.maning.mndialoglibrary.R.id.horizontalProgressBar);
             }
             LineProgressBar.setProgress(0);
@@ -1163,18 +1225,17 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //            tvTips.setVisibility(View.GONE);
             dialog_window_background.setVisibility(View.GONE);
 
-            LogUtil.e(TAG,"onError " + e.toString());
+            LogUtil.e(TAG, "onError " + e.toString());
 
-            if (mContext != null ) {
+            if (mContext != null) {
                 final String info;
                 if (e instanceof UnknownHostException) {
                     info = "网络未连接!";
                 } else if (e instanceof SocketTimeoutException) {
                     info = "连接网络超时!";
-                } else if(e instanceof ConnectException){
-                    info = "连接地址: "+PreferenceUtil.get(mContext,Const.KEY_URL_SERVER,ResHelper.getString(mContext,R.string.url_server_address))+" 失败";
-                }
-                else {
+                } else if (e instanceof ConnectException) {
+                    info = "连接地址: " + PreferenceUtil.get(mContext, Const.KEY_URL_SERVER, ResHelper.getString(mContext, R.string.url_server_address)) + " 失败";
+                } else {
                     info = e.toString();
                 }
 
@@ -1188,17 +1249,17 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //                soundErrorNow(R.raw.sound_ou);
 
                 Toast.makeText(mContext,
-                        "Error:"+"\n"+info,
+                        "Error:" + "\n" + info,
                         Toast.LENGTH_LONG).show();
 
-                if(isTest){
-                    onResponse("{未排程;取消;窜货}",12);
-                }
+//                if (isTest) {
+//                    onResponse("{未排程;取消;窜货}", 12);
+//                }
 
 
             }
 
-            Log.e(TAG,"Exception = "+e.toString());
+            Log.e(TAG, "Exception = " + e.toString());
 
         }
 
@@ -1207,7 +1268,6 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
 
 //            VoiceThread mt=new VoiceThread(mContext);
-
 
 
             dialog_window_background.setVisibility(View.GONE);
@@ -1222,7 +1282,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
             ResponseObj obj = GsonUtil.toResponseObj(response);
 
-            if(isTest){
+            if (isTest) {
                 obj = new ResponseObj();
 
                 obj.setErrormsg("未排程;包状态异常;窜货;取消;漏货");
@@ -1232,34 +1292,31 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             }
 
 
-
-            if(obj==null){
-                addViewAndShowInfo("返回信息错误",response);
+            if (obj == null) {
+                addViewAndShowInfo("返回信息错误", response);
                 soundErrorNow(R.raw.alarmbell5s);
                 shake();
 //              soundError();
 
                 testAlsert();
                 Toast.makeText(mContext,
-                        "返回信息错误:"+response,
+                        "返回信息错误:" + response,
                         Toast.LENGTH_LONG).show();
 
-            }
-
-            else {
+            } else {
 
                 boolean isSuccess = true;
                 StringBuffer sb = new StringBuffer();
-                if(!StringHelper2.isEmpty(obj.getErrormsg())){
+                if (!StringHelper2.isEmpty(obj.getErrormsg())) {
 
-                    String[] strArr = obj.getErrormsg().split(";",-1);
+                    String[] strArr = obj.getErrormsg().split(";", -1);
                     int myLength = strArr.length;
-                    if(myLength!=0){
-                        for(int i=0;i<myLength;i++){
+                    if (myLength != 0) {
+                        for (int i = 0; i < myLength; i++) {
 
 
-                            if(!StringHelper2.isEmpty(strArr[i])){
-                                isSuccess =false;
+                            if (!StringHelper2.isEmpty(strArr[i])) {
+                                isSuccess = false;
 
                                 addSoundNow(strArr[i]);
                                 sb.append(strArr[i]);
@@ -1267,7 +1324,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 
                             }
 
-                            if(i==myLength-1&&isSuccess==true){
+                            if (i == myLength - 1 && isSuccess == true) {
                                 Toast.makeText(mContext, "上传成功", Toast.LENGTH_SHORT).show();
                                 soundSuccessNow();
                                 buttonClearOn();
@@ -1278,23 +1335,22 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
                                 break;
                             }
                             //出现错误,下面进行播放
-                            else if(i==myLength-1){
+                            else if (i == myLength - 1) {
                                 testAlsert();
                                 notifyActivityUpdateAdapter();
                                 //发出声音
                                 SoundUtil.playSound();
                                 //震动
                                 shake();
-                                ToastUtil.showToast(mContext,sb.toString());
-                                if(!StringHelper2.isEmpty(obj.getMyPackage())){
+                                ToastUtil.showToast(mContext, sb.toString());
+                                if (!StringHelper2.isEmpty(obj.getMyPackage())) {
                                     Toast.makeText(mContext, obj.getMyPackage(), Toast.LENGTH_LONG).show();
                                 }
                             }
 
                         }
                     }
-                }
-                else{
+                } else {
                     //错误
                     testAlsert();
                     notifyActivityUpdateAdapter();
@@ -1311,13 +1367,12 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
             int currentProgress = (int) (100 * progress);
 
 
-
             if (currentProgress < 100) {
-                tvShow.setText("上传进度:"+currentProgress+"%");
+                tvShow.setText("上传进度:" + currentProgress + "%");
                 //添加动画平滑过度
                 circularProgressBar.setProgress(progress, true);
 
-                if(LineProgressBar!=null){
+                if (LineProgressBar != null) {
                     LineProgressBar.setProgress(currentProgress);
                 }
 
@@ -1326,7 +1381,7 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
                 tvShow.setText("上传进度:100%");
                 circularProgressBar.setProgress(100);
 
-                if(LineProgressBar!=null){
+                if (LineProgressBar != null) {
                     LineProgressBar.setProgress(100);
                 }
 
@@ -1343,39 +1398,41 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
         }
 
 
-
-
     }
+
     TextView tvShow;
     MCircularProgressBar circularProgressBar;
     ProgressBar LineProgressBar;
 
 
-
-
     //清空数据;
-    private void buttonClearOn(){
-        //liudongwen 清空
-        clearAllData();
-        tvTotalScan.setText("总数:0");
-        Comm.lv.clear();
-        Comm.clean();
-        //demo
-        showlist();
+    private void buttonClearOn() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                //liudongwen 清空
+                clearAllData();
+                tvTotalScan.setText("总数:0");
+                Comm.lv.clear();
+                Comm.clean();
+                //demo
+                showlist();
+            }
+        });
+
     }
-    public void clearAllData(){
+
+    public void clearAllData() {
         //liudongwen 清空数据;
-        if(uploadSet==null){
+        if (uploadSet == null) {
             uploadSet = new HashSet<>();
         }
-        if(list==null){
+        if (list == null) {
             list = new ArrayList<>();
         }
         list.clear();
         uploadSet.clear();
     }
-
-
 
 
 //    public void soundError() {
@@ -1400,15 +1457,16 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //    }
 
 
+    public void notifyActivityUpdateAdapter() {
+//        Intent mIntent = new Intent();
+//        mIntent.setAction("$_UpdateAdapter");
+//        getApplicationContext().sendBroadcast(mIntent);
 
+        if (RFIDApplication.instance.suoFeiYaMainDemand2Activity != null) {
+            RFIDApplication.instance.suoFeiYaMainDemand2Activity.uiFresh();
+        }
 
-
-    public void notifyActivityUpdateAdapter(){
-        Intent mIntent = new Intent();
-        mIntent.setAction("$_UpdateAdapter");
-        getApplicationContext().sendBroadcast(mIntent);
     }
-
 
 
     public class ActionUpReceiver extends BroadcastReceiver {
@@ -1420,63 +1478,41 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
     }
 
 
-    private void addSoundNow(String msg){
-        LogUtil.e(TAG,"***错误信息*** ----------");
-        LogUtil.e(TAG,"msg = " + msg);
+    private void addSoundNow(String msg) {
+        LogUtil.e(TAG, "***错误信息*** ----------");
+        LogUtil.e(TAG, "msg = " + msg);
 
-        if(StringHelper2.isEmpty(msg)){
+        if (StringHelper2.isEmpty(msg)) {
             return;
         }
         //else if(msg.toUpperCase().startsWith("非本生产OU")){
 //             SoundUtil.put(R.raw.sound_weipaicheng3,index);
-       // index++;
+        // index++;
 //        }
-        else if(msg.startsWith("未排程")){
-            SoundUtil.put(R.raw.sound_weipaicheng3,index);
+        else if (msg.startsWith("未排程")) {
+            SoundUtil.put(R.raw.sound_weipaicheng3, index);
             index++;
-        }
-        else if(msg.startsWith("非已点数")){
-            SoundUtil.put(R.raw.sound_feiyidianshu3,index);
+        } else if (msg.startsWith("非已点数")) {
+            SoundUtil.put(R.raw.sound_feiyidianshu3, index);
             index++;
-        }
-        else if(msg.startsWith("包状态异常")){
-            SoundUtil.put(R.raw.sound_baozhuangtaiyc3,index);
+        } else if (msg.startsWith("包状态异常")) {
+            SoundUtil.put(R.raw.sound_baozhuangtaiyc3, index);
             index++;
-        }
+        } else if (msg.startsWith("窜货")) {
 
-        else if(msg.startsWith("窜货")){
-
-            SoundUtil.put(R.raw.sound_cuanhuo3,index);
+            SoundUtil.put(R.raw.sound_cuanhuo3, index);
+            index++;
+        } else if (msg.startsWith("漏货")) {
+            SoundUtil.put(R.raw.sound_louhuo3, index);
+            index++;
+        } else if (msg.startsWith("取消")) {
+            SoundUtil.put(R.raw.sound_quxiao3, index);
             index++;
         }
-
-        else if(msg.startsWith("漏货")){
-            SoundUtil.put(R.raw.sound_louhuo3,index);
-            index++;
-        }
-
-        else if(msg.startsWith("取消")){
-            SoundUtil.put(R.raw.sound_quxiao3,index);
-            index++;
-        }
-        LogUtil.e("TAG","soundErrorMsg");
+        LogUtil.e("TAG", "soundErrorMsg");
     }
 
     int index = 0;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //
@@ -1567,7 +1603,60 @@ public class FloatService extends MyBaseService implements OnClickListener , Run
 //    }
 
 
+//    public void setPower(){
+//        try {
+//            Comm.opeT = Comm.operateType.setPower;
+//            int ant1pow = 1;
+//            int ant2pow = 0;
+//            int ant3pow = 0;
+//            int ant4pow = 0;
+//
+//
+//            setAntPower(ant1pow, ant2pow, ant3pow, ant4pow);
+//        } catch (Exception e) {
+//            // TODO Auto-generated catch block
+//            Toast.makeText(RFIDApplication.instance,
+//                    "Set Exception:" + e.getMessage(), Toast.LENGTH_SHORT)
+//                    .show();
+//
+//            LogUtil.e("TAG","----------------------");
+//            LogUtil.e("TAG","Set Exception:" + e.getMessage());
+//            return;
+//        }
+//    }
 
+
+//    public Handler testHandler = new Handler() {
+//        public void handleMessage(Message msg) {
+//            try {
+//
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                Log.e("connectH", e.getMessage());
+//            }
+//        }
+//    };
+//
+//
+//    private void test1(){
+//        testHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if(totalTagsSum>1000 || totalTagsSum==0){
+//                    if (RFIDApplication.instance != null && RFIDApplication.instance.floatService != null) {
+//                        RFIDApplication.instance.floatService.scanBiz();
+//                    }
+//                }
+//                test1();
+//            }
+//        },5000);
+//    }
+//    int times = 0;
+//    private void test2(){
+//        times++;
+//        Toast.makeText(RFIDApplication.instance," 次数:"+ times,Toast.LENGTH_LONG).show();
+//    }
 
 
 }

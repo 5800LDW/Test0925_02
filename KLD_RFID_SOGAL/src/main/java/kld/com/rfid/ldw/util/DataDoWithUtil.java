@@ -1,5 +1,7 @@
 package kld.com.rfid.ldw.util;
 
+import com.ldw.xyz.util.LogUtil;
+
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -8,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 
 public class DataDoWithUtil {
 
+    private final static String TAG = "DataDoWithUtil";
 
     public static String dataConversion(String content) {
 
@@ -28,9 +31,13 @@ public class DataDoWithUtil {
 //        String normal = content.substring(4, content.length());
 //        return PA + normal;
 
+        LogUtil.e(TAG,"----------------------------");
+        LogUtil.e(TAG,"处理前 content = "+ content);
 
 
         content = content.toUpperCase();
+
+        StringBuffer sb = new StringBuffer();
 
         //转换;
         String PA = content.substring(0, 4);
@@ -38,7 +45,13 @@ public class DataDoWithUtil {
 
         content = content.substring(4,content.length()).replace("F","");
 
-        return PA+content;
+        LogUtil.e(TAG,"----------------------------");
+        LogUtil.e(TAG,"处理后  = "+ PA+content);
+
+        sb.append(PA);
+        sb.append(content);
+
+        return sb.toString();
 
 
 //        return bytesToAscii(hexStringToBytes(content),0,content.length()/2);

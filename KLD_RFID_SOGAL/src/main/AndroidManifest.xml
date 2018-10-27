@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kld.com.rfid.ldw"
-    android:versionName="1.1.2"
+    android:versionName="1.1.9"
     android:versionCode="106">
 
     <!--<uses-permission android:name="android.permission.INSTALL_PACKAGES" />-->
@@ -77,6 +77,7 @@
 
         <activity
             android:name="kld.com.rfid.ldw.demand2.SuoFeiYaMainDemand2Activity"
+            android:windowSoftInputMode="stateHidden"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -27,7 +27,7 @@ public class LogEpcID {
 
     public static void initExecutor() {
         queue = new PriorityBlockingQueue<>();
-        executor = Executors.newCachedThreadPool();
+        executor = Executors.newFixedThreadPool(5);
         singleThreadexecutor = Executors.newSingleThreadExecutor();
     }
 

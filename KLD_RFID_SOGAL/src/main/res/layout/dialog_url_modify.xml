@@ -305,7 +305,124 @@
                         android:textSize="16dp" />
 
                 </LinearLayout>
+                <TextView
 
+                    style="@style/item_style"
+                    android:layout_width="fill_parent"
+                    android:background="#EAEAEA"
+                    android:gravity="left|center"
+                    android:paddingLeft="10dp" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvTestText"
+                style="@style/item_style"
+                android:layout_width="fill_parent"
+                android:background="#EAEAEA"
+                android:gravity="left|center"
+                android:paddingLeft="10dp"
+                android:text="是否显示测试数据" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvLeftShow"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="显示"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
+
+                    <kld.com.rfid.ldw.demand2.CheckSwitchButton
+                        android:id="@+id/csbTestData"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="3" />
+
+                    <TextView
+                        android:id="@+id/tvRightUnShow"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="不显示"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <TextView
+                style="@style/item_style"
+                android:layout_width="fill_parent"
+                android:background="#EAEAEA"
+                android:gravity="left|center"
+                android:text="设置功率"
+                android:paddingLeft="10dp" />
+            <Button
+                android:id="@+id/btPower"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="设置功率"/>
+
+
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:padding="5dp"
+                android:minHeight="35dp"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/textView_01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置功率"
+                    android:visibility="gone"
+                    />
+
+                <Spinner
+                    android:id="@+id/spinner_ant1pow"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="wrap_content"
+                    android:minHeight="25dp"
+                    />
+
+                <Button
+                    android:id="@+id/btSetPower"
+                    android:layout_width="100dp"
+                    android:layout_height="44dp"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/bg_btn_main"
+                    android:shadowColor="@color/colorPrimaryDarker"
+                    android:text="确认更改"
+                    android:textColor="@android:color/white"
+                    android:textSize="16dp" />
 
             </LinearLayout>
         </LinearLayout>

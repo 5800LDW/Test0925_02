@@ -21,6 +21,7 @@ import java.util.Set;
 import kld.com.rfid.ldw.R;
 import kld.com.rfid.ldw.RFIDApplication;
 import kld.com.rfid.ldw.demand2.logepc.LogEpcID;
+import kld.com.rfid.ldw.demand2.logepc2.LogEpcID2;
 
 /**
  * Created by liudongwen on 2018/9/1.
@@ -28,9 +29,10 @@ import kld.com.rfid.ldw.demand2.logepc.LogEpcID;
 
 public abstract class MyBaseService extends Service implements BizInterface{
 
-    public boolean isCanRunRead = true;
-    public static List<Map<String, ?>> list = new ArrayList<>();
+    public volatile boolean isCanRunRead = true;
+    public  static List<Map<String, String>> list = new ArrayList<>();
     public  static Set<String> uploadSet = new HashSet<>();
+//    public static Set<String> uploadSet = new LinkedHashSet<>();
 
     @Nullable
     @Override
@@ -84,6 +86,7 @@ public abstract class MyBaseService extends Service implements BizInterface{
     }
 
     public static Handler mHandler = new Handler();
+
 
 //    public SoundPool sp;
 //    public int shoot1id = -1;
@@ -310,7 +313,11 @@ public abstract class MyBaseService extends Service implements BizInterface{
         if(RFIDApplication.getIsCanRecordEpcID()){
             LogEpcID.put(string ,id);
         }
+    }
 
+
+    public void logUnRightEpcIDString(String string,int id){
+        LogEpcID2.put(string ,id);
     }
 
 

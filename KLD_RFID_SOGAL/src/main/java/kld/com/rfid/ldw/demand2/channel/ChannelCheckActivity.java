@@ -109,25 +109,29 @@ public class ChannelCheckActivity  extends AppCompatActivity implements SelectCh
                     return;
                 }
 
-                List<String> list = new ArrayList<>();
+                final List<String> list = new ArrayList<>();
                 for(int i=0;i<organizationList.size();i++){
                     list.add(organizationList.get(i).getORGANIZATION_NAME());
                 }
 
-                showPopupWindow(list, llOrganization, new AdapterView.OnItemClickListener() {
+
+
+                mHandler.postDelayed(new Runnable() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int positionForRepair, long id) {
+                    public void run() {
+                        showPopupWindow(list, llOrganization, new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int positionForRepair, long id) {
 
+                                if(positionForRepair<organizationList.size()){
+                                    String name = organizationList.get(positionForRepair).getORGANIZATION_NAME();
+                                    String ID = organizationList.get(positionForRepair).getORGANIZATION_ID();
+                                    tvOrganization.setText(name+"");
 
-                        if(positionForRepair<organizationList.size()){
-                            String name = organizationList.get(positionForRepair).getORGANIZATION_NAME();
-                            String ID = organizationList.get(positionForRepair).getORGANIZATION_ID();
-                            tvOrganization.setText(name+"");
-
-                            ORGANIZATION_ID = ID;
-                            if( popupWindow!=null){
-                                popupWindow.dismiss();
-                            }
+                                    ORGANIZATION_ID = ID;
+                                    if( popupWindow!=null){
+                                        popupWindow.dismiss();
+                                    }
 //                        //todo 联网获取数据;
 //                        mHanlder.postDelayed(new Runnable() {
 //                            @Override
@@ -136,18 +140,20 @@ public class ChannelCheckActivity  extends AppCompatActivity implements SelectCh
 //                            }
 //                        },100);
 
-                            //todo 联网获取数据;
-                            mHandler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    getChannelInfo();
+                                    //todo 联网获取数据;
+                                    mHandler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            getChannelInfo();
+                                        }
+                                    },200);
+
                                 }
-                            },50);
-
-                        }
-
+                            }
+                        });
                     }
-                });
+                },500);
+
 
             }
         });
@@ -296,13 +302,20 @@ public class ChannelCheckActivity  extends AppCompatActivity implements SelectCh
             LogUtil.e(TAG, "response ------------> " + response);
             LogUtil.e(TAG, "id ------------>" + id);
 
-            DownloadOrganization obj = GsonUtil.toDownloadOrganization(response);
+            final DownloadOrganization obj = GsonUtil.toDownloadOrganization(response);
             if(obj!=null){
 
                 if(obj.getSuccess().toUpperCase().equals("TRUE")){
 //                    ToastUtil.showToast(mContext,obj.getMsg());
-                    organizationList = obj.getData();
-                    llOrganization.performClick();
+
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            organizationList = obj.getData();
+                            llOrganization.performClick();
+                        }
+                    },200);
+
                 }
                 else {
                     ToastUtil.showToast(mContext,obj.getMsg());
@@ -466,7 +479,13 @@ public class ChannelCheckActivity  extends AppCompatActivity implements SelectCh
                         ChannelInfoList.clear();
                         ToastUtil.showToast(mContext,"查无数据!");
                         if(adapter!=null){
-                            adapter.notifyDataSetChanged();
+
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    adapter.notifyDataSetChanged();
+                                }
+                            },100);
                         }
                     }
 
