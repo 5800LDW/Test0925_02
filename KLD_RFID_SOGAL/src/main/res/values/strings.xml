@@ -28,7 +28,7 @@
     <string name="tab2_layout_button_readclear">清除</string>
     <string name="tab2_layout_button_readset">设置 </string>
     <string name="tab2_layout_textView1">本次读到标签个数：</string>
-    <string name="tab2_layout_textView2">        总共读到标签个数：</string>
+    <string name="tab2_layout_textView2">读到标签总数：</string>
     <string name="tab2_layout_textView3">设备状态：</string>
     <string name="connectSec">连接成功</string>
     <string name="connectFalse">连接失败</string>
@@ -84,6 +84,8 @@
     <string name="loading">正在处理,请稍后...</string>
     <string name="alright">好的</string>
     <string name="url_server_address">http://10.8.149.108:8089</string>
+
+    <string name="url_server_update">http://192.168.43.202:8080/MyFirstServletDemo/servlet/HelloServlet/getVersionName</string>
 
 
     <string name="dialog_default_title">Here\'s a message!</string>
