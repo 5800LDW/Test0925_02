@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="8dp">
+    </View>
+
+    <EditText
+        android:id="@+id/etNum"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="6dp"
+        android:hint="输入数量"
+        android:maxLength="2"
+        android:maxLines="1"
+        android:paddingLeft="10dp"
+        android:inputType="number"
+        android:digits="@string/filter_number"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black">
+
+        <requestFocus></requestFocus>
+    </EditText>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="8dp">
+    </View>
+
+</LinearLayout>
