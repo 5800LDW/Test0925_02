@@ -31,6 +31,7 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ldw.xyz.util.LogUtil;
 import com.uhf.uhf.Common.Comm;
 import com.uhf.uhf.UHF1.UHF1Application;
 
@@ -317,6 +318,19 @@ public class Sub4TabActivity extends  Activity {
                     int ant2pow = spinner_ant2pow.getSelectedItemPosition();
                     int ant3pow = spinner_ant3pow.getSelectedItemPosition();
                     int ant4pow = spinner_ant4pow.getSelectedItemPosition();
+
+                    LogUtil.e("TAG","----------------------");
+                    LogUtil.e("TAG","ant1pow = "+ant1pow);
+
+                    LogUtil.e("TAG","----------------------");
+                    LogUtil.e("TAG","ant2pow = "+ant2pow);
+
+                    LogUtil.e("TAG","----------------------");
+                    LogUtil.e("TAG","ant3pow = "+ant3pow);
+
+                    LogUtil.e("TAG","----------------------");
+                    LogUtil.e("TAG","ant4pow = "+ant4pow);
+
                     setAntPower(ant1pow, ant2pow, ant3pow, ant4pow);
                 } catch (Exception e) {
                     // TODO Auto-generated catch block

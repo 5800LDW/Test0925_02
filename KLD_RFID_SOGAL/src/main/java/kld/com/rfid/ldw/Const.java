@@ -51,6 +51,7 @@ public final class Const {
     public static final int CONST_NOT_UPDATE = 0;
     public static final int CONST_UPDATE = 1;
     public static final int CONST_NOT_CHECK = 2;
+    public static final int CONST_SET_POWER = 25;
 
 
     public static final String[] Coname = new String[]{"NO", "                    EPC ID ", "Count"};

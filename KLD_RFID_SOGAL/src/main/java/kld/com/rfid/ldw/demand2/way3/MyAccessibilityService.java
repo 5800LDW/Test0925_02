@@ -10,7 +10,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Toast;
 
-import com.ldw.xyz.util.ActivityUtil;
 import com.ldw.xyz.util.LogUtil;
 import com.ldw.xyz.util.PreferenceUtil;
 
@@ -214,9 +213,23 @@ public class MyAccessibilityService extends AccessibilityService {
 //            Intent mIntent = new Intent();
 //            mIntent.setAction("$_ActionUp");
 //            sendBroadcast(mIntent);
-            if (RFIDApplication.instance != null && RFIDApplication.instance.floatService != null) {
-                RFIDApplication.instance.floatService.scanBiz();
+
+            LogUtil.e("TAG1", "RFIDApplication.instance.isCanRead");
+            LogUtil.e("TAG1", RFIDApplication.instance.isCanRead);
+            LogUtil.e("TAG1", "RFIDApplication.instance.serviceIsStop");
+            LogUtil.e("TAG1", RFIDApplication.instance.serviceIsStop);
+
+            if(!RFIDApplication.instance.isCanRead){
+                return super.onKeyEvent(event);
             }
+
+            if(RFIDApplication.instance.serviceIsStop == true){
+                return super.onKeyEvent(event);
+            }
+
+
+            doBiz();
+
 
 
             LogUtil.e("TAG1", "getAction=========>" + event.getAction());
@@ -226,11 +239,60 @@ public class MyAccessibilityService extends AccessibilityService {
         }
     }
 
+    static  long time1 = 0;
+
+    public static void doBiz(){
+        //重复点击不处理;
+        if ((System.currentTimeMillis() - time1)<600) {
+            return;
+        }
+
+
+        time1 =   System.currentTimeMillis();
+
+        if(!RFIDApplication.instance.isCanRead){
+            return ;
+        }
+
+        if(RFIDApplication.instance.serviceIsStop == true){
+            return ;
+        }
+
+
+
+        new Handler().postDelayed(runnable,1);
+
+
+    }
+
+
+
+
+
+
+    public static Runnable runnable =new Runnable() {
+        @Override
+        public void run() {
+            if(!RFIDApplication.instance.isCanRead){
+                return ;
+            }
+
+            if (RFIDApplication.instance != null && RFIDApplication.instance.floatService != null) {
+                RFIDApplication.instance.floatService.scanBiz();
+            }
+        }
+    };
+
+
+
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         LogUtil.e(TAG, "onCreate() >>>>>>>>>>>>>.");
         test();
+
     }
 
     @Override
@@ -481,7 +543,7 @@ public class MyAccessibilityService extends AccessibilityService {
 
                     MyAccessibilityService.this.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK);
 
-                    ActivityUtil.startActivity(MyAccessibilityService.this, SuoFeiYaMainDemand2Activity.class,null);
+//                    ActivityUtil.startActivity(MyAccessibilityService.this, SuoFeiYaMainDemand2Activity.class,null);
 
                     Intent in = new Intent(MyAccessibilityService.this,SuoFeiYaMainDemand2Activity.class);
                     in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

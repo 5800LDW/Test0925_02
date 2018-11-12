@@ -83,7 +83,7 @@
     <string name="wait_operate">等待操作...</string>
     <string name="loading">正在处理,请稍后...</string>
     <string name="alright">好的</string>
-    <string name="url_server_address">http://10.8.149.108:8089</string>
+    <string name="url_server_address">http://10.10.19.211:8089/RFIDProject</string>
 
     <string name="url_server_update">http://192.168.43.202:8080/MyFirstServletDemo/servlet/HelloServlet/getVersionName</string>
 
@@ -100,6 +100,10 @@
     <string name="service_description">开启后，才能使用按键触发扫描。</string>
 
 
+    <string name="filter_number">0123456789</string>
+
+    <string name="power_set_succeed">功率设置成功</string>
+    <string name="power_set_failed">功率设置失败</string>
 
 
     <string name="toys">M 1278.43 1.63 C 1287.08 -0.60 1296.46 0.13 1304.77 3.35 C 1314.05 6.95 1321.22

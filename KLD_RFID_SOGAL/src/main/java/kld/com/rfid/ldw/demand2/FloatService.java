@@ -61,6 +61,7 @@ import kld.com.rfid.ldw.demand2.baseService.MyBaseService;
 import kld.com.rfid.ldw.demand2.logepc.LogEpcID;
 import kld.com.rfid.ldw.demand2.logepc2.LogEpcID2;
 import kld.com.rfid.ldw.demand2.sound.SoundUtil;
+import kld.com.rfid.ldw.demand2.way3.MyAccessibilityService;
 import kld.com.rfid.ldw.util.DataDoWithUtil;
 import kld.com.rfid.ldw.util.GsonUtil;
 import okhttp3.Call;
@@ -75,6 +76,7 @@ import static com.uhf.uhf.Common.Comm.isQuick;
 import static com.uhf.uhf.Common.Comm.isrun;
 import static com.uhf.uhf.Common.Comm.lsTagList;
 import static com.uhf.uhf.Common.Comm.lsTagList6B;
+import static com.uhf.uhf.Common.Comm.operateType.nullOperate;
 import static com.uhf.uhf.Common.Comm.soundPool;
 import static com.uhf.uhf.Common.Comm.tagListSize;
 import static kld.com.rfid.ldw.demand2.sound.SoundUtil.initExecutorSoundUtil;
@@ -87,6 +89,8 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
     private static final String TAG = "FloatService";
 
     boolean isTest = RFIDApplication.getIsCanTest();
+
+    public static Handler mHandler = new Handler();
 
 
     protected Object cancelTag = this;
@@ -128,7 +132,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
     private int scanCount = 0;
 
     //20181012
-    private int updateState = Const.CONST_NOT_UPDATE;
+    private static int updateState = Const.CONST_NOT_UPDATE;
 
     public static int unPAStartNum = 0;
     public static int unAAAStartNum = 0;
@@ -172,11 +176,20 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
         checkDevice();
         Comm.initWireless(Comm.app);
         Comm.connecthandler = connectH;
-//        Comm.moduleType = null;
-        if (Comm.moduleType != null)
-            ConnectModule();
-        else
-            Connect();
+
+        if(false){
+            //        Comm.moduleType = null;
+            if (Comm.moduleType != null)
+                ConnectModule();
+            else
+                Connect();
+        }
+
+
+        Comm.moduleType = null;
+        Comm.mOtherHandler = opeHandler;
+        Comm.Connect();
+
         LogUtil.e(TAG, "-----------------------------------");
         LogUtil.e(TAG, "connect");
 
@@ -194,6 +207,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
                 connectHTimes++;
 
                 Comm.mInventoryHandler = uhfhandler;
+                Comm.mOtherHandler = opeHandler;
 
                 Comm.SetInventoryTid(false);
 
@@ -257,7 +271,6 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
 //					}
 //				}
 
-
                 if (tagListSize > 0 && tagListSize > uploadSet.size()) {
 
 
@@ -319,18 +332,75 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
         }
     };
 
+    @SuppressLint("HandlerLeak")
+    private Handler opeHandler = new Handler() {
+        @SuppressWarnings({"unchecked", "unused"})
+        @Override
+        public void handleMessage(Message msg) {
 
-    @Override
-    public void onCreate() {
-        LogUtil.e(TAG, "onCreate");
-        super.onCreate();
+            try {
 
+                Bundle b = msg.getData();
+                switch (Comm.opeT) {
+                    case getPower:    //succeed
+//                        try {
+////                            b = msg.getData();
+////                            int ant1Power = b.getInt("ant1Power");
+////                            int ant2Power = b.getInt("ant2Power");
+////                            int ant3Power = b.getInt("ant3Power");
+////                            int ant4Power = b.getInt("ant4Power");
+////
+////                            Toast.makeText(SuoFeiYaMainDemand2Activity.this, "读取功率成功！  " + ant1Power, Toast.LENGTH_LONG).show();
+////                        } catch (Exception e) {
+////                            e.printStackTrace();
+////                            Log.d("uhf6readOp", "Exception" + e.getMessage());
+////                        }
+                        break;
+                    case setPower:
+                        if (RFIDApplication.getPowerTimes() > 1){
+                            return;
+                        }
+                        b = msg.getData();
+                        boolean isSetPower =  b.getBoolean("isSetPower");
+
+                        if (isSetPower)
+                            Toast.makeText(FloatService.this,
+                                    R.string.power_set_succeed, Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(FloatService.this,
+                                    R.string.power_set_failed, Toast.LENGTH_SHORT).show();
+
+                        if(RFIDApplication.instance.suoFeiYaMainDemand2Activity!=null){
+                            RFIDApplication.instance.suoFeiYaMainDemand2Activity. dismissSetPowerDialog();
+                        }
+
+
+                        break;
+                    case getFre:
+                        break;
+                    case setFre:
+                        break;
+                    default:
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Comm.opeT = nullOperate;
+        }
+    };
+
+    private View viewAll;
+
+
+    private void createMyView() {
         if (RFIDApplication.getIsDefaultFloatButton() == false) {
             view = LayoutInflater.from(this).inflate(R.layout.floating2, null);
         } else {
             view = LayoutInflater.from(this).inflate(R.layout.floating, null);
         }
 
+        viewAll = view.findViewById(R.id.viewAll);
 
         iv = (ImageView) view.findViewById(R.id.img2);
         imageView1 = (ImageView) view.findViewById(R.id.img1);
@@ -341,11 +411,18 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
         iv.setVisibility(View.GONE);
         handler.postDelayed(task, delaytime);
         createView();
+    }
+
+    @Override
+    public void onCreate() {
+        LogUtil.e(TAG, "onCreate");
+        super.onCreate();
+
+        createMyView();
 
 
-        //liudognwen
-        mContext = this;
-        RFIDApplication.instance.floatService = this;
+        mHandler = new Handler();
+
 
         Awl = new AndroidWakeLock((PowerManager) getSystemService(Context.POWER_SERVICE));
 
@@ -375,17 +452,19 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
             getApplicationContext().registerReceiver(actionUpReceiver, filter);
         }
 
-        //开始每隔一段时间看是否需要刷新界面;
-        updateListSurface();
 
         initJieWenTest();
 
+        RFIDApplication.setPowerTimesZero();
 
-    }
 
+        RFIDApplication.instance.floatService = this;
+        //liudognwen
+        mContext = this;
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+        //开始每隔一段时间看是否需要刷新界面;
+        updateListSurface();
+
         //liudongwen
 
         InitDevice();
@@ -417,12 +496,69 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
         LogEpcID2.initExecutor();
 
 
-        if(unUPploadSet == null){
+        if (unUPploadSet == null) {
             unUPploadSet = new HashSet<>();
         }
 
+        setPower();
+    }
+
+    private void onStartRequire() {
+        RFIDApplication.instance.floatService = this;
+//        InitDevice();
+//        initSoundPool();
+        if (unUPploadSet == null) {
+            unUPploadSet = new HashSet<>();
+        }
+        setPower();
+    }
+
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+
         return super.onStartCommand(intent, flags, startId);
     }
+
+    @Override
+    public void setPower() {
+
+        if (RFIDApplication.instance.suoFeiYaMainDemand2Activity != null && RFIDApplication.getPowerTimes() <= 1) {
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    RFIDApplication.instance.suoFeiYaMainDemand2Activity.chekPowerIsLastSetOrNot();
+
+                }
+            }, 1);
+        }
+    }
+
+
+    public void hideFloatView() {
+
+        RFIDApplication.instance.isCanRead = false;
+        if (view != null) {
+            view.setVisibility(View.INVISIBLE);
+        }
+
+    }
+
+    public void showFloatView() {
+
+        RFIDApplication.instance.isCanRead = true;
+
+//        if(RFIDApplication.instance.floatService!=null){
+        onStartRequire();
+//        }
+        if (view != null) {
+            view.setVisibility(View.VISIBLE);
+        }
+//        createMyView();
+    }
+
 
     // end
     private void createView() {
@@ -497,29 +633,35 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
                     case MotionEvent.ACTION_UP:
                         state = MotionEvent.ACTION_UP;
 
-                        if (isClick()) {
-                            scanBiz();
+                        if (!RFIDApplication.instance.isCanRead) {
+
                         } else {
-                            updateViewPosition();
+                            if (isClick()) {
+                                MyAccessibilityService.doBiz();
+//                                scanBiz();
+
+                            } else {
+                                updateViewPosition();
+                            }
+
+                            mTouchStartX = mTouchStartY = 0;
                         }
 
-
-                        mTouchStartX = mTouchStartY = 0;
                         break;
                 }
                 return true;
             }
         });
 
-        iv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Intent serviceStop = new Intent();
-                serviceStop.setClass(FloatService.this, FloatService.class);
-                stopService(serviceStop);
-            }
-        });
+//        iv.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//                Intent serviceStop = new Intent();
+//                serviceStop.setClass(FloatService.this, FloatService.class);
+//                stopService(serviceStop);
+//            }
+//        });
 
     }
 
@@ -536,18 +678,29 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
         //todo 上传操作;
     }
 
+    /**
+     * 用于保存数据时的同步处理
+     */
+    private static Object sSyncObject = new Object();
 
-    public void startScan() {
+    protected void myStartScan() {
 
         unUPploadSet.clear();
 
-        Comm.lv.clear();
+//        Comm.lv.clear();
         Comm.clean();
 
         try {
+            synchronized (sSyncObject) {
+                Comm.Awl.WakeLock();
+                Comm.startScan();
+            }
 
-            Awl.WakeLock();
-            Comm.startScan();
+            if (false) {
+                Awl.WakeLock();
+                Comm.startScan();
+            }
+
 
             LogUtil.e(TAG, "Comm.startScan()");
             ToastUtil.showToast(mContext, "开始RFID扫描");
@@ -585,6 +738,12 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
         // Decoding is enable
 
 
+//        if (RFIDApplication.instance.floatService != null && RFIDApplication.instance.floatService.isCanRunRead == false) {
+//            ToastUtil.showToast(mContext, "正在上传数据,请稍后重试");
+//            return;
+//        }
+
+
         if (isCanRunRead == true) {
             view.setVisibility(View.VISIBLE);
 //			wmParams.width = WindowManager.LayoutParams.FILL_PARENT;
@@ -596,14 +755,20 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
             //正在运行
             if (Comm.isrun) {
                 LogUtil.e(TAG, "*** STOP *** 开始进行停止---------");
+
                 stopButtonClick();
-                LogUtil.e(TAG, "停止后是否正在运行 Comm.isrun = " + Comm.isrun);
+
+//                LogUtil.e(TAG, "停止后是否正在运行 Comm.isrun = " + Comm.isrun);
+
             } else if (!Comm.isrun) {
                 //todo 运行
                 startUI();
-                startScan();
-                LogUtil.e(TAG, "是否已经开始正在运行 Comm.isrun = " + Comm.isrun);
+                myStartScan();
+//                LogUtil.e(TAG, "是否已经开始正在运行 Comm.isrun = " + Comm.isrun);
+
             }
+
+
             // todo 如果正在上传 ,提示等待上传成功;
 
         } else {
@@ -611,16 +776,22 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
         }
 
         LogUtil.e(TAG, "*** scanBiz =");
-        LogUtil.e(TAG, "*** isCanRunRead  =" + isCanRunRead);
+//        LogUtil.e(TAG, "*** isCanRunRead  =" + isCanRunRead);
     }
 
 
     @Override
     public void stopButtonClick() {
-        Awl.ReleaseWakeLock();
-        Comm.stopScan();
-        LogUtil.e(TAG, "Comm.stopScan();");
+        synchronized (sSyncObject) {
+            Comm.Awl.ReleaseWakeLock();
+            Comm.stopScan();
+        }
 
+        if (false) {
+            Awl.ReleaseWakeLock();
+            Comm.stopScan();
+            LogUtil.e(TAG, "Comm.stopScan();");
+        }
 
         if (tagListSize == 0 || uploadSet.size() == 0) {
 
@@ -690,11 +861,19 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
     public void stopUI() {
         imageView1.setBackground(getDrawable(R.drawable.svg_rfid_stop));
         tvTotalScan.setTextColor(getResources().getColor(R.color.white));
+        if (RFIDApplication.instance.suoFeiYaMainDemand2Activity != null) {
+            RFIDApplication.instance.suoFeiYaMainDemand2Activity.setBtSetPowerTrueEnable();
+        }
     }
 
     public void startUI() {
         imageView1.setBackground(getDrawable(R.drawable.svg_rfid_read));
         tvTotalScan.setTextColor(getResources().getColor(R.color.green));
+        if (RFIDApplication.instance.suoFeiYaMainDemand2Activity != null) {
+            RFIDApplication.instance.suoFeiYaMainDemand2Activity.setBtSetPowerFalseEnable();
+            RFIDApplication.instance.suoFeiYaMainDemand2Activity.hideAlerDialog();
+
+        }
     }
 
 
@@ -774,6 +953,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
 
 
     public void updateListSurface() {
+
         mHandler.postDelayed(updateRunnable, 50);
 
     }
@@ -809,6 +989,8 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
 
         //liudongwen
         release();
+
+        RFIDApplication.instance.floatService = null;
 
         super.onDestroy();
 
@@ -940,9 +1122,9 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
                             }
 
                             LogUtil.e(TAG, "---------------------");
-                            LogUtil.e(TAG, "AAAStartNum = " + AAAStartNum);
+//                            LogUtil.e(TAG, "AAAStartNum = " + AAAStartNum);
                             LogUtil.e(TAG, "---------------------");
-                            LogUtil.e(TAG, "unAAAStartNum = " + unAAAStartNum);
+//                            LogUtil.e(TAG, "unAAAStartNum = " + unAAAStartNum);
                         }
 
 
@@ -989,13 +1171,12 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
                         m.put(Coname[1], epcstr);
 
 
-                        if(b){
+                        if (b) {
                             logUnRightEpcIDString(epcstr, index);
-                        }else {
+                        } else {
                             // 20180910 添加记录读到的数据;
                             logScanEpcIDString(epcstr, index);
                         }
-
 
 
                         ////demo该标签读取的次数;
@@ -1021,11 +1202,11 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
             //liudongwen 为零就是清空了,所以要刷新,大于原来的就是新加了, 也要刷新;
             if (uploadSet != null && (uploadSet.size() == 0 || (uploadSet.size() > uploadSetStartSize))) {
 
-                LogUtil.e(TAG, "uploadSet.size() ========================> " + uploadSet.size());
-                LogUtil.e(TAG, "uploadSet.toString()========================>)" + uploadSet.toString());
+//                LogUtil.e(TAG, "uploadSet.size() ========================> " + uploadSet.size());
+//                LogUtil.e(TAG, "uploadSet.toString()========================>)" + uploadSet.toString());
 
                 totalTagsSum = uploadSet.size() - unUPploadSet.size();
-                if(totalTagsSum<0){
+                if (totalTagsSum < 0) {
                     totalTagsSum = 0;
                 }
 
@@ -1051,7 +1232,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
         try {
             if (isrun)
                 Comm.stopScan();
-            Comm.Exit();
+//            Comm.Exit();
             Comm.powerDown();
         } catch (Exception e) {
             e.printStackTrace();
@@ -1081,7 +1262,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
 
         String organizationID = PreferenceUtil.get(mContext, Const.KEY_ORGANIZATION, "");
 
-        LogUtil.e(TAG, "ORGANIZATION_ID =" + organizationID);
+//        LogUtil.e(TAG, "ORGANIZATION_ID =" + organizationID);
 
         if (Const.IsCanTest == true) {
             //测试环境不需要检测;
@@ -1094,9 +1275,9 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
 
 //        String url = Const.getURL_UPLAOD();
 
-        LogUtil.e(TAG, "url = " + url);
-        LogUtil.e(TAG, "content = " + content);
-        LogUtil.e(TAG, "organization = " + organizationID);
+//        LogUtil.e(TAG, "url = " + url);
+//        LogUtil.e(TAG, "content = " + content);
+//        LogUtil.e(TAG, "organization = " + organizationID);
 
         OkHttpUtils
                 .post()//
@@ -1114,7 +1295,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
 
     private String getJsonObject() {
 
-        LogUtil.e(TAG, "uploadSet.size() = " + uploadSet.size());
+//        LogUtil.e(TAG, "uploadSet.size() = " + uploadSet.size());
 
         StringBuffer sb = new StringBuffer();
 
@@ -1136,7 +1317,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
             while (it.hasNext()) {
                 String str = it.next();
 
-                if(!unUPploadSet.contains(str)){
+                if (!unUPploadSet.contains(str)) {
                     if (isFirst) {
                         isFirst = false;
                     } else {
@@ -1225,7 +1406,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
 //            tvTips.setVisibility(View.GONE);
             dialog_window_background.setVisibility(View.GONE);
 
-            LogUtil.e(TAG, "onError " + e.toString());
+//            LogUtil.e(TAG, "onError " + e.toString());
 
             if (mContext != null) {
                 final String info;
@@ -1277,7 +1458,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
             LogUtil.e(TAG, "onResponse：complete-------->");
 
 
-            LogUtil.e(TAG, "response ------------> " + response);
+//            LogUtil.e(TAG, "response ------------> " + response);
             LogUtil.e(TAG, "id ------------>" + id);
 
             ResponseObj obj = GsonUtil.toResponseObj(response);
@@ -1480,7 +1661,7 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
 
     private void addSoundNow(String msg) {
         LogUtil.e(TAG, "***错误信息*** ----------");
-        LogUtil.e(TAG, "msg = " + msg);
+//        LogUtil.e(TAG, "msg = " + msg);
 
         if (StringHelper2.isEmpty(msg)) {
             return;
@@ -1513,6 +1694,18 @@ public class FloatService extends MyBaseService implements OnClickListener, Runn
     }
 
     int index = 0;
+
+
+    private void openScanner(boolean on){
+        if (on) {
+            sendBroadcast(new Intent("com.android.server.scannerservice.onoff")
+                    .putExtra("scanneronoff", 1));
+
+        } else {
+            sendBroadcast(new Intent("com.android.server.scannerservice.onoff")
+                    .putExtra("scanneronoff", 0));
+        }
+    }
 
 
 //

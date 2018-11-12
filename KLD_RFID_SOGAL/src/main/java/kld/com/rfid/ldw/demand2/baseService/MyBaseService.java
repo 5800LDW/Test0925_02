@@ -42,7 +42,7 @@ public abstract class MyBaseService extends Service implements BizInterface{
     public abstract  void scanBiz();
 
 
-
+    public abstract void setPower();
 
 
 
@@ -85,7 +85,7 @@ public abstract class MyBaseService extends Service implements BizInterface{
         }
     }
 
-    public static Handler mHandler = new Handler();
+
 
 
 //    public SoundPool sp;

@@ -50,6 +50,7 @@ public class UpdateUtil {
     public interface  UpdateCheckListener{
         void checkSuccess();
         void checkFail();
+        void cannotCheck();
     }
 
 
@@ -63,11 +64,17 @@ public class UpdateUtil {
         if (!StringHelper2.judeIsLegalURL(PreferenceUtil.get(RFIDApplication.instance, Const.KEY_URL_UPDATE))) {
             LogUtil.i("TAG", "软件更新地址 = " + PreferenceUtil.get(RFIDApplication.instance, Const.KEY_URL_UPDATE));
 
-            ToastUtil.showToast(RFIDApplication.instance, "检测更新失败,请正确填写软件更新地址");
+            ToastUtil.showToast(RFIDApplication.instance, "检测更新失败,请检查软件更新地址");
+
+            if(listener!=null){
+                listener.cannotCheck();
+            }
             return;
         }
 
 
+        LogUtil.e(TAG, "---------------------------------------");
+        LogUtil.e(TAG, "更新接口的  url  = "+PreferenceUtil.get(RFIDApplication.instance, Const.KEY_URL_UPDATE));
 
         builder = AllenVersionChecker
                 .getInstance()
@@ -79,8 +86,12 @@ public class UpdateUtil {
                     @Nullable
                     @Override
                     public UIData onRequestVersionSuccess(String result) {
-                        LogUtil.e(TAG, "****** result ****** -------------------");
-                        LogUtil.e(TAG, result);
+
+                        UIData uiData = null;
+
+
+                        LogUtil.e(TAG, "---------------------------------------");
+                        LogUtil.e(TAG, "更新接口返回的数据 result = "+result);
 
                         String title = "发现新版本,立刻更新?";
                         String content;
@@ -92,7 +103,7 @@ public class UpdateUtil {
                         //测试数据
                         if (Const.IsCanTest == true) {
                             bean = new UpdateBean();
-                            bean.setUpdateUrl(Const.getURL_DownloadAPK());
+                            bean.setUpdateUrl(PreferenceUtil.get(RFIDApplication.instance, Const.KEY_URL_UPDATE));
                             bean.setApkSize("5m");
                             bean.setCanUpdate("YES");
                             bean.setConstraintUpdate("false");
@@ -169,28 +180,40 @@ public class UpdateUtil {
                                 listener.checkSuccess();
                             }
 
-
-                            return crateUIData(title, content, url);
-                        } else {
+                            uiData =  crateUIData(title, content, url);
+                        }
+                        else if(bean!=null && !bean.getCanUpdate().toUpperCase().equals("YES")){
                             //不进行下载;
                             RFIDApplication.setIsCanInstallFALSE();
-                            ToastUtil.showToast(context,"检查更新失败!");
-
+                            ToastUtil.showToast(context,"无需更新");
                             if(listener!=null){
                                 listener.checkFail();
                             }
 
-                            return null;
+                        }
+                        else {
+                            //不进行下载;
+                            RFIDApplication.setIsCanInstallFALSE();
+//                            ToastUtil.showToast(context,"无可用更新");
+
+                            if(listener!=null){
+                                listener.checkFail();
+                            }
                         }
 
-
+                        return uiData;
                     }
 
                     @Override
                     public void onRequestVersionFailure(String message) {
+
+                        if(listener!=null){
+                            listener.checkFail();
+                        }
+
                         LogUtil.e(TAG, "****** 下载失败  ****** -------------------");
                         LogUtil.e(TAG, "下载失败!" + "\n" + message);
-//                        Toast.makeText(context, "下载失败!"+"\n"+message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "无法检查更新!"+"\n"+message, Toast.LENGTH_SHORT).show();
                         RFIDApplication.setIsCanInstallFALSE();
                     }
                 });

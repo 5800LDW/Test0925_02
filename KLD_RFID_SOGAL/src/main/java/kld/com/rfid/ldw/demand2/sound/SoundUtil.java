@@ -99,6 +99,7 @@ public class SoundUtil {
     static int id_alarmbell5s;
     static int id_sound_houtaierror;
     static int id_sound_success;
+    static int id_sound_baozhuangtaiyc3;
 
 
     public static void  initAllSoundPool(){
@@ -112,6 +113,7 @@ public class SoundUtil {
         id_alarmbell5s = allSoundPool.load(RFIDApplication.instance, R.raw.alarmbell5s, 1);//alarmbell5s//sound_houtaierror
         id_sound_houtaierror = allSoundPool.load(RFIDApplication.instance, R.raw.sound_houtaierror, 1);//alarmbell5s//sound_houtaierror
         id_sound_success = allSoundPool.load(RFIDApplication.instance, R.raw.sound_success3, 1);
+        id_sound_baozhuangtaiyc3 = allSoundPool.load(RFIDApplication.instance, R.raw.sound_baozhuangtaiyc3, 1);
     }
 
 
@@ -119,7 +121,7 @@ public class SoundUtil {
     static Vibrator vibrator = (Vibrator) RFIDApplication.instance.getSystemService(Context.VIBRATOR_SERVICE);
 
     static void shake(){
-        vibrator.vibrate(3000);
+        vibrator.vibrate(2000);
     }
 
     public static void soundErrorNow(final int rawId){
@@ -155,6 +157,10 @@ public class SoundUtil {
 
             case  R.raw.sound_houtaierror:
                 playMySound(id_sound_houtaierror);
+                break;
+
+            case  R.raw.sound_baozhuangtaiyc3:
+                playMySound(id_sound_baozhuangtaiyc3);
                 break;
 //            case  R.raw.sound_success3:
 //                playMySound(id_sound_success);
